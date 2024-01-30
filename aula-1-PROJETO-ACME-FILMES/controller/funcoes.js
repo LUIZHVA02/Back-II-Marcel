@@ -16,7 +16,10 @@ const getNomeFilmes = function () {
     console.log(jsonFilmes)
     return jsonFilmes
 }
-getNomeFilmes()
+//getNomeFilmes()
+
+
+
 module.exports = {
     getNomeFilmes
 }

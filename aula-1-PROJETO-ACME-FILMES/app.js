@@ -13,3 +13,14 @@ app.use ((request, response, next)=>{
 
     next()
 })
+
+app.get('v1/acme-filmes/nome-dos-filmes', cors(), async function (request, response, next) {
+    let controleNomeFilmes = require("./controller/funcoes")
+
+    let nomeFilmes = controleNomeFilmes.getNomeFilmes()
+
+    if(nomeFilmes){
+        response.json(nomeFilmes)
+        response.status()
+    }
+})
