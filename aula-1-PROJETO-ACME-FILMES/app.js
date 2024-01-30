@@ -14,13 +14,38 @@ app.use ((request, response, next)=>{
     next()
 })
 
-app.get('v1/acme-filmes/nome-dos-filmes', cors(), async function (request, response, next) {
-    let controleNomeFilmes = require("./controller/funcoes")
+app.get('/v1/acme-filmes/filmes/:id', cors(), async function (request, response, next) {
 
-    let nomeFilmes = controleNomeFilmes.getNomeFilmes()
+    let filmeIdUser = request.params.id
 
-    if(nomeFilmes){
-        response.json(nomeFilmes)
-        response.status()
+    let controleFilmesID = require('./controller/funcoes')
+
+    let filmesID = controleFilmesID.getFilmesID(filmeIdUser)
+
+    if(filmesID){
+        response.json(filmesID)
+        response.status(200)
+    }else{
+        response.status(404)
+        response.json({erro:'Não foi possível encontrar um item!'})
     }
+})
+
+app.get('/v1/acme-filmes/filmes', cors(), async function (request, response, next) {
+
+    let controleNomeFilmes = require('./controller/funcoes')
+
+    let infoFilmes = controleNomeFilmes.getFilmes()
+
+    if(infoFilmes){
+        response.json(infoFilmes)
+        response.status(200)
+    }else{
+        response.status(404)
+        response.json({erro:'Não foi possível encontrar um item!'})
+    }
+})
+
+app.listen(8080, function(){
+    console.log('Serviço funcionando e aguardando requisições')
 })
