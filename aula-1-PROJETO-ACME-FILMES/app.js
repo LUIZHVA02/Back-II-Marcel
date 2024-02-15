@@ -75,7 +75,7 @@ app.get('/v1/acme-filmes/filmes', cors(), async function (request, response, nex
 })
 
 //EndPoint: Retorna os dados do BD(Banco de Dados)
-app.get('/v2/acme-filmes/filmes', cors(), async function(request, response, next){
+app.get('/v2/acmefilmes/filmes', cors(), async function(request, response, next){
 
     //Chama a função para retornar os dados de filme
     let dadosFilmes = await controllerFilmes.getListarFilmes()
