@@ -28,48 +28,46 @@ const getFilmes = function () {
     return jsonFilmes
 }
 
-const getFilmesID = function (filmeIdUser) {
+// const getFilmesID = function (filmeIdUser) {
 
-    let idFilme = filmeIdUser
-    let arrayFilmes = []
-    let jsonFilmesID = {}
-    let caminhoFilmes = filmes.filmes.filmes
-    let status = false
+//     let idFilme = filmeIdUser
+//     let arrayFilmes = []
+//     let jsonFilmesID = {}
+//     let caminhoFilmes = filmes.filmes.filmes
+//     let status = false
 
 
-    caminhoFilmes.forEach(function (caminhoFilmes) {
+//     caminhoFilmes.forEach(function (caminhoFilmes) {
 
-            if (caminhoFilmes.nome.includes(idFilme)) {
+//             if (caminhoFilmes.nome.includes(idFilme)) {
 
-                let jsonFilmeAtual = {}
+//                 let jsonFilmeAtual = {}
 
-                jsonFilmeAtual.nome_filme = caminhoFilmes.nome
-                jsonFilmeAtual.sinopse_filme = caminhoFilmes.sinopse
-                jsonFilmeAtual.duracao_filme = caminhoFilmes.duracao
-                jsonFilmeAtual.data_lancamento_filme = caminhoFilmes.data_lancamento
-                jsonFilmeAtual.data_relancamento_filme = caminhoFilmes.data_relancamento
-                jsonFilmeAtual.foto_capa_filme = caminhoFilmes.foto_capa
-                jsonFilmeAtual.valor_unitario_filme = caminhoFilmes.valor_unitario
+//                 jsonFilmeAtual.nome_filme = caminhoFilmes.nome
+//                 jsonFilmeAtual.sinopse_filme = caminhoFilmes.sinopse
+//                 jsonFilmeAtual.duracao_filme = caminhoFilmes.duracao
+//                 jsonFilmeAtual.data_lancamento_filme = caminhoFilmes.data_lancamento
+//                 jsonFilmeAtual.data_relancamento_filme = caminhoFilmes.data_relancamento
+//                 jsonFilmeAtual.foto_capa_filme = caminhoFilmes.foto_capa
+//                 jsonFilmeAtual.valor_unitario_filme = caminhoFilmes.valor_unitario
 
-                status = true
+//                 status = true
 
-            }
+//             }
 
-    })
+//     })
 
-    if (status = true) {
-        console.log(jsonFilmeAtual)
-        return jsonFilmeAtual
+//     if (status = true) {
+//         console.log(jsonFilmeAtual)
+//         return jsonFilmeAtual
 
-    } else {
-        return false
-    }
-}
-getFilmesID('O Segredo do Vale')
+//     } else {
+//         return false
+//     }
+// }
 
 
 
 module.exports = {
-    getFilmes,
-    getFilmesID
+    getFilmes
 }

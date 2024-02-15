@@ -39,6 +39,8 @@ const getListarFilmes = async function(){
         filmesJSON.filmes = dadosFilmes
         filmesJSON.quantidade = dadosFilmes.length
         filmesJSON.status_code = 200
+        
+        return filmesJSON
     } else {
         return false
     }

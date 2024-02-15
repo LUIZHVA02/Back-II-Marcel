@@ -30,23 +30,25 @@ const deleteFilme = async function(){
 //Função para retornar todos os filmes do banco de dados
 const selectAllFilmes = async function(){
 
-    //Script SQL para buscar todos os registros do BD
-    let sql = 'select*from tbl_filme'
+     //Script SQL para buscar todos os registros do BD
+     let sql = 'select * from tbl_filmes'
 
-    /**
-     * $queryRawUnsafe(sql)                 ----- Encaminha uma variável
-     * $queryRaw('select*from tbl_filme')   ----- Encaminha direto o script
-    */
-
-    //Executa o scriptSQL no DB e guarda o retorno dos dados
-    let rsFilmes = await prisma.$queryRawUnsafe(sql)
-
-    //Validação para retornar os dados ou retornar false
-    if(rsFilmes.length>0){
-        return rsFilmes
-    } else {
-        return false
-    }
+     /**
+      * $queryRawUnsafe(sql)                 ----- Encaminha uma variável
+      * $queryRaw('select*from tbl_filme')   ----- Encaminha direto o script
+     */
+ 
+     //Executa o scriptSQL no DB e guarda o retorno dos dados
+     let rsFilmes = await prisma.$queryRawUnsafe(sql)
+ 
+     //Validação para retornar os dados ou retornar false
+     if(rsFilmes.length>0){
+         return rsFilmes
+     } else {
+         return false
+     }
+    
+   
 }
 
 //Função para retornar um filme no banco de dados pelo id

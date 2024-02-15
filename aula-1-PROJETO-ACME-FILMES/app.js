@@ -40,29 +40,30 @@ app.use ((request, response, next)=>{
     const controllerFilmes = require('./controller/controller_filme.js')
 
 /***********************************************************************/
-app.get('/v1/acme-filmes/filmes/:id', cors(), async function (request, response, next) {
 
-    let filmeIdUser = request.params.id
+// app.get('/v1/acme-filmes/filmes/:id', cors(), async function (request, response, next) {
 
-    let controleFilmesID = require('./controller/funcoes')
+//     let filmeIdUser = request.params.id
 
-    let filmesID = controleFilmesID.getFilmesID(filmeIdUser)
+//     let controleFilmesID = require('./controller/funcoes.js')
 
-    if(filmesID){
-        response.json(filmesID)
-        response.status(200)
-    }else{
-        response.status(404)
-        response.json({erro:'Não foi possível encontrar um item!'})
-    }
-})
+//     let filmesID = controleFilmesID.getFilmesID(filmeIdUser)
+
+//     if(filmesID){
+//         response.json(filmesID)
+//         response.status(200)
+//     }else{
+//         response.status(404)
+//         response.json({erro:'Não foi possível encontrar um item!'})
+//     }
+// })
 
 //EndPoint: Retorna os dados do arquivo JSON
 app.get('/v1/acme-filmes/filmes', cors(), async function (request, response, next) {
 
-    let controleNomeFilmes = require('./controller/funcoes')
+    let controleNomeFilmes = require('./controller/funcoes.js')
 
-    let infoFilmes = controleNomeFilmes.getFilmes()
+    let infoFilmes = await controleNomeFilmes.getFilmes()
 
     if(infoFilmes){
         response.json(infoFilmes)
