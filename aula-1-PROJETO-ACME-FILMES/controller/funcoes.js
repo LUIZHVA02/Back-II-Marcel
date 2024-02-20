@@ -1,5 +1,5 @@
 const { json } = require('express')
-var filmes = require('../modulo/filmes')
+var filmes = require('../model/filmesStatic')
 
 const getFilmes = function () {
     let jsonFilmes = {}
