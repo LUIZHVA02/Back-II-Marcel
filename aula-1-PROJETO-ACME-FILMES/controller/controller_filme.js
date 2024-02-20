@@ -39,17 +39,22 @@ const getListarFilmes = async function () {
 
     //Validação para criar o JSON dos dados
     if (dadosFilmes) {
+        if (dadosFilmes.length > 0) {
 
-        //Cria o JSON de retorno dos dados
-        filmesJSON.filmes = dadosFilmes
-        filmesJSON.quantidade = dadosFilmes.length
-        filmesJSON.status_code = 200
+            //Cria o JSON de retorno dos dados
+            filmesJSON.filmes = dadosFilmes
+            filmesJSON.quantidade = dadosFilmes.length
+            filmesJSON.status_code = 200
 
-        return filmesJSON
+            return filmesJSON
+        } else {
+            return message.ERROR_NOT_FOUND
+        }
     } else {
-        return false
+        return message.INTERNAL_SERVER_ERROR_DB
     }
 }
+
 
 //Função para retornar o filtro de um filme pelo id
 const getBuscarFilmes = async function (id) {

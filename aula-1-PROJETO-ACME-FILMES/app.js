@@ -80,14 +80,8 @@ app.get('/v2/acmefilmes/filmes', cors(), async function(request, response, next)
     //Chama a função para retornar os dados de filme
     let dadosFilmes = await controllerFilmes.getListarFilmes()
 
-    //Validação para retornar os dados
-    if(dadosFilmes){
-        response.json(dadosFilmes)
-        response.status(200)
-    } else {
-        response.json({message:'Nenhum registro encontrado'})
-        response.status(404)
-    }
+    response.status(dadosFilmes.status_code)
+    response.json(dadosFilmes)
 })
 
 //EndPoint: Retorna os dados de um filme pelo ID
@@ -99,7 +93,6 @@ app.get('/v2/acmefilmes/filme/:id', cors(), async function(request, response, ne
 
     response.status(dadosFilme.status_code)
     response.json(dadosFilme)
-    // response.status(dadosFilme.status_code)
 })
 
 app.listen(8080, function(){
