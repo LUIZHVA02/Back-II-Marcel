@@ -41,23 +41,6 @@ app.use ((request, response, next)=>{
 
 /***********************************************************************/
 
-// app.get('/v1/acme-filmes/filmes/:id', cors(), async function (request, response, next) {
-
-//     let filmeIdUser = request.params.id
-
-//     let controleFilmesID = require('./controller/funcoes.js')
-
-//     let filmesID = controleFilmesID.getFilmesID(filmeIdUser)
-
-//     if(filmesID){
-//         response.json(filmesID)
-//         response.status(200)
-//     }else{
-//         response.status(404)
-//         response.json({erro:'Não foi possível encontrar um item!'})
-//     }
-// })
-
 //EndPoint: Retorna os dados do arquivo JSON
 app.get('/v1/acme-filmes/filmes', cors(), async function (request, response, next) {
 
@@ -73,6 +56,25 @@ app.get('/v1/acme-filmes/filmes', cors(), async function (request, response, nex
         response.json({erro:'Não foi possível encontrar um item!'})
     }
 })
+
+app.get('/v1/acme-filmes/filmes/:id', cors(), async function (request, response, next) {
+
+    let filmeIdUser = request.params.id
+
+    let controleFilmesID = require('./controller/funcoes.js')
+
+    let filmesID = controleFilmesID.getFilmesID(filmeIdUser)
+
+    if(filmesID){
+        response.json(filmesID)
+        response.status(200)
+    }else{
+        response.status(404)
+        response.json({erro:'Não foi possível encontrar um item!'})
+    }
+})
+
+
 
 //EndPoint: Retorna os dados do BD(Banco de Dados)
 app.get('/v2/acmefilmes/filmes', cors(), async function(request, response, next){
