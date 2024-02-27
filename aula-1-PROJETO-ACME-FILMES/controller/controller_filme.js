@@ -27,14 +27,13 @@ const setInserirNovoFilme = async function (nome, sinopse, duracao, data_lancame
     let valor_unitarioFilme = valor_unitario
 
     if(
-        nomeFilme == '' || sinopseFilme == '' || duracaoFilme == '' || dtLancamentoFilme == '' || 
-        dtRelancamentoFilme == '' || foto_capaFilme == '' || valor_unitarioFilme == '' ||
-        nomeFilme == undefined || sinopseFilme == undefined || duracaoFilme == undefined || 
-        dtLancamentoFilme == undefined || dtRelancamentoFilme == undefined || foto_capaFilme == undefined || 
-        valor_unitarioFilme == undefined || duracaoFilme == isNaN || dtLancamentoFilme == isNaN || 
-        dtRelancamentoFilme == isNaN || valor_unitarioFilme == isNaN
+        nomeFilme == ''             || sinopseFilme == ''               || duracaoFilme == ''               || 
+        dtLancamentoFilme == ''     || foto_capaFilme == ''             || nomeFilme == undefined           || 
+        sinopseFilme == undefined   || duracaoFilme == undefined        || dtLancamentoFilme == undefined   || 
+        foto_capaFilme == undefined || duracaoFilme == isNaN            || dtLancamentoFilme == isNaN       || 
+        dtRelancamentoFilme == isNaN|| valor_unitarioFilme == isNaN
     ){
-        return ERR
+        return message.ERROR_ANSWERS_ENTER
     }
 
         let dadosFilmes = await filmesDAO.InsertFilme(nomeFilme, sinopseFilme, duracaoFilme, dtLancamentoFilme, dtRelancamentoFilme, foto_capaFilme, valor_unitarioFilme)

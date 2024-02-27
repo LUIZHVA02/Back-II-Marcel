@@ -17,6 +17,10 @@
  * 
  *      Após as intalações devemos rodar o comando:
  *          npx prisma init (Esse comando inicializa a utilização do projeto)
+ * 
+ *      Caso ocorra algum problema, execute:
+ *              npx prisma generate 
+ *              npm i 
  */
 
 const express = require('express')

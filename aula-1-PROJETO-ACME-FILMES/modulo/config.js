@@ -9,7 +9,7 @@
 /**********************Mensagens de Erro do Projeto**********************/
 const ERROR_INVALID_ID = {status: false, status_code: 400, message: 'O ID encaminhado na requisição não é válido!!!'}
 
-const ERROR_ANSWERS_ENTER = {status: false, status_code: 400, message: 'As informações encaminhadas na requisição não são válidas!!!'}
+const ERROR_BAD_REQUEST = {status: false, status_code: 400, message: 'As informações encaminhadas na requisição não são válidas!!!'}
 
 const ERROR_INVALID_NAME_ENTER = {status: false, status_code: 400, message: 'O Nome encaminhado na requisição não é válido!!!'}
 
@@ -23,5 +23,5 @@ module.exports = {
     ERROR_NOT_FOUND,
     INTERNAL_SERVER_ERROR_DB,
     ERROR_INVALID_NAME_ENTER,
-    ERROR_ANSWERS_ENTER
+    ERROR_BAD_REQUEST
 }
