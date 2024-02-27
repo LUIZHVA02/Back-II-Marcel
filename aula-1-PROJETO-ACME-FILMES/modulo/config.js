@@ -9,6 +9,10 @@
 /**********************Mensagens de Erro do Projeto**********************/
 const ERROR_INVALID_ID = {status: false, status_code: 400, message: 'O ID encaminhado na requisição não é válido!!!'}
 
+const ERROR_ANSWERS_ENTER = {status: false, status_code: 400, message: 'As informações encaminhadas na requisição não são válidas!!!'}
+
+const ERROR_INVALID_NAME_ENTER = {status: false, status_code: 400, message: 'O Nome encaminhado na requisição não é válido!!!'}
+
 const ERROR_NOT_FOUND = {status: false, status_code: 404, message: 'Nenhum item encontrado na requisição!!!'}
 
 const INTERNAL_SERVER_ERROR_DB = {status: false, status_code: 500, message: 'Ocorreram Erros no processamento do Banco de Dados. Contate o Administrador da API!!!'}
@@ -17,5 +21,7 @@ const INTERNAL_SERVER_ERROR_DB = {status: false, status_code: 500, message: 'Oco
 module.exports = {
     ERROR_INVALID_ID,
     ERROR_NOT_FOUND,
-    INTERNAL_SERVER_ERROR_DB
+    INTERNAL_SERVER_ERROR_DB,
+    ERROR_INVALID_NAME_ENTER,
+    ERROR_ANSWERS_ENTER
 }

@@ -14,7 +14,31 @@ const message = require('../modulo/config.js')
 
 
 //Função para inserir um novo filme
-const setInserirNovoFilme = async function () {
+const setInserirNovoFilme = async function (nome, sinopse, duracao, data_lancamento, data_relancamento, foto_capa, valor_unitario) {
+    
+    let inserirFilmeJson = {}
+
+    let nomeFilme = nome
+    let sinopseFilme = sinopse
+    let duracaoFilme = duracao
+    let dtLancamentoFilme = data_lancamento
+    let dtRelancamentoFilme = data_relancamento
+    let foto_capaFilme = foto_capa
+    let valor_unitarioFilme = valor_unitario
+
+    if(
+        nomeFilme == '' || sinopseFilme == '' || duracaoFilme == '' || dtLancamentoFilme == '' || 
+        dtRelancamentoFilme == '' || foto_capaFilme == '' || valor_unitarioFilme == '' ||
+        nomeFilme == undefined || sinopseFilme == undefined || duracaoFilme == undefined || 
+        dtLancamentoFilme == undefined || dtRelancamentoFilme == undefined || foto_capaFilme == undefined || 
+        valor_unitarioFilme == undefined || duracaoFilme == isNaN || dtLancamentoFilme == isNaN || 
+        dtRelancamentoFilme == isNaN || valor_unitarioFilme == isNaN
+    ){
+        return ERR
+    }
+
+        let dadosFilmes = await filmesDAO.InsertFilme(nomeFilme, sinopseFilme, duracaoFilme, dtLancamentoFilme, dtRelancamentoFilme, foto_capaFilme, valor_unitarioFilme)
+
 
 }
 
@@ -86,10 +110,39 @@ const getBuscarFilmes = async function (id) {
     }
 }
 
+const getBuscarFilmesPeloNome = async function (nome) {
+    let nomeFilme = nome
+
+    let filmeNomeJson = {}
+
+    if (nomeFilme == '' || nomeFilme == undefined) {
+        return message.ERROR_INVALID_ID
+    } else {
+
+        //Encaminha o ID do filme para o DAO para o retorno do banco de dados 
+        let dadosFilme = await filmesDAO.selectByNameFilmes(nomeFilme)
+
+        if (dadosFilme) {
+            //Validação para verificar se o DAO retornou os dados
+            if (dadosFilme.length > 0) {
+                filmeNomeJson.filme = dadosFilme
+                filmeNomeJson.status_code = 200
+                
+                return filmeNomeJson
+            } else {
+                return message.ERROR_INVALID_NAME_ENTER
+            }
+        } else {
+            return message.INTERNAL_SERVER_ERROR_DB
+        }
+    }
+}
+
 module.exports = {
     setInserirNovoFilme,
     setAtualizarNovoFilme,
     setExcluirFilme,
     getListarFilmes,
-    getBuscarFilmes
+    getBuscarFilmes,
+    getBuscarFilmesPeloNome
 }

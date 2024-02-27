@@ -34,7 +34,9 @@ insert into tbl_filmes(nome, sinopse, duracao, data_lancamento, data_relancament
 '2019-05-01', 
 'https://br.web.img3.acsta.net/c_310_420/pictures/19/04/10/19/44/2904073.jpg', 
 27.99
-),
+);
+
+insert into tbl_filmes(nome, sinopse, duracao, data_lancamento, data_relancamento, foto_capa, valor_unitario)values
 (
 'A Forma da Água', 
 'Década de 60. Em meio aos grandes conflitos políticos e transformações sociais dos Estados Unidos da Guerra Fria, a muda Elisa (Sally Hawkins), zeladora em um laboratório experimental secreto do governo, se afeiçoa a uma criatura fantástica mantida presa e maltratada no local. Para executar um arriscado e apaixonado resgate ela recorre ao melhor amigo Giles (Richard Jenkins) e à colega de turno Zelda (Octavia Spencer).', 
@@ -48,9 +50,10 @@ show tables;
 
 
 
-select* from tbl_filmes where id = 1;
+select* from tbl_filmes where id > 0;
 
 delete from tbl_filmes where id > 0;
 
 desc tbl_filmes;
 
+select* from tbl_filmes where nome like '%Forma%'

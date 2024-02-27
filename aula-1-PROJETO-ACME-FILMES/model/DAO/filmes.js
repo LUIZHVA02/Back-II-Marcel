@@ -67,10 +67,28 @@ const selectByIdFilmes = async function (id) {
     }
 }
 
+//Função para retornar um filme no banco de dados pelo id
+const selectByNameFilmes = async function (nome) {
+
+    try {
+        //ScriptSQL para buscar um dos registros pelo id no BD
+        let sql = `select* from tbl_filmes where nome like '%${nome}%';`
+
+        //Executa o scriptSQL no BD e guarda o retorno dos dados
+        let rsFilme = await prisma.$queryRawUnsafe(sql)
+
+        //Validação para retornar os dados ou retornar false
+        return rsFilme
+    } catch (error) {
+        return false
+    }
+}
+
 module.exports = {
     InsertFilme,
     updateFilme,
     deleteFilme,
     selectAllFilmes,
-    selectByIdFilmes
+    selectByIdFilmes,
+    selectByNameFilmes
 }

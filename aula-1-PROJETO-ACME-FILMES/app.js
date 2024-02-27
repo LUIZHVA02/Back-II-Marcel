@@ -97,6 +97,17 @@ app.get('/v2/acmefilmes/filme/:id', cors(), async function(request, response, ne
     response.json(dadosFilme)
 })
 
+//EndPoint: Retorna os dados de um filme pelo nome
+app.get('/v2/acmefilmes/filtro/filme/', cors(), async function(request, response, next){
+
+    let nomeFilme = request.query.nome
+    
+    let dadosFilme = await controllerFilmes.getBuscarFilmesPeloNome(nomeFilme)
+
+    response.status(dadosFilme.status_code)
+    response.json(dadosFilme)
+})
+
 app.listen(8080, function(){
     console.log('Serviço funcionando e aguardando requisições')
 })
