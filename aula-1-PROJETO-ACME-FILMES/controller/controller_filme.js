@@ -14,30 +14,48 @@ const message = require('../modulo/config.js')
 
 
 //Função para inserir um novo filme
-const setInserirNovoFilme = async function (nome, sinopse, duracao, data_lancamento, data_relancamento, foto_capa, valor_unitario) {
+const setInserirNovoFilme = async function (dadosFilme) {
     
-    let inserirFilmeJson = {}
-
-    let nomeFilme = nome
-    let sinopseFilme = sinopse
-    let duracaoFilme = duracao
-    let dtLancamentoFilme = data_lancamento
-    let dtRelancamentoFilme = data_relancamento
-    let foto_capaFilme = foto_capa
-    let valor_unitarioFilme = valor_unitario
-
+    let novoFilmeJson = {}
+    let statusvalidate = false
     if(
-        nomeFilme == ''             || sinopseFilme == ''               || duracaoFilme == ''               || 
-        dtLancamentoFilme == ''     || foto_capaFilme == ''             || nomeFilme == undefined           || 
-        sinopseFilme == undefined   || duracaoFilme == undefined        || dtLancamentoFilme == undefined   || 
-        foto_capaFilme == undefined || duracaoFilme == isNaN            || dtLancamentoFilme == isNaN       || 
-        dtRelancamentoFilme == isNaN|| valor_unitarioFilme == isNaN
-    ){
-        return message.ERROR_ANSWERS_ENTER
+        dadosFilme.nome                == ''|| dadosFilme.nome            == undefined|| dadosFilme.nome             == null|| dadosFilme.nome.length             > 80||
+        dadosFilme.sinopse             == ''|| dadosFilme.sinopse         == undefined|| dadosFilme.sinopse          == null|| dadosFilme.sinopse.length       > 65000||
+        dadosFilme.duracao             == ''|| dadosFilme.duracao         == undefined|| dadosFilme.duracao          == null|| dadosFilme.duracao.length           > 8||
+        dadosFilme.data_lancamento     == ''|| dadosFilme.data_lancamento == undefined|| dadosFilme.data_lancamento  == null|| dadosFilme.data_lancamento.length != 10||
+        dadosFilme.foto_capa           == ''|| dadosFilme.foto_capa       == undefined|| dadosFilme.foto_capa        == null|| dadosFilme.foto_capa.length       > 200||
+        dadosFilme.valor_unitario.length > 8|| isNaN(dadosFilme.valor_unitario)
+        ){
+        return message.ERROR_REQUIRED_FIELDS
+    }else{
+        if (
+            dadosFilme.data_relancamento != ''        &&
+            dadosFilme.data_relancamento != null      &&
+            dadosFilme.data_relancamento != undefined
+            ) {
+                if(dadosFilme.data_relancamento.length != 10){
+                    return message.ERROR_REQUIRED_FIELDS
+                } else{
+                    statusvalidate = true // validação para liberar a inserção dos dados no DAO
+                }
+        } else {
+            statusvalidate = true // validação para liberar a inserção dos dados no DAO
+        }
     }
+        if(statusvalidate){
+            let novoFilme = await filmesDAO.InsertFilme(dadosFilme)
 
-        let dadosFilmes = await filmesDAO.InsertFilme(nomeFilme, sinopseFilme, duracaoFilme, dtLancamentoFilme, dtRelancamentoFilme, foto_capaFilme, valor_unitarioFilme)
-
+            if (novoFilme) {
+                novoFilmeJson.status        = message.SUCCES_CREATED_ITEM.status
+                novoFilmeJson.status_code   = message.SUCCES_CREATED_ITEM.status_code
+                novoFilmeJson.message       = message.SUCCES_CREATED_ITEM.message
+                novoFilmeJson.filme         = dadosFilme
+                
+                return novoFilmeJson
+            } else {
+                return message.INTERNAL_SERVER_ERROR_DB
+            }
+        }
 
 }
 

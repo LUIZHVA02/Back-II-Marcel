@@ -13,34 +13,66 @@ const { PrismaClient } = require('@prisma/client')
 const prisma = new PrismaClient()
 
 //Função para excluir um filme no banco de dados
-const InsertFilme = async function (nome, sinopse, duracao, data_lancamento, data_relancamento, foto_capa, valor_unitario) {
+const InsertFilme = async function (dadosFilme) {
+    let sql
+
     try {
         //ScriptSQL para buscar um dos registros pelo nome no BD
-        let sql = `
-        insert into tbl_filmes  (
-                                    nome, 
-                                    sinopse, 
-                                    duracao, 
-                                    data_lancamento, 
-                                    data_relancamento, 
-                                    foto_capa, 
-                                    valor_unitario
-                                )values(
-                                        '${nome}', 
-                                        '${sinopse}', 
-                                        '${duracao}', 
-                                        '${data_lancamento}', 
-                                        '${data_relancamento}', 
-                                        '${foto_capa}', 
-                                         ${valor_unitario}
-                                );
-        `
 
+        if (dadosFilme.data_relancamento == undefined ||
+            dadosFilme.data_relancamento == null ||
+            dadosFilme.data_relancamento == '') {
+
+            sql = `
+                insert into tbl_filmes  (
+                                            nome, 
+                                            sinopse, 
+                                            duracao, 
+                                            data_lancamento,
+                                            foto_capa, 
+                                            valor_unitario
+                                        )values(
+                                                '${dadosFilme.nome}', 
+                                                '${dadosFilme.sinopse}', 
+                                                '${dadosFilme.duracao}', 
+                                                '${dadosFilme.data_lancamento}',
+                                                '${dadosFilme.foto_capa}', 
+                                                '${dadosFilme.valor_unitario}'
+                                );
+            `  
+        } else {
+            sql = `
+                insert into tbl_filmes  (
+                                            nome, 
+                                            sinopse, 
+                                            duracao, 
+                                            data_lancamento, 
+                                            data_relancamento, 
+                                            foto_capa, 
+                                            valor_unitario
+                                        )values(
+                                                '${dadosFilme.nome}', 
+                                                '${dadosFilme.sinopse}', 
+                                                '${dadosFilme.duracao}', 
+                                                '${dadosFilme.data_lancamento}', 
+                                                '${dadosFilme.data_relancamento}', 
+                                                '${dadosFilme.foto_capa}', 
+                                                '${dadosFilme.valor_unitario}'
+                                        );
+                `
+            
+        }
         //Executa o scriptSQL no BD e guarda o retorno dos dados
-        let rsFilme = await prisma.$queryRawUnsafe(sql)
+        let result = await prisma.$executeRawUnsafe(sql)
 
         //Validação para retornar os dados ou retornar false
-        return rsFilme
+
+        if (result) {
+            return true
+        } else {
+            return false
+        }
+        
     } catch (error) {
         return false
     }
