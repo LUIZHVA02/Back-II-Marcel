@@ -12,6 +12,27 @@ const { PrismaClient } = require('@prisma/client')
 //Instânciando a classe do PrismaCliente
 const prisma = new PrismaClient()
 
+const selectLastIdFilmes = async function () {
+
+    try {
+        //ScriptSQL para buscar um dos registros pelo id no BD
+        let sql = `select cast(last_insert_id() as decimal) as id from tbl_filmes limit 1`
+
+        //Executa o scriptSQL no BD e guarda o retorno dos dados
+        let lastFilme = await prisma.$queryRawUnsafe(sql)
+
+        //Validação para retornar os dados ou retornar false
+        if (lastFilme) {
+            return lastFilme
+        } else {
+            return false
+        }
+
+    } catch (error) {
+        return false
+    }
+}
+
 //Função para excluir um filme no banco de dados
 const InsertFilme = async function (dadosFilme) {
     let sql
@@ -151,5 +172,6 @@ module.exports = {
     deleteFilme,
     selectAllFilmes,
     selectByIdFilmes,
-    selectByNameFilmes
+    selectByNameFilmes,
+    selectLastIdFilmes
 }

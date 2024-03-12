@@ -68,18 +68,15 @@ values
 
 show tables;
 
-select
-    *
-from
-    tbl_filmes
-where
-    id > 0;
+select *from tbl_filmes where id > 0;
 
-desc tbl_filmes;
+delete from tbl_filmes where id > 3;
 
-select
-    *
-from
-    tbl_filmes
-where
-    nome like '%Forma%';
+
+select *from tbl_filmes where nome like '%Forma%';
+
+select id from tbl_filmes order by id limit 1;
+
+select cast(last_insert_id() as decimal) as id from tbl_filmes limit 1;
+
+select cast(id as decimal) as id from tbl_filmes order by id limit 1;

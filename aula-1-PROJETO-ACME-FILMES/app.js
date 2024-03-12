@@ -29,7 +29,7 @@ const bodyParser = require('body-parser')
 
 const app = express()
 
-app.use ((request, response, next)=>{
+app.use((request, response, next) => {
 
     response.header('Access-Control-Allow-Origin', '*')
     response.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE,OPTIONS')
@@ -43,7 +43,8 @@ const bodyParserJson = bodyParser.json()
 
 /*************** Import dos arquivos internos do projeto ***************/
 
-    const controllerFilmes = require('./controller/controller_filme.js')
+const controllerFilmes = require('./controller/controller_filme.js')
+const { METHOD_NOT_ALLOWED } = require('./modulo/config.js')
 
 /***********************************************************************/
 
@@ -54,12 +55,12 @@ app.get('/v1/acme-filmes/filmes', cors(), async function (request, response, nex
 
     let infoFilmes = await controleNomeFilmes.getFilmes()
 
-    if(infoFilmes){
+    if (infoFilmes) {
         response.json(infoFilmes)
         response.status(200)
-    }else{
+    } else {
         response.status(404)
-        response.json({erro:'Não foi possível encontrar um item!'})
+        response.json({ erro: 'Não foi possível encontrar um item!' })
     }
 })
 
@@ -71,19 +72,19 @@ app.get('/v1/acme-filmes/filmes/:id', cors(), async function (request, response,
 
     let filmesID = controleFilmesID.getFilmesID(filmeIdUser)
 
-    if(filmesID){
+    if (filmesID) {
         response.json(filmesID)
         response.status(200)
-    }else{
+    } else {
         response.status(404)
-        response.json({erro:'Não foi possível encontrar um item!'})
+        response.json({ erro: 'Não foi possível encontrar um item!' })
     }
 })
 
 
 
 //EndPoint: Retorna os dados do BD(Banco de Dados)
-app.get('/v2/acmefilmes/filmes', cors(), async function(request, response, next){
+app.get('/v2/acmefilmes/filmes', cors(), async function (request, response, next) {
 
     //Chama a função para retornar os dados de filme
     let dadosFilmes = await controllerFilmes.getListarFilmes()
@@ -93,10 +94,10 @@ app.get('/v2/acmefilmes/filmes', cors(), async function(request, response, next)
 })
 
 //EndPoint: Retorna os dados de um filme pelo ID
-app.get('/v2/acmefilmes/filme/:id', cors(), async function(request, response, next){
+app.get('/v2/acmefilmes/filme/:id', cors(), async function (request, response, next) {
 
     let idFilme = request.params.id
-    
+
     let dadosFilme = await controllerFilmes.getBuscarFilmes(idFilme)
 
     response.status(dadosFilme.status_code)
@@ -104,25 +105,30 @@ app.get('/v2/acmefilmes/filme/:id', cors(), async function(request, response, ne
 })
 
 //EndPoint: Retorna os dados de um filme pelo nome
-app.get('/v2/acmefilmes/filtro/filme/', cors(), async function(request, response, next){
+app.get('/v2/acmefilmes/filtro/filme/', cors(), async function (request, response, next) {
 
     let nomeFilme = request.query.nome
-    
+
     let dadosFilme = await controllerFilmes.getBuscarFilmesPeloNome(nomeFilme)
 
     response.status(dadosFilme.status_code)
     response.json(dadosFilme)
 })
 
-app.post('/v2/acmefilmes/filme/', cors(), bodyParserJson, async function(request, response, next){
+app.post('/v2/acmefilmes/filme/', cors(), bodyParserJson, async function (request, response, next) {
+
+    let contentType = request.headers['content-type']
+    console.log(contentType)
+
     let dadosBody = request.body
 
-    let resultDados = await controllerFilmes.setInserirNovoFilme(dadosBody)
+    let resultDados = await controllerFilmes.setInserirNovoFilme(dadosBody, contentType)
 
     response.status(resultDados.status_code)
     response.json(resultDados)
+
 })
 
-app.listen(8080, function(){
+app.listen(8080, function () {
     console.log('Serviço funcionando e aguardando requisições')
 })

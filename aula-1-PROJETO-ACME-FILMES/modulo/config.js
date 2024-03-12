@@ -16,8 +16,11 @@ const ERROR_INVALID_NAME_ENTER = {status: false, status_code: 400, message: 'O N
 
 const ERROR_NOT_FOUND = {status: false, status_code: 404, message: 'Nenhum item encontrado na requisição!!!'}
 
-const INTERNAL_SERVER_ERROR_DB = {status: false, status_code: 500, message: 'Ocorreram Erros no processamento do Banco de Dados. Contate o Administrador da API!!!'}
+const ERROR_CONTENT_TYPE = {status: false, status_code: 415, message: 'O Content-Type da requisição não é suportado na API. Deve-se encaminhar os dados no formato application/json!!!'}
 
+const ERROR_INTERNAL_SERVER_DB = {status: false, status_code: 500, message: 'Ocorreram Erros no processamento do Banco de Dados. Contate o Administrador da API!!!'}
+
+const ERROR_INTERNAL_SERVER = {status: false, status_code: 500, message: 'Ocorreram Erros no servidor Back-end na camada de serviços/negócios, portanto não foi possível fazer a requisição!!!'}
 /**********************Mensagens de Sucesso do Projeto**********************/
 
 const SUCCES_CREATED_ITEM = {status: true, status_code: 201, message: 'O item foi inserido com sucesso!!!'}
@@ -25,9 +28,11 @@ const SUCCES_CREATED_ITEM = {status: true, status_code: 201, message: 'O item fo
 
 module.exports = {
     ERROR_INVALID_ID,
-    ERROR_NOT_FOUND,
-    INTERNAL_SERVER_ERROR_DB,
-    ERROR_INVALID_NAME_ENTER,
     ERROR_REQUIRED_FIELDS,
+    ERROR_INVALID_NAME_ENTER,
+    ERROR_NOT_FOUND,
+    ERROR_CONTENT_TYPE,
+    ERROR_INTERNAL_SERVER_DB,
+    ERROR_INTERNAL_SERVER,
     SUCCES_CREATED_ITEM
 }
