@@ -76,8 +76,24 @@ const setInserirNovoFilme = async function (dadosFilme, content) {
 }
 
 //Função para atualizar um filme existente
-const setAtualizarNovoFilme = async function () {
+const setAtualizarNovoFilme = async function (dadosFilmeUpdate,content) {
+    if (String(content).toLowerCase() == 'application/json') {
+        try {
+            const id = dadosFilmeUpdate.id
+            delete dadosFilmeUpdate.id
 
+            const filmeAtualizado = await filmesDAO.updateFilme(id, dadosFilmeUpdate)
+            if (filmeAtualizado) {
+                return message.SUCCES_UPDATED_ITEM
+            } else {
+                return message.ERROR_INTERNAL_SERVER_DB
+            }
+        } catch (error) {
+            return message.ERROR_UPDATED_ITEM
+        }
+    } else {
+        return message.ERROR_CONTENT_TYPE
+    }
 }
 
 //Função para excluir um filme existente
@@ -104,6 +120,32 @@ const getListarFilmes = async function () {
             filmesJSON.status_code = 200
 
             return filmesJSON
+        } else {
+            return message.ERROR_NOT_FOUND
+        }
+    } else {
+        return message.INTERNAL_SERVER_ERROR_DB
+    }
+}
+
+const getListarFotosFilmes = async function () {
+
+    //Criar o objeto JSON
+    let fotoFilmesJSON = {}
+
+    //Chama a função do DAO para retornar os dados do BD
+    let dadosFotoFilmes = await filmesDAO.selectAllPhotoFilmes()
+
+    //Validação para criar o JSON dos dados
+    if (dadosFotoFilmes) {
+        if (dadosFotoFilmes.length > 0) {
+
+            //Cria o JSON de retorno dos dados
+            fotoFilmesJSON.filmes = dadosFotoFilmes
+            fotoFilmesJSON.quantidade = dadosFotoFilmes.length
+            fotoFilmesJSON.status_code = 200
+
+            return fotoFilmesJSON
         } else {
             return message.ERROR_NOT_FOUND
         }
@@ -177,5 +219,6 @@ module.exports = {
     setExcluirFilme,
     getListarFilmes,
     getBuscarFilmes,
-    getBuscarFilmesPeloNome
+    getBuscarFilmesPeloNome,
+    getListarFotosFilmes
 }

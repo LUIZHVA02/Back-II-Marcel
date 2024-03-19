@@ -93,6 +93,15 @@ app.get('/v2/acmefilmes/filmes', cors(), async function (request, response, next
     response.json(dadosFilmes)
 })
 
+app.get('/v2/acmefilmes/filme/foto_capa', cors(), async function (request, response, next) {
+
+    //Chama a função para retornar os dados de filme
+    let dadosFilmes = await controllerFilmes.getListarFotosFilmes()
+
+    response.status(dadosFilmes.status_code)
+    response.json(dadosFilmes)
+})
+
 //EndPoint: Retorna os dados de um filme pelo ID
 app.get('/v2/acmefilmes/filme/:id', cors(), async function (request, response, next) {
 
@@ -127,6 +136,17 @@ app.post('/v2/acmefilmes/filme/', cors(), bodyParserJson, async function (reques
     response.status(resultDados.status_code)
     response.json(resultDados)
 
+})
+
+app.put('/v2/acmefilmes/filmeUpdate/', cors(), bodyParserJson, async function (request, response, next) {
+
+    let contentType = request.headers['content-type']
+    let dadosFilmeUpdate = request.body
+
+    let resultDados = await controllerFilmes.setAtualizarFilme(dadosFilmeUpdate, contentType)
+
+    response.status(resultDados.status_code)
+    response.json(resultDados)
 })
 
 app.listen(8080, function () {

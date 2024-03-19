@@ -53,14 +53,14 @@ const InsertFilme = async function (dadosFilme) {
                                             foto_capa, 
                                             valor_unitario
                                         )values(
-                                                '${dadosFilme.nome}', 
-                                                '${dadosFilme.sinopse}', 
-                                                '${dadosFilme.duracao}', 
-                                                '${dadosFilme.data_lancamento}',
-                                                '${dadosFilme.foto_capa}', 
-                                                '${dadosFilme.valor_unitario}'
+                                                "${dadosFilme.nome}", 
+                                                "${dadosFilme.sinopse}", 
+                                                "${dadosFilme.duracao}", 
+                                                "${dadosFilme.data_lancamento}",
+                                                "${dadosFilme.foto_capa}", 
+                                                "${dadosFilme.valor_unitario}"
                                 );
-            `  
+            `
         } else {
             sql = `
                 insert into tbl_filmes  (
@@ -72,16 +72,16 @@ const InsertFilme = async function (dadosFilme) {
                                             foto_capa, 
                                             valor_unitario
                                         )values(
-                                                '${dadosFilme.nome}', 
-                                                '${dadosFilme.sinopse}', 
-                                                '${dadosFilme.duracao}', 
-                                                '${dadosFilme.data_lancamento}', 
-                                                '${dadosFilme.data_relancamento}', 
-                                                '${dadosFilme.foto_capa}', 
-                                                '${dadosFilme.valor_unitario}'
+                                                "${dadosFilme.nome}", 
+                                                "${dadosFilme.sinopse}", 
+                                                "${dadosFilme.duracao}", 
+                                                "${dadosFilme.data_lancamento}", 
+                                                "${dadosFilme.data_relancamento}", 
+                                                "${dadosFilme.foto_capa}", 
+                                                "${dadosFilme.valor_unitario}"
                                         );
                 `
-            
+
         }
         //Executa o scriptSQL no BD e guarda o retorno dos dados
         let result = await prisma.$executeRawUnsafe(sql)
@@ -93,14 +93,33 @@ const InsertFilme = async function (dadosFilme) {
         } else {
             return false
         }
-        
+
     } catch (error) {
         return false
     }
 }
 
 //Função para atualizar um filme no banco de dados
-const updateFilme = async function () {
+const updateFilme = async function (id, dadosFilmeUpdate) {
+    try {
+        let sql = `UPDATE tbl_filme SET `
+        const keys = Object.keys(dadosFilmeUpdate)
+
+        keys.forEach((key, index) => {
+            sql += `${key} = '${dadosFilmeUpdate[key]}'`
+            if (index !== keys.length - 1) {
+                sql += `, `
+            }
+        })
+
+        sql += ` WHERE id = ${id}`
+
+        let result = await prisma.$executeRawUnsafe(sql)
+
+        return result
+    } catch (error) {
+        return ERROR_INTERNAL_SERVER_DB
+    }
 
 }
 
@@ -115,6 +134,28 @@ const selectAllFilmes = async function () {
     try {
         //Script SQL para buscar todos os registros do BD
         let sql = 'select * from tbl_filmes'
+
+        /**
+         * $queryRawUnsafe(sql)                 ----- Encaminha uma variável
+         * $queryRaw('select*from tbl_filme')   ----- Encaminha direto o script
+        */
+
+        //Executa o scriptSQL no DB e guarda o retorno dos dados
+        let rsFilmes = await prisma.$queryRawUnsafe(sql)
+
+        //Validação para retornar os dados ou retornar false
+        return rsFilmes
+
+    } catch (error) {
+        return false
+    }
+}
+
+const selectAllPhotoFilmes = async function () {
+
+    try {
+        //Script SQL para buscar todos os registros do BD
+        let sql = 'select foto_capa from tbl_filmes where id > 0;'
 
         /**
          * $queryRawUnsafe(sql)                 ----- Encaminha uma variável
@@ -173,5 +214,6 @@ module.exports = {
     selectAllFilmes,
     selectByIdFilmes,
     selectByNameFilmes,
-    selectLastIdFilmes
+    selectLastIdFilmes,
+    selectAllPhotoFilmes
 }
