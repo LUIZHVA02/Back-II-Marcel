@@ -70,7 +70,7 @@ show tables;
 
 select *from tbl_filmes where id > 0;
 
-delete from tbl_filmes where id > 3;
+delete from tbl_filmes where id = 4;
 
 select foto_capa from tbl_filmes where id > 0;
 

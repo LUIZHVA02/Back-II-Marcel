@@ -102,7 +102,7 @@ const InsertFilme = async function (dadosFilme) {
 //Função para atualizar um filme no banco de dados
 const updateFilme = async function (id, dadosFilmeUpdate) {
     try {
-        let sql = `UPDATE tbl_filme SET `
+        let sql = `UPDATE tbl_filmes SET `
         const keys = Object.keys(dadosFilmeUpdate)
 
         keys.forEach((key, index) => {
@@ -118,14 +118,23 @@ const updateFilme = async function (id, dadosFilmeUpdate) {
 
         return result
     } catch (error) {
-        return ERROR_INTERNAL_SERVER_DB
+        console.log(error)
+        return false
     }
 
 }
 
 //Função para excluir um filme no banco de dados
-const deleteFilme = async function () {
+const deleteFilme = async function (id) {
+    try {
+        let sql = `delete from tbl_filmes where id = ${id};`
+        let result = await prisma.$executeRawUnsafe(sql)
 
+        return result
+    } catch (error) {
+        console.log(error)
+        return false
+    }
 }
 
 //Função para retornar todos os filmes do banco de dados

@@ -14,7 +14,9 @@ const ERROR_REQUIRED_FIELDS = {status: false, status_code: 400, message: 'As inf
 
 const ERROR_INVALID_NAME_ENTER = {status: false, status_code: 400, message: 'O Nome encaminhado na requisição não é válido!!!'}
 
-const ERROR_UPDATED_ITEM = {status: true, status_code: 400, message: 'As informações encaminhadas na requisição não são válidas!!!'}
+const ERROR_UPDATED_ITEM = {status: true, status_code: 400, message: 'As informações encaminhadas na requisição de update não são válidas!!!'}
+
+const ERROR_DELETED_ITEM = {status: true, status_code: 400, message: 'Não foi possível fazer a exclusão!!!'}
 
 const ERROR_NOT_FOUND = {status: false, status_code: 404, message: 'Nenhum item encontrado na requisição!!!'}
 
@@ -26,7 +28,10 @@ const ERROR_INTERNAL_SERVER = {status: false, status_code: 500, message: 'Ocorre
 /**********************Mensagens de Sucesso do Projeto**********************/
 
 const SUCCES_CREATED_ITEM = {status: true, status_code: 201, message: 'O item foi inserido com sucesso!!!'}
+
 const SUCCES_UPDATED_ITEM = {status: true, status_code: 200, message: 'O item foi atualizado com sucesso!!!'}
+
+const SUCCES_DELETED_ITEM = {status: true, status_code: 200, message: 'O item foi deletado com sucesso!!!'}
 
 
 module.exports = {
@@ -39,5 +44,7 @@ module.exports = {
     ERROR_INTERNAL_SERVER,
     SUCCES_CREATED_ITEM,
     SUCCES_UPDATED_ITEM,
-    ERROR_UPDATED_ITEM
+    ERROR_UPDATED_ITEM,
+    SUCCES_DELETED_ITEM,
+    ERROR_DELETED_ITEM
 }
