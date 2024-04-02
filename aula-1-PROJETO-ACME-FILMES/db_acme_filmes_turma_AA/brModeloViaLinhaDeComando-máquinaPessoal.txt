@@ -1,0 +1,5 @@
+https://medium.com/@wmonteiro/instala%C3%A7%C3%A3o-do-brmodelo-2a450f3b165a
+
+https://www.java.com/en/download/
+
+java -jar C:\Users\luizh\Downloads\brModelo.jar
