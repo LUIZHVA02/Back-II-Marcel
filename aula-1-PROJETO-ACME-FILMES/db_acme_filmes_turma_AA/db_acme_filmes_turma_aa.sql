@@ -85,4 +85,4 @@ select cast(id as decimal) as id from tbl_filmes order by id limit 1;
 update tbl_filmes set nome = "Julius" where id=9;
 select *from tbl_filmes where id=9;
 
-update tbl_filmes set nome = "Julius", sinopse = "Será que vai funcionar", duracao = "02:03:00", data_lancamento="2022-08-25", data_relancamento="2022-08-25", foto_capa="https://i.pinimg.com/736x/d2/33/a4/d233a42eb8ab9c98d82bb019d230b354.jpg", valor_unitario = "20" where id=9;
+update tbl_filmes set nome = "Julius", sinopse = "Será que vai funcionar", duracao = "02:03:00", data_lancamento="2022-08-25", data_relancamento="2022-08-25", foto_capa="https://i.pinimg.com/736x/d2/33/a4/d233a42eb8ab9c98d82bb019d230b354.jpg", valor_unitario = "20" where id=3;
