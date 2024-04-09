@@ -2,6 +2,205 @@ create database db_acme_filmes_turma_aa;
 
 use db_acme_filmes_turma_aa;
 
+create table tbl_classificacoes(
+	id int not null auto_increment primary key,
+	sigla varchar(5) not null,
+    classificacao varchar(45) not null,
+    legenda varchar(150) not null
+);
+
+insert into 
+	tbl_classificacoes(
+		sigla,
+        classificacao,
+        legenda
+	)
+values
+	(
+		"L",
+        "Livre para todos os públicos",
+        "Esta programação não tem conteúdos potencialmente prejudiciais para qualquer faixa etária"
+	),
+	(
+		"A10",
+        "Não recomendado para menores de 10 anos",
+        "Esta programação pode ter conteúdo violento e linguagem imprópria de nível leve"
+	),
+	(
+		"A12","Não recomendado para menores de 12 anos",
+        "Esta programação possui cenas de agressão física leve, insinuação de consumo de drogas e insinuação leve de sexo"
+	),
+	(
+		"A14","Não recomendado para menores de 14 anos",
+        "Esta programação possui cenas de agressão física média, consumo de drogas explícito e insinuação de sexo acentuada"
+	),
+	(
+		"A16",
+		"Não recomendado para menores de 16 anos",
+		"Esta programação possui cenas de agressão física acentuada, consumo de drogas explícito e insinuação de sexo acentuada"
+    ),
+	(
+		"A18",
+        "Não recomendado para menores de 18 anos",
+        "Esta programação possui cenas de violência extrema, suicídio, consumo e indução ao consumo de drogas, sexo explícito e distúrbios psicossomáticos"
+	);
+
+
+create table tbl_generos(
+	id int not null auto_increment primary key,
+	nome varchar(100) not null
+);
+
+insert into
+	tbl_generos(
+		nome
+	)
+values
+	("Ação"),
+    ("Animação"),
+    ("Aventura"),
+    ("Chanchada"),
+	("Cinema Catástrofe"),
+	("Comédia"),
+    ("Comédia de Ação"),
+    ("Comédia Dramática"),
+	("Comédia Romântica"),
+    ("Cult"),
+    ("Documentários"),
+    ("Drama"),
+	("Espionagem"),
+	("Erótico"),
+    ("Fantasia"),
+    ("Faroeste"),
+    ("Ficção científica"),
+	("Franchise/Séries"),
+	("Guerra"),
+    ("Machinima"),
+    ("Musical"),
+    ("Filme noir"),
+	("Policial"),
+	("Pornochanchada"),
+    ("Pornográfico"),
+    ("Romance"),
+    ("Suspense"),
+	("Terror"),
+	("Trash");
+
+create table tbl_sexo(
+	id int not null auto_increment primary key,
+	sexo varchar(10) not null
+);
+
+insert into
+	tbl_sexo(
+		sexo
+	)
+values
+	("Feminino"),
+    ("Masculino");
+
+create table tbl_atores(
+	id int not null auto_increment primary key,
+	nome varchar(200) not null,
+    dt_nasc date not null,
+    dt_falec date,
+    sobre text,
+    id_sexo int not null,
+    foreign key (id_sexo) references tbl_sexo(id)
+);
+
+insert into
+	tbl_atores(
+		nome,
+        dt_nasc,
+        sobre,
+        id_sexo
+    )
+values
+	(
+		"Willard Christopher Smith Jr.",
+        "1968-09-25",
+        "Criado numa família de classe média, o jovem Will Smith, mesmo com altas notas na escola e um futuro acadêmico promissor, 
+			preferiu abandonar os estudos e investir na carreira de rapper, apresentando-se com um amigo sob o nome de 'Fresh Prince'.
+			O duo 'DJ Jazzy Jeff and the Fresh Prince' rapidamente conquistou o EUA, com diversos hits que passavam nas rádios, 
+			como 'Summertime' e 'Parents Just Don’t Understand'. Milionário aos 20 anos de idade, Smith gastou sua fortuna em carros, 
+            casas e joias, beirando a falência antes do 25° aniversário. Em 1989, o produtor Benny Medina mudou sua carreira ao propor 
+            a criação de um seriado de televisão baseado na sua vida: um garoto dos bairros negros que teria vida nova na rica região 
+            de Beverly Hills. Smith aceitou, e com a aprovação da rede NBC, a série Um Maluco no Pedaço (1990) durou seis temporadas, 
+            e transformou o rapper em ator. Ele rapidamente aceitou as propostas de atuar no cinema, como no drama Seis Graus de Separação (1993), 
+            que chamou a atenção da crítica ao seu talento dramático. Seu primeiro grande sucesso de bilheteria foi Bad Boys (1995), 
+            que provou sua capacidade de estrelar grandes filmes de ação. Assim, vários diretores renomados apostaram na imagem 
+            carismática de Smith, como Roland Emmerich em Independence Day (1996), Barry Sonnenfeld em Homens de Preto (1997) e 
+            Tony Scott em Inimigo do Estado (1998). Todos os filmes obtiveram um grande sucesso de público. Com a rápida notoriedade, 
+            o ator foi convidado a ser o protagonista de Matrix, mas Smith preferiu recusar o convite e investir na aventura cômica 
+            As Loucas Aventuras de James West (1999). Este talvez tenha sido o maior fracasso de sua carreira, um arrependimento 
+            admitido pelo próprio ator. Desde então, com maior cuidado nas escolhas, Smith tornou-se o único ator da história a 
+            acumular oito filmes consecutivos com bilheteria superior a 100 milhões de dólares. Ele é sempre citado nas listas 
+            especializadas como um dos atores mais rentáveis de Hollywood. Paralelamente, ele também investe na carreira de produtor 
+            e produtor executivo, principalmente dos filmes em que estrela. Sua longa série de sucessos inclui gêneros variados, 
+            como os dramas Ali (2001) e À Procura da Felicidade (2006), pelos quais ele foi indicado duas vezes ao Oscar, 
+            o filme de ação Bad Boys II (2003), as ficções científicas Homens de Preto II (2002) e Eu Sou a Lenda (2007),
+            a comédia Hitch - Conselheiro Amoroso (2005) e a animação O Espanta Tubarões (2004). Desde o drama Sete Vidas (2008), 
+            Will Smith tem se consagrado em continuações de franquias de sucesso, como Homens de Preto III (2012), Bad Boys III (2013) 
+            além do filme de ficção científica dirigido por M. Night Shyamalan (O Sexto Sentido), intitulado Depois da Terra (2013). 
+            Will Smith se casou com a também atriz Jada Koren Pinkett em 1997. Juntos, eles têm dois filhos: Jaden Christopher Syre Smith (nascido em 1998), 
+            sua co-estrela em À Procura da Felicidade (2006) e Depois da Terra (2013), e Willow Camille Reign Smith (nascida em 2000), 
+            que apareceu como sua filha em Eu Sou a Lenda (2007). Smith e seu irmão Harry possuem a Treyball Development Inc., 
+            uma empresa com sede em Beverly Hills. Ele mora em Los Angeles, Califórnia, com sua família. O ator foi citado na lista dos 
+            '40 mais ricos' da Fortune Magazine, dos 40 americanos mais ricos com menos de 40 anos.",
+        2
+    ),
+	(
+		"Morgan Freeman",
+        "1937-06-01",
+        "Morgan Freeman é um premiado ator, produtor, narrador e cineasta norte-americano. Nascido em Memphis, Tennessee, 
+			em 1 de junho de 1937, ele passeou por diversos gêneros de filmes, sendo particularmente reconhecido por sua voz marcante. 
+			Freeman recebeu vários prêmios ao longo de sua carreira, incluindo um Oscar, um Globo de Ouro e um Screen Actors Guild Award. 
+            Ele é mais conhecido por seus trabalhos em Conduzindo Miss Daisy (1989), Tempo de Glória (1989), 
+            Robin Hood - O Príncipe dos Ladrões (1991), Os Imperdoáveis (1992), Seven - Os Sete Crimes Capitais(1995), Todo Poderoso(2003) 
+            e A Volta do Todo Poderoso (2007). Antes de iniciar nas artes dramáticas, Freeman pensou em concretizar seu sonho de criança, 
+            de se tornar piloto. De 1955 a 1969, logo após formar-se no Los Angeles Community College, ele conseguiu chegar 
+            à Força Aérea Americana - todavia, nunca como piloto, e sim como mecânico. Iniciando sua carreira nos palcos na década de 1960, 
+            conseguiu participar de uma série de papéis, tanto em grandes espetáculos quanto nos circuitos alternativos de Nova York. 
+            Mas Freeman se tornou conhecido na mídia americana por meio de papéis em novelas e filmes para televisão.
+			Outros créditos do ator incluem Armação Perigosa (1987), Menina de Ouro (2004), Um Sonho de Liberdade (1994), 
+            Batman Begins (2005), Batman - O Cavaleiro Das Trevas (2008), Batman - O Cavaleiro das Trevas Ressurge (2012), 
+            Antes de Partir (2007) e Invictus (2009), além de fornecer narração para filmes como o documentário 
+            vencedor do Oscar A Marcha dos Pingüins (2005).",
+        2
+    );
+
+create table tbl_diretores(
+	id int not null auto_increment primary key,
+	nome varchar(200) not null,
+    dt_nasc date not null,
+    dt_falec date,
+    sobre text,
+    id_sexo int,
+    foreign key (id_sexo) references tbl_sexo(id)
+);
+
+create table tbl_nacionalidades(
+	id int not null auto_increment primary key,
+	pais_origem varchar(100) not null
+);
+
+create table tbl_nacionalidades_ator(
+	id int not null auto_increment primary key,
+	id_ator int,
+    id_nacionalidade int,
+    foreign key (id_ator) references tbl_ator(id),
+    foreign key (id_nacionalidade) references tbl_nacionalidades(id)
+);
+
+create table tbl_nacionalidades_diretor(
+	id int not null auto_increment primary key,
+	id_diretor int,
+    id_nacionalidade int,
+    foreign key (id_diretor) references tbl_diretor (id),
+    foreign key (id_nacionalidade) references tbl_nacionalidades (id)
+);
+
 create table tbl_filmes(
     id int not null auto_increment primary key,
     nome varchar(100) not null,
@@ -11,8 +210,34 @@ create table tbl_filmes(
     data_relancamento date,
     foto_capa varchar(300) not null,
     valor_unitario float,
+    id_classificacao int not null,
     unique key(id),
-    unique index(id)
+    unique index(id),
+    foreign key (id_classificacao) references tbl_classificacoes (id)
+);
+
+create table tbl_filmes_ator(
+	id int not null auto_increment primary key,
+    id_ator int,
+    id_filme int,
+	foreign key (id_filme) references tbl_filmes (id),
+    foreign key (id_ator) references tbl_ator(id)
+);
+
+create table tbl_filmes_diretor(
+	id int not null auto_increment primary key,
+    id_diretor int,
+    id_filme int,
+	foreign key (id_filme) references tbl_filmes (id),
+    foreign key (id_diretor) references tbl_diretor(id)
+);
+
+create table tbl_genero_filme(
+	id int not null auto_increment primary key,
+	id_genero int,
+    id_filme int,
+    foreign key (id_genero) references tbl_generos (id),
+    foreign key (id_filme) references tbl_filmes (id)
 );
 
 insert into
@@ -23,7 +248,8 @@ insert into
         data_lancamento,
         data_relancamento,
         foto_capa,
-        valor_unitario
+        valor_unitario,
+        id_classificacao
     )
 values
     (
@@ -43,20 +269,7 @@ values
         "2019-05-01",
         "https://br.web.img3.acsta.net/c_310_420/pictures/19/04/10/19/44/2904073.jpg",
         27.99
-    );
-
-insert into
-    tbl_filmes(
-        nome,
-        sinopse,
-        duracao,
-        data_lancamento,
-        data_relancamento,
-        foto_capa,
-        valor_unitario
-    )
-values
-    (
+    ),(
         "A Forma da Água",
         "Década de 60. Em meio aos grandes conflitos políticos e transformações sociais dos Estados Unidos da Guerra Fria, a muda Elisa (Sally Hawkins), zeladora em um laboratório experimental secreto do governo, se afeiçoa a uma criatura fantástica mantida presa e maltratada no local. Para executar um arriscado e apaixonado resgate ela recorre ao melhor amigo Giles (Richard Jenkins) e à colega de turno Zelda (Octavia Spencer).",
         "2:03:00",
