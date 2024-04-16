@@ -189,7 +189,7 @@ create table tbl_nacionalidades_ator(
 	id int not null auto_increment primary key,
 	id_ator int,
     id_nacionalidade int,
-    foreign key (id_ator) references tbl_ator(id),
+    foreign key (id_ator) references tbl_atores(id),
     foreign key (id_nacionalidade) references tbl_nacionalidades(id)
 );
 
@@ -197,7 +197,7 @@ create table tbl_nacionalidades_diretor(
 	id int not null auto_increment primary key,
 	id_diretor int,
     id_nacionalidade int,
-    foreign key (id_diretor) references tbl_diretor (id),
+    foreign key (id_diretor) references tbl_diretores (id),
     foreign key (id_nacionalidade) references tbl_nacionalidades (id)
 );
 
@@ -221,7 +221,7 @@ create table tbl_filmes_ator(
     id_ator int,
     id_filme int,
 	foreign key (id_filme) references tbl_filmes (id),
-    foreign key (id_ator) references tbl_ator(id)
+    foreign key (id_ator) references tbl_atores(id)
 );
 
 create table tbl_filmes_diretor(
@@ -229,7 +229,7 @@ create table tbl_filmes_diretor(
     id_diretor int,
     id_filme int,
 	foreign key (id_filme) references tbl_filmes (id),
-    foreign key (id_diretor) references tbl_diretor(id)
+    foreign key (id_diretor) references tbl_diretores(id)
 );
 
 create table tbl_genero_filme(
@@ -259,7 +259,8 @@ values
         "1972-03-24",
         "2022-02-24",
         "https://br.web.img3.acsta.net/c_310_420/medias/nmedia/18/90/93/20/20120876.jpg",
-        32.99
+        32.99,
+        4
     ),
     (
         "A Lista de Schindler",
@@ -268,7 +269,8 @@ values
         "1993-12-31",
         "2019-05-01",
         "https://br.web.img3.acsta.net/c_310_420/pictures/19/04/10/19/44/2904073.jpg",
-        27.99
+        27.99,
+        5
     ),(
         "A Forma da Água",
         "Década de 60. Em meio aos grandes conflitos políticos e transformações sociais dos Estados Unidos da Guerra Fria, a muda Elisa (Sally Hawkins), zeladora em um laboratório experimental secreto do governo, se afeiçoa a uma criatura fantástica mantida presa e maltratada no local. Para executar um arriscado e apaixonado resgate ela recorre ao melhor amigo Giles (Richard Jenkins) e à colega de turno Zelda (Octavia Spencer).",
@@ -276,7 +278,8 @@ values
         "2018-02-01",
         null,
         "https://br.web.img3.acsta.net/c_310_420/pictures/17/11/28/18/40/3044833.jpg",
-        17.99
+        17.99,
+        5
     );
 
 show tables;
