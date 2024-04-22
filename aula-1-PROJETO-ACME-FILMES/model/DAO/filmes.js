@@ -51,14 +51,16 @@ const InsertFilme = async function (dadosFilme) {
                                             duracao, 
                                             data_lancamento,
                                             foto_capa, 
-                                            valor_unitario
+                                            valor_unitario,
+                                            id_classificacao
                                         )values(
                                                 "${dadosFilme.nome}", 
                                                 "${dadosFilme.sinopse}", 
                                                 "${dadosFilme.duracao}", 
                                                 "${dadosFilme.data_lancamento}",
                                                 "${dadosFilme.foto_capa}", 
-                                                "${dadosFilme.valor_unitario}"
+                                                "${dadosFilme.valor_unitario}",
+                                                "${dadosFilme.id_classificacao}"
                                 );
             `
         } else {
@@ -70,7 +72,8 @@ const InsertFilme = async function (dadosFilme) {
                                             data_lancamento, 
                                             data_relancamento, 
                                             foto_capa, 
-                                            valor_unitario
+                                            valor_unitario,
+                                            id_classificacao
                                         )values(
                                                 "${dadosFilme.nome}", 
                                                 "${dadosFilme.sinopse}", 
@@ -78,7 +81,8 @@ const InsertFilme = async function (dadosFilme) {
                                                 "${dadosFilme.data_lancamento}", 
                                                 "${dadosFilme.data_relancamento}", 
                                                 "${dadosFilme.foto_capa}", 
-                                                "${dadosFilme.valor_unitario}"
+                                                "${dadosFilme.valor_unitario}",
+                                                "${dadosFilme.id_classificacao}"
                                         );
                 `
 
