@@ -173,6 +173,19 @@ app.get('/v2/acmefilmes/classificacoes', cors(), async function (request, respon
     response.json(dadosClassificacoes)
 })
 
+app.post('/v2/acmefilmes/classificacao/', cors(), bodyParserJson, async function (request, response, next) {
+
+    let contentType = request.headers['content-type']
+
+    let dadosBody = request.body
+
+    let resultDados = await controllerClassificacoes.setInserirNovaClassificacao(dadosBody, contentType)
+
+    response.status(resultDados.status_code)
+    response.json(resultDados)
+
+})
+
 app.get('/v2/acmefilmes/filtro/classificacao/siglas/', cors(), async function (request, response, next){
     
     let siglaClassificacao = request.query.sigla
@@ -181,6 +194,30 @@ app.get('/v2/acmefilmes/filtro/classificacao/siglas/', cors(), async function (r
 
     response.status(dadosClassificacao.status_code)
     response.json(dadosClassificacao)
+})
+
+app.get('/v2/acmefilmes/filtro/classificacao/legenda/', cors(), async function (request, response, next){
+    
+    let legendaClassificacao = request.query.legenda
+
+    
+    let dadosClassificacao = await controllerClassificacoes.getClassificacaoPelaLegenda(legendaClassificacao)
+
+    response.status(dadosClassificacao.status_code)
+    response.json(dadosClassificacao)
+})
+
+app.put('/v2/acmefilmes/updateClassificacao/:id', cors(), bodyParserJson, async function (request, response, next) {
+
+    let idClassificacao = request.params.id
+    let contentType = request.headers['content-type']
+    let dadosFilmeUpdate = request.body
+
+    let resultDados = await controllerClassificacoes.setAtualizarClassificacoes(idClassificacao, dadosFilmeUpdate, contentType)
+    console.log(resultDados)
+
+    response.status(resultDados.status_code)
+    response.json(resultDados)
 })
 
 app.get('/v2/acmefilmes/classificacao/:id', cors(), async function (request, response, next){
@@ -194,16 +231,15 @@ app.get('/v2/acmefilmes/classificacao/:id', cors(), async function (request, res
     response.json(dadosClassificacao)
 })
 
+app.delete('/v2/acmefilmes/deleteClassificacao/:id', cors(), bodyParserJson, async function (request, response, next) {
 
-app.get('/v2/acmefilmes/filtro/classificacao/legenda/', cors(), async function (request, response, next){
-    
-    let legendaClassificacao = request.query.legenda
+    let idClassificacao = request.params.id
 
-    
-    let dadosClassificacao = await controllerClassificacoes.getClassificacaoPelaLegenda(legendaClassificacao)
+    let resultDados = await controllerClassificacoes.setExcluirClassificacao(idClassificacao)
+    console.log(resultDados)
 
-    response.status(dadosClassificacao.status_code)
-    response.json(dadosClassificacao)
+    response.status(resultDados.status_code)
+    response.json(resultDados)
 })
 
 app.listen(8080, function () {

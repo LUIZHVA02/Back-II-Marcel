@@ -67,7 +67,7 @@ const insertClassificacao = async function (dadosClassificacao) {
 const deleteClassificacao = async function (id) {
     
     try {
-        let sql = `delete from tbl_classificacoes where id ${id};`
+        let sql = `delete from tbl_classificacoes where id = ${id};`
 
         let result = await prisma.$queryRawUnsafe(sql)
         
@@ -99,7 +99,6 @@ const selectBySiglaClassificacao = async function (sigla) {
 
         return rsClassificacao
     } catch (error) {
-        console.log(error)
         return false
     }
 }
@@ -135,10 +134,8 @@ const updateClassificacoes = async function (id, dadosClassificacoesUpdate) {
 
         return result
     } catch (error) {
-        console.log(error)
         return false
     }
-
 }
 
 module.exports = {

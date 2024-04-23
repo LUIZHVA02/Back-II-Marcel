@@ -101,7 +101,6 @@ const setAtualizarNovoFilme = async function (id, dadosFilmeUpdate, content) {
             }
 
         } catch (error) {
-            console.log(error)
             return message.ERROR_UPDATED_ITEM
         }
     } else {
@@ -134,7 +133,6 @@ const setExcluirFilme = async function (id) {
         }
 
     } catch (error) {
-        console.log(error)
         return message.ERROR_UPDATED_ITEM
     }
 }

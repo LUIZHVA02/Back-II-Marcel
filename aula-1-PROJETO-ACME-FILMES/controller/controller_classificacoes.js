@@ -44,47 +44,31 @@ const setInserirNovaClassificacao = async function (dadosClassificacao, content)
 
         if (String(content).toLowerCase() === 'application/json') {
 
-            let novoClassificacaoJson = {}
+            let novaClassificacaoJson = {}
             let statusvalidate = false
             if (
-                dadosClassificacao.nome == '' || dadosClassificacao.nome == undefined || dadosClassificacao.nome == null || dadosClassificacao.nome.length > 80 ||
-                dadosClassificacao.sinopse == '' || dadosClassificacao.sinopse == undefined || dadosClassificacao.sinopse == null || dadosClassificacao.sinopse.length > 65000 ||
-                dadosClassificacao.duracao == '' || dadosClassificacao.duracao == undefined || dadosClassificacao.duracao == null || dadosClassificacao.duracao.length > 8 ||
-                dadosClassificacao.data_lancamento == '' || dadosClassificacao.data_lancamento == undefined || dadosClassificacao.data_lancamento == null || dadosClassificacao.data_lancamento.length != 10 ||
-                dadosClassificacao.foto_capa == '' || dadosClassificacao.foto_capa == undefined || dadosClassificacao.foto_capa == null || dadosClassificacao.foto_capa.length > 200 ||
-                dadosClassificacao.valor_unitario.length > 8 || isNaN(dadosClassificacao.valor_unitario) || dadosClassificacao.id_classificacao == '' || dadosClassificacao.id_classificacao == undefined ||
-                dadosClassificacao.id_classificacao == null || dadosClassificacao.id_classificacao.length > 6
+                dadosClassificacao.sigla == '' || dadosClassificacao.sigla == undefined || dadosClassificacao.sigla == null || dadosClassificacao.sigla.length > 5 ||
+                dadosClassificacao.classificacao == '' || dadosClassificacao.classificacao == undefined || dadosClassificacao.classificacao == null || dadosClassificacao.classificacao.length > 45 ||
+                dadosClassificacao.legenda == '' || dadosClassificacao.legenda == undefined || dadosClassificacao.legenda == null || dadosClassificacao.legenda.length > 150
                 ) {
                 return message.ERROR_REQUIRED_FIELDS
             } else {
-                if (
-                    dadosClassificacao.data_relancamento != '' &&
-                    dadosClassificacao.data_relancamento != null &&
-                    dadosClassificacao.data_relancamento != undefined
-                ) {
-                    if (dadosClassificacao.data_relancamento.length != 10) {
-                        return message.ERROR_REQUIRED_FIELDS
-                    } else {
-                        statusvalidate = true // validação para liberar a inserção dos dados no DAO
-                    }
-                } else {
-                    statusvalidate = true // validação para liberar a inserção dos dados no DAO
-                }
+                statusvalidate = true // validação para liberar a inserção dos dados no DAO
             }
             if (statusvalidate) {
-                let novoClassificacao = await classificacoesDAO.insertClassificacao(dadosClassificacao)
+                let novaClassificacao = await classificacoesDAO.insertClassificacao(dadosClassificacao)
 
-                if (novoClassificacao) {
+                if (novaClassificacao) {
 
-                    let idNovoClassificacao = await classificacoesDAO.selectLastClassificacao()
+                    let idNovaClassificacao = await classificacoesDAO.selectLastClassificacao()
 
-                    novoClassificacaoJson.status = message.SUCCES_CREATED_ITEM.status
-                    novoClassificacaoJson.status_code = message.SUCCES_CREATED_ITEM.status_code
-                    novoClassificacaoJson.message = message.SUCCES_CREATED_ITEM.message
-                    novoClassificacaoJson.id = idNovoClassificacao
-                    novoClassificacaoJson.Classificacao = dadosClassificacao
+                    novaClassificacaoJson.status = message.SUCCES_CREATED_ITEM.status
+                    novaClassificacaoJson.status_code = message.SUCCES_CREATED_ITEM.status_code
+                    novaClassificacaoJson.message = message.SUCCES_CREATED_ITEM.message
+                    novaClassificacaoJson.id = idNovaClassificacao
+                    novaClassificacaoJson.Classificacao = dadosClassificacao
 
-                    return novoClassificacaoJson
+                    return novaClassificacaoJson
                 } else {
                     return message.INTERNAL_SERVER_ERROR_DB
                 }
@@ -98,8 +82,65 @@ const setInserirNovaClassificacao = async function (dadosClassificacao, content)
     }
 }
 
-const setAtualizarClassificacoes = async function (id) {
+const setAtualizarClassificacoes = async function (id, dadosclassificacaoUpdate, content) {
+    if (String(content).toLowerCase() == 'application/json') {
+        
+        let updateclassificacaoJson = {}
+        try {
+            const validaId = await getBuscarClassificacao(id)
+            
+            if (validaId) {
+                const classificacaoAtualizado = await classificacoesDAO.updateClassificacoes(id, dadosclassificacaoUpdate)
+                
+                if (classificacaoAtualizado) {
+                    updateclassificacaoJson.id = validaId
+                    updateclassificacaoJson.status = message.SUCCES_UPDATED_ITEM.status
+                    updateclassificacaoJson.status_code = message.SUCCES_UPDATED_ITEM.status_code
+                    updateclassificacaoJson.message = message.SUCCES_UPDATED_ITEM.message
+                    updateclassificacaoJson.classificacao = classificacaoAtualizado
+
+                    return updateclassificacaoJson
+                } else {
+                    return message.ERROR_INTERNAL_SERVER_DB
+                }
+            } else {
+                return message.ERROR_NOT_FOUND
+            }
+
+        } catch (error) {
+            return message.ERROR_UPDATED_ITEM
+        }
+    } else {
+        return message.ERROR_CONTENT_TYPE
+    }
+}
+
+const setExcluirClassificacao = async function (id) {
+    let deleteClassificacaoJson ={}
     
+    try {
+        const validaId = await getBuscarClassificacao(id)
+        
+        if (validaId) {
+            const apagarClassificacao = await classificacoesDAO.deleteClassificacao(id)
+            
+            if (apagarClassificacao) {
+                deleteClassificacaoJson.status = message.SUCCES_DELETED_ITEM.status
+                deleteClassificacaoJson.status_code = message.SUCCES_DELETED_ITEM.status_code
+                deleteClassificacaoJson.message = message.SUCCES_DELETED_ITEM.message
+                deleteClassificacaoJson.id = validaId
+
+                return deleteClassificacaoJson
+            } else {
+                return message.ERROR_INTERNAL_SERVER_DB
+            }
+        } else {
+            return message.ERROR_NOT_FOUND
+        }
+
+    } catch (error) {
+        return message.ERROR_UPDATED_ITEM
+    }
 }
 
 const getBuscarClassificacao = async function (id) {
@@ -135,7 +176,6 @@ const getClassificacaoPelaSigla = async function (sigla) {
     let classificacaoIdJSON = {}
 
     if (siglaClassificacao == '' || siglaClassificacao == undefined) {
-        console.log(siglaClassificacao)
         return message.ERROR_INVALID_NAME_ENTER
         
     } else {
@@ -149,11 +189,9 @@ const getClassificacaoPelaSigla = async function (sigla) {
                 
                 return classificacaoIdJSON
             } else {
-                console.log(dadosClassificacao)
                 return message.ERROR_INVALID_NAME_ENTER
             }
         } else {
-            console.log(dadosClassificacao)
             return message.INTERNAL_SERVER_ERROR_DB
         }
     }
@@ -189,5 +227,8 @@ module.exports = {
     getListarClassificacoes,
     getBuscarClassificacao,
     getClassificacaoPelaSigla,
-    getClassificacaoPelaLegenda
+    getClassificacaoPelaLegenda,
+    setInserirNovaClassificacao,
+    setAtualizarClassificacoes,
+    setExcluirClassificacao
 }

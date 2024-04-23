@@ -122,7 +122,6 @@ const updateFilme = async function (id, dadosFilmeUpdate) {
 
         return result
     } catch (error) {
-        console.log(error)
         return false
     }
 
@@ -136,7 +135,6 @@ const deleteFilme = async function (id) {
 
         return result
     } catch (error) {
-        console.log(error)
         return false
     }
 }
