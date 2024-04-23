@@ -48,7 +48,7 @@ const setInserirNovoFilme = async function (dadosFilme, content) {
                 }
             }
             if (statusvalidate) {
-                let novoFilme = await filmesDAO.InsertFilme(dadosFilme)
+                let novoFilme = await filmesDAO.insertFilme(dadosFilme)
 
                 if (novoFilme) {
 
@@ -229,7 +229,7 @@ const getBuscarFilmesPeloNome = async function (nome) {
     let filmeNomeJson = {}
 
     if (nomeFilme == '' || nomeFilme == undefined) {
-        return message.ERROR_INVALID_ID
+        return message.ERROR_INVALID_NAME_ENTER
     } else {
 
         //Encaminha o ID do filme para o DAO para o retorno do banco de dados 

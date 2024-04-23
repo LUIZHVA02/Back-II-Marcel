@@ -44,6 +44,7 @@ const bodyParserJson = bodyParser.json()
 /*************** Import dos arquivos internos do projeto ***************/
 
 const controllerFilmes = require('./controller/controller_filme.js')
+const controllerClassificacoes = require('./controller/controller_classificacoes.js')
 const { METHOD_NOT_ALLOWED } = require('./modulo/config.js')
 
 /***********************************************************************/
@@ -159,6 +160,50 @@ app.delete('/v2/acmefilmes/deleteFilme/:id', cors(), bodyParserJson, async funct
 
     response.status(resultDados.status_code)
     response.json(resultDados)
+})
+
+
+
+
+
+app.get('/v2/acmefilmes/classificacoes', cors(), async function (request, response, next){
+    let dadosClassificacoes = await controllerClassificacoes.getListarClassificacoes()
+
+    response.status(dadosClassificacoes.status_code)
+    response.json(dadosClassificacoes)
+})
+
+app.get('/v2/acmefilmes/filtro/classificacao/siglas/', cors(), async function (request, response, next){
+    
+    let siglaClassificacao = request.query.sigla
+    
+    let dadosClassificacao = await controllerClassificacoes.getClassificacaoPelaSigla(siglaClassificacao)
+
+    response.status(dadosClassificacao.status_code)
+    response.json(dadosClassificacao)
+})
+
+app.get('/v2/acmefilmes/classificacao/:id', cors(), async function (request, response, next){
+    
+    let idClassificacao = request.params.id
+
+    
+    let dadosClassificacao = await controllerClassificacoes.getBuscarClassificacao(idClassificacao)
+
+    response.status(dadosClassificacao.status_code)
+    response.json(dadosClassificacao)
+})
+
+
+app.get('/v2/acmefilmes/filtro/classificacao/legenda/', cors(), async function (request, response, next){
+    
+    let legendaClassificacao = request.query.legenda
+
+    
+    let dadosClassificacao = await controllerClassificacoes.getClassificacaoPelaLegenda(legendaClassificacao)
+
+    response.status(dadosClassificacao.status_code)
+    response.json(dadosClassificacao)
 })
 
 app.listen(8080, function () {

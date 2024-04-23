@@ -34,7 +34,7 @@ const selectLastIdFilmes = async function () {
 }
 
 //Função para excluir um filme no banco de dados
-const InsertFilme = async function (dadosFilme) {
+const insertFilme = async function (dadosFilme) {
     let sql
 
     try {
@@ -221,7 +221,7 @@ const selectByNameFilmes = async function (nome) {
 }
 
 module.exports = {
-    InsertFilme,
+    insertFilme,
     updateFilme,
     deleteFilme,
     selectAllFilmes,

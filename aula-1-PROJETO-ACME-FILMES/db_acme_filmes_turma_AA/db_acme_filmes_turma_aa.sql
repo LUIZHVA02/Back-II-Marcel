@@ -45,6 +45,8 @@ values
         "Esta programação possui cenas de violência extrema, suicídio, consumo e indução ao consumo de drogas, sexo explícito e distúrbios psicossomáticos"
 	);
 
+
+
 create table tbl_generos(
 	id int not null auto_increment primary key,
 	nome varchar(100) not null
@@ -283,21 +285,15 @@ values
 
 show tables;
 
+select *from tbl_classificacoes where sigla like '%L%';
+
 select *from tbl_filmes where id > 0;
-
 delete from tbl_filmes where id = 0;
-
 select foto_capa from tbl_filmes where id > 0;
-
 select *from tbl_filmes where nome like '%Forma%';
-
 select id from tbl_filmes order by id limit 1;
-
 select cast(last_insert_id() as decimal) as id from tbl_filmes limit 1;
-
-select cast(id as decimal) as id from tbl_filmes order by id limit 1;
-
+select cast(id as decimal) as id from tbl_filmes order by id desc limit 1;
 update tbl_filmes set nome = "Julius" where id=9;
 select *from tbl_filmes where id=9;
-
 update tbl_filmes set nome = "Julius", sinopse = "Será que vai funcionar", duracao = "02:03:00", data_lancamento="2022-08-25", data_relancamento="2022-08-25", foto_capa="https://i.pinimg.com/736x/d2/33/a4/d233a42eb8ab9c98d82bb019d230b354.jpg", valor_unitario = "20" where id=3;
