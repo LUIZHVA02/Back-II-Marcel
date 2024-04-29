@@ -28,7 +28,7 @@ const selectAllClassificacoes = async function () {
 const selectLastClassificacao = async function () {
     
     try {
-        let sql = `select cast(id as decimal) as id from tbl_filmes order by id desc limit 1;`
+        let sql = `select cast(id as decimal) as id from tbl_classificacoes order by id desc limit 1;`
 
         let rsClassificacoes = await prisma.$queryRawUnsafe(sql)
         
