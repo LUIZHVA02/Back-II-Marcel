@@ -47,6 +47,7 @@ const controllerFilmes = require('./controller/controller_filme.js')
 const controllerClassificacoes = require('./controller/controller_classificacoes.js')
 const controllerGeneros = require('./controller/controller_generos.js')
 const controllerSexos = require('./controller/controller_sexos.js')
+const controllerNacionalidades = require('./controller/controller_nacionalidades.js')
 const { METHOD_NOT_ALLOWED } = require('./modulo/config.js')
 
 /***********************************************************************/
@@ -83,6 +84,8 @@ app.get('/v1/acme-filmes/filmes/:id', cors(), async function (request, response,
         response.json({ erro: 'Não foi possível encontrar um item!' })
     }
 })
+
+
 
 
 
@@ -147,7 +150,6 @@ app.put('/v2/acmefilmes/updateFilme/:id', cors(), bodyParserJson, async function
     let dadosFilmeUpdate = request.body
 
     let resultDados = await controllerFilmes.setAtualizarNovoFilme(idFilme, dadosFilmeUpdate, contentType)
-    console.log(resultDados)
 
     response.status(resultDados.status_code)
     response.json(resultDados)
@@ -158,7 +160,6 @@ app.delete('/v2/acmefilmes/deleteFilme/:id', cors(), bodyParserJson, async funct
     let idFilme = request.params.id
 
     let resultDados = await controllerFilmes.setExcluirFilme(idFilme)
-    console.log(resultDados)
 
     response.status(resultDados.status_code)
     response.json(resultDados)
@@ -216,7 +217,6 @@ app.put('/v2/acmefilmes/updateClassificacao/:id', cors(), bodyParserJson, async 
     let dadosFilmeUpdate = request.body
 
     let resultDados = await controllerClassificacoes.setAtualizarClassificacoes(idClassificacao, dadosFilmeUpdate, contentType)
-    console.log(resultDados)
 
     response.status(resultDados.status_code)
     response.json(resultDados)
@@ -238,11 +238,12 @@ app.delete('/v2/acmefilmes/deleteClassificacao/:id', cors(), bodyParserJson, asy
     let idClassificacao = request.params.id
 
     let resultDados = await controllerClassificacoes.setExcluirClassificacao(idClassificacao)
-    console.log(resultDados)
 
     response.status(resultDados.status_code)
     response.json(resultDados)
 })
+
+
 
 
 
@@ -317,72 +318,86 @@ app.delete('/v2/acmefilmes/deleteGenero/:id', cors(), bodyParserJson, async func
 
 
 
-app.get('/v2/acmefilmes/sexo', cors(), async function (request, response, next) {
+app.get('/v2/acmefilmes/nacionalidades', cors(), async function (request, response, next) {
 
     //Chama a função para retornar os dados de filme
-    let dadosSexo = await controllerSexos.getListarSexos()
+    let dadosNacionalidade = await controllerNacionalidades.getListarNacionalidades()
 
-    response.status(dadosSexo.status_code)
-    response.json(dadosSexo)
+    response.status(dadosNacionalidade.status_code)
+    response.json(dadosNacionalidade)
 })
 
 
 //EndPoint: Retorna os dados de um filme pelo ID
-app.get('/v2/acmefilmes/sexo/:id', cors(), async function (request, response, next) {
+app.get('/v2/acmefilmes/nacionalidade/:id', cors(), async function (request, response, next) {
 
-    let idSexo = request.params.id
+    let idNacionalidade = request.params.id
 
-    let dadosSexo = await controllerSexos.getBuscarSexo(idSexo)
+    let dadosNacionalidade = await controllerNacionalidades.getBuscarNacionalidade(idNacionalidade)
 
-    response.status(dadosSexo.status_code)
-    response.json(dadosSexo)
+    response.status(dadosNacionalidade.status_code)
+    response.json(dadosNacionalidade)
 })
 
 //EndPoint: Retorna os dados de um filme pelo nome
-app.get('/v2/acmefilmes/filtro/sexo/nome/', cors(), async function (request, response, next) {
+app.get('/v2/acmefilmes/filtro/nacionalidade/nome/', cors(), async function (request, response, next) {
 
-    let nomeSexo = request.query.nome
+    let nomeNacionalidade = request.query.nome
 
-    let dadosSexo = await controllerSexos.getSexoPeloNome(nomeSexo)
+    let dadosNacionalidade = await controllerNacionalidades.getNacionalidadePelaNacionalidade(nomeNacionalidade)
 
-    response.status(dadosSexo.status_code)
-    response.json(dadosSexo)
+    response.status(dadosNacionalidade.status_code)
+    response.json(dadosNacionalidade)
 })
 
-app.post('/v2/acmefilmes/sexo/', cors(), bodyParserJson, async function (request, response, next) {
+app.get('/v2/acmefilmes/filtro/nacionalidade/paisOrigem/nome/', cors(), async function (request, response, next) {
+
+    let nomePaisOrigem = request.query.nome
+
+    let dadosNacionalidade = await controllerNacionalidades.getNacionalidadePeloPaisOrigem(nomePaisOrigem)
+
+    response.status(dadosNacionalidade.status_code)
+    response.json(dadosNacionalidade)
+})
+
+app.post('/v2/acmefilmes/InsertNacionalidade/', cors(), bodyParserJson, async function (request, response, next) {
 
     let contentType = request.headers['content-type']
 
     let dadosBody = request.body
 
-    let resultDados = await controllerSexos.setInserirNovoSexo(dadosBody, contentType)
+    let resultDados = await controllerNacionalidades.setInserirNovaNacionalidade(dadosBody, contentType)
 
     response.status(resultDados.status_code)
     response.json(resultDados)
 
 })
 
-app.put('/v2/acmefilmes/updateSexo/:id', cors(), bodyParserJson, async function (request, response, next) {
+app.put('/v2/acmefilmes/updateNacionalidade/:id', cors(), bodyParserJson, async function (request, response, next) {
 
-    let idSexo = request.params.id
+    let idNacionalidade = request.params.id
     let contentType = request.headers['content-type']
-    let dadosSexoUpdate = request.body
+    let dadosNacionalidadeUpdate = request.body
 
-    let resultDados = await controllerSexos.setAtualizarSexos(idSexo, dadosSexoUpdate, contentType)
+    let resultDados = await controllerNacionalidades.setAtualizarNacionalidades(idNacionalidade, dadosNacionalidadeUpdate, contentType)
+
+    response.status(resultDados.status_code)
+    response.json(resultDados)
+})
+
+app.delete('/v2/acmefilmes/deleteNacionalidade/:id', cors(), bodyParserJson, async function (request, response, next) {
+
+    let idNacionalidade = request.params.id
+
+    let resultDados = await controllerNacionalidades.setExcluirNacionalidade(idNacionalidade)
 
     response.status(resultDados.status_code)
     response.json(resultDados)
 })
 
-app.delete('/v2/acmefilmes/deleteSexo/:id', cors(), bodyParserJson, async function (request, response, next) {
 
-    let idSexo = request.params.id
 
-    let resultDados = await controllerSexos.setExcluirSexo(idSexo)
 
-    response.status(resultDados.status_code)
-    response.json(resultDados)
-})
 
 app.listen(8080, function () {
     console.log('Serviço funcionando e aguardando requisições')

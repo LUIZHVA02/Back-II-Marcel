@@ -48,7 +48,7 @@ const setInserirNovoSexo = async function (dadosSexo, content) {
             let statusvalidate = false
             if (
                 dadosSexo.sexo == '' || dadosSexo.sexo == undefined || 
-                dadosSexo.sexo == null || dadosSexo.sexo.length > 100) {
+                dadosSexo.sexo == null || dadosSexo.sexo.length > 20) {
                 return message.ERROR_REQUIRED_FIELDS
             } else {
                 statusvalidate = true // validação para liberar a inserção dos dados no DAO
@@ -64,7 +64,7 @@ const setInserirNovoSexo = async function (dadosSexo, content) {
                     novoSexoJson.status_code = message.SUCCES_CREATED_ITEM.status_code
                     novoSexoJson.message = message.SUCCES_CREATED_ITEM.message
                     novoSexoJson.id = idNovoSexo
-                    novoSexoJson.Sexo = dadosSexo
+                    novoSexoJson.sexo = dadosSexo
 
                     return novoSexoJson
                 } else {
