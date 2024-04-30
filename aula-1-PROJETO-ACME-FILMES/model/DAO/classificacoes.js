@@ -45,11 +45,13 @@ const insertClassificacao = async function (dadosClassificacao) {
         insert into tbl_classificacoes  (
 		                                    sigla,
                                             classificacao,
-                                            legenda
+                                            legenda,
+                                            imagem
 	                                    )values(
                                                 "${dadosClassificacao.sigla}",
                                                 "${dadosClassificacao.classificacao}",
-                                                "${dadosClassificacao.legenda}"
+                                                "${dadosClassificacao.legenda}",
+                                                "${dadosClassificacao.imagem}"
 	                                    );`
         
         let result = await prisma.$queryRawUnsafe(sql)

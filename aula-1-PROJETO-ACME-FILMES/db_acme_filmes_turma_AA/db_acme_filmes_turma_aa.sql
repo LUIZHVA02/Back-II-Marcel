@@ -6,43 +6,51 @@ create table tbl_classificacoes(
 	id int not null auto_increment primary key,
 	sigla varchar(5) not null,
     classificacao varchar(45) not null,
-    legenda varchar(150) not null
+    legenda varchar(150) not null,
+    imagem varchar(300) not null
 );
 
 insert into 
 	tbl_classificacoes(
 		sigla,
         classificacao,
-        legenda
+        legenda,
+        imagem
 	)
 values
 	(
 		"L",
         "Livre para todos os públicos",
-        "Esta programação não tem conteúdos potencialmente prejudiciais para qualquer faixa etária"
+        "Esta programação não tem conteúdos potencialmente prejudiciais para qualquer faixa etária",
+        "https://raw.githubusercontent.com/LUIZHVA02/Back-II-Leonid/main/Front-acme/image/png/classi-indicativa-livre.png"
 	),
 	(
 		"A10",
         "Não recomendado para menores de 10 anos",
-        "Esta programação pode ter conteúdo violento e linguagem imprópria de nível leve"
+        "Esta programação pode ter conteúdo violento e linguagem imprópria de nível leve",
+        "https://raw.githubusercontent.com/LUIZHVA02/Back-II-Leonid/main/Front-acme/image/png/classi-indicativa10.png"
 	),
 	(
 		"A12","Não recomendado para menores de 12 anos",
-        "Esta programação possui cenas de agressão física leve, insinuação de consumo de drogas e insinuação leve de sexo"
+        "Esta programação possui cenas de agressão física leve, insinuação de consumo de drogas e insinuação leve de sexo",
+        "https://raw.githubusercontent.com/LUIZHVA02/Back-II-Leonid/main/Front-acme/image/png/classi-indicativa12.png"
 	),
 	(
 		"A14","Não recomendado para menores de 14 anos",
-        "Esta programação possui cenas de agressão física média, consumo de drogas explícito e insinuação de sexo acentuada"
+        "Esta programação possui cenas de agressão física média, consumo de drogas explícito e insinuação de sexo acentuada",
+        "https://raw.githubusercontent.com/LUIZHVA02/Back-II-Leonid/main/Front-acme/image/png/classi-indicativa14.png"
 	),
 	(
 		"A16",
 		"Não recomendado para menores de 16 anos",
-		"Esta programação possui cenas de agressão física acentuada, consumo de drogas explícito e insinuação de sexo acentuada"
+		"Esta programação possui cenas de agressão física acentuada, consumo de drogas explícito e insinuação de sexo acentuada",
+        "https://raw.githubusercontent.com/LUIZHVA02/Back-II-Leonid/main/Front-acme/image/png/classi-indicativa16.png"
     ),
 	(
 		"A18",
         "Não recomendado para menores de 18 anos",
-        "Esta programação possui cenas de violência extrema, suicídio, consumo e indução ao consumo de drogas, sexo explícito e distúrbios psicossomáticos"
+        "Esta programação possui cenas de violência extrema, suicídio, consumo e indução ao consumo de drogas, sexo explícito e distúrbios psicossomáticos",
+        "https://raw.githubusercontent.com/LUIZHVA02/Back-II-Leonid/main/Front-acme/image/png/classi-indicativa18.png"
 	);
 
 
@@ -488,7 +496,13 @@ select *from tbl_classificacoes where sigla like '%L%';
 
 select *from tbl_generos where nome LIKE '%ação%';
 
-select *from tbl_filmes where id > 0;
+select tbl_filmes.id, tbl_filmes.nome, tbl_filmes.sinopse, tbl_filmes.duracao, 
+		tbl_filmes.data_lancamento, tbl_filmes.data_relancamento, tbl_filmes.foto_capa, 
+			tbl_filmes.valor_unitario, tbl_classificacoes.sigla, tbl_classificacoes.classificacao, 
+				tbl_classificacoes.legenda, tbl_classificacoes.imagem from tbl_filmes inner join tbl_classificacoes 
+					on tbl_filmes.id_classificacao = tbl_classificacoes.id where tbl_filmes.id > 0;
+
+
 delete from tbl_filmes where id = 0;
 select foto_capa from tbl_filmes where id > 0;
 select *from tbl_filmes where nome like '%Forma%';

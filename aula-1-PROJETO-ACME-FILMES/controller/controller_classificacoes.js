@@ -49,7 +49,8 @@ const setInserirNovaClassificacao = async function (dadosClassificacao, content)
             if (
                 dadosClassificacao.sigla == '' || dadosClassificacao.sigla == undefined || dadosClassificacao.sigla == null || dadosClassificacao.sigla.length > 5 ||
                 dadosClassificacao.classificacao == '' || dadosClassificacao.classificacao == undefined || dadosClassificacao.classificacao == null || dadosClassificacao.classificacao.length > 45 ||
-                dadosClassificacao.legenda == '' || dadosClassificacao.legenda == undefined || dadosClassificacao.legenda == null || dadosClassificacao.legenda.length > 150
+                dadosClassificacao.legenda == '' || dadosClassificacao.legenda == undefined || dadosClassificacao.legenda == null || dadosClassificacao.legenda.length > 150 ||
+                dadosClassificacao.imagem == '' || dadosClassificacao.imagem == undefined || dadosClassificacao.imagem == null || dadosClassificacao.imagem.length > 300
                 ) {
                 return message.ERROR_REQUIRED_FIELDS
             } else {

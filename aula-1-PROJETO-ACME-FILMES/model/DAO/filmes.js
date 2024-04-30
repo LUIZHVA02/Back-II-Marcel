@@ -144,7 +144,11 @@ const selectAllFilmes = async function () {
 
     try {
         //Script SQL para buscar todos os registros do BD
-        let sql = 'select * from tbl_filmes'
+        let sql = `select tbl_filmes.id, tbl_filmes.nome, tbl_filmes.sinopse, tbl_filmes.duracao, 
+		tbl_filmes.data_lancamento, tbl_filmes.data_relancamento, tbl_filmes.foto_capa, 
+			tbl_filmes.valor_unitario, tbl_classificacoes.sigla, tbl_classificacoes.classificacao, 
+				tbl_classificacoes.legenda, tbl_classificacoes.imagem from tbl_filmes inner join tbl_classificacoes 
+					on tbl_filmes.id_classificacao = tbl_classificacoes.id where tbl_filmes.id > 0 order by id;`
 
         /**
          * $queryRawUnsafe(sql)                 ----- Encaminha uma variável
