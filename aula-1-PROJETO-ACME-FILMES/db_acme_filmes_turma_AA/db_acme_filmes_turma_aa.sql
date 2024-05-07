@@ -183,6 +183,13 @@ values
         2
     );
 
+select tbl_atores.id, tbl_atores.nome, tbl_sexo.sexo, tbl_atores.foto_ator, 
+        tbl_atores.dt_nasc, tbl_atores.dt_falec, tbl_atores.sobre, tbl_nacionalidades.nacionalidade, tbl_nacionalidades.pais_origem
+				from tbl_sexo left join tbl_atores on tbl_sexo.id = tbl_atores.id_sexo 
+					inner join tbl_nacionalidades_ator on tbl_atores.id = tbl_nacionalidades_ator.id_ator
+						inner join tbl_nacionalidades on tbl_nacionalidades.id = tbl_nacionalidades_ator.id_nacionalidade 
+							where tbl_atores.id > 0;
+
 create table tbl_diretores(
 	id int not null auto_increment primary key,
 	nome varchar(200) not null,
@@ -199,6 +206,7 @@ create table tbl_nacionalidades(
 	pais_origem varchar(100) not null,
     nacionalidade varchar(100) not null
 );
+
 insert into tbl_nacionalidades (pais_origem, nacionalidade) values
 ("Afeganistão", "Afegão"),
 ("Andorra", "Andorrano"),
@@ -401,6 +409,10 @@ create table tbl_nacionalidades_ator(
     foreign key (id_nacionalidade) references tbl_nacionalidades(id)
 );
 
+insert into tbl_nacionalidades_ator(id_ator, id_nacionalidade)values
+(1,184),
+(2,184);
+
 create table tbl_nacionalidades_diretor(
 	id int not null auto_increment primary key,
 	id_diretor int,
@@ -500,7 +512,7 @@ select tbl_filmes.id, tbl_filmes.nome, tbl_filmes.sinopse, tbl_filmes.duracao,
 		tbl_filmes.data_lancamento, tbl_filmes.data_relancamento, tbl_filmes.foto_capa, 
 			tbl_filmes.valor_unitario, tbl_classificacoes.sigla, tbl_classificacoes.classificacao, 
 				tbl_classificacoes.legenda, tbl_classificacoes.imagem from tbl_filmes inner join tbl_classificacoes 
-					on tbl_filmes.id_classificacao = tbl_classificacoes.id where tbl_filmes.id > 0;
+					on tbl_filmes.id_classificacao = tbl_classificacoes.id where tbl_filmes.id > 0 order by id;
 
 
 delete from tbl_filmes where id = 0;
