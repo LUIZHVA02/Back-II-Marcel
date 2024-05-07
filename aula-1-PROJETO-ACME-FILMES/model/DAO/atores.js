@@ -52,12 +52,12 @@ const insertAtor = async function (dadosAtor) {
                                             nome, 
                                             foto_ator, 
                                             dt_nasc,
-                                            id_Ator
+                                            id_ator
                                         )values(
                                                 "${dadosAtor.nome}", 
                                                 "${dadosAtor.foto_ator}", 
                                                 "${dadosAtor.dt_nasc}",
-                                                "${dadosAtor.id_Ator}"
+                                                "${dadosAtor.id_ator}"
                                         );
             `
         } 
@@ -71,13 +71,13 @@ const insertAtor = async function (dadosAtor) {
                                             foto_ator, 
                                             dt_nasc,
                                             dt_falec,
-                                            id_Ator
+                                            id_ator
                                         )values(
                                                 "${dadosAtor.nome}", 
                                                 "${dadosAtor.foto_ator}", 
                                                 "${dadosAtor.dt_nasc}",
                                                 "${dadosAtor.dt_falec}",
-                                                "${dadosAtor.id_Ator}"
+                                                "${dadosAtor.id_ator}"
                                         );
             `
         } 
@@ -91,13 +91,13 @@ const insertAtor = async function (dadosAtor) {
                                             foto_ator, 
                                             dt_nasc,
                                             sobre,
-                                            id_Ator
+                                            id_ator
                                         )values(
                                                 "${dadosAtor.nome}", 
                                                 "${dadosAtor.foto_ator}", 
                                                 "${dadosAtor.dt_nasc}",
                                                 "${dadosAtor.sobre}",
-                                                "${dadosAtor.id_Ator}"
+                                                "${dadosAtor.id_ator}"
                                         );
             `
         } else {
@@ -109,14 +109,14 @@ const insertAtor = async function (dadosAtor) {
                                             dt_nasc,
                                             dt_falec,
                                             sobre,
-                                            id_Ator
+                                            id_ator
                                         )values(
                                                 "${dadosAtor.nome}", 
                                                 "${dadosAtor.foto_ator}", 
                                                 "${dadosAtor.dt_nasc}",
                                                 "${dadosAtor.dt_falec}",
                                                 "${dadosAtor.sobre}",
-                                                "${dadosAtor.id_Ator}"
+                                                "${dadosAtor.id_ator}"
                                         );
         `
 
@@ -178,9 +178,9 @@ const selectAllAtores = async function () {
 
     try {
         //Script SQL para buscar todos os registros do BD
-        let sql = `select tbl_atores.id, tbl_atores.nome, tbl_Ator.Ator, tbl_atores.foto_ator, 
+        let sql = `select tbl_atores.id, tbl_atores.nome, tbl_sexo.sexo, tbl_atores.foto_ator, 
         tbl_atores.dt_nasc, tbl_atores.dt_falec, tbl_atores.sobre, tbl_nacionalidades.nacionalidade, tbl_nacionalidades.pais_origem
-				from tbl_Ator left join tbl_atores on tbl_Ator.id = tbl_atores.id_Ator 
+				from tbl_sexo left join tbl_atores on tbl_sexo.id = tbl_atores.id_sexo 
 					inner join tbl_nacionalidades_ator on tbl_atores.id = tbl_nacionalidades_ator.id_ator
 						inner join tbl_nacionalidades on tbl_nacionalidades.id = tbl_nacionalidades_ator.id_nacionalidade 
 							where tbl_atores.id > 0;`
@@ -228,7 +228,12 @@ const selectByIdAtores = async function (id) {
 
     try {
         //ScriptSQL para buscar um dos registros pelo id no BD
-        let sql = `select* from tbl_atores where id = ${id}`
+        let sql = `select tbl_atores.id, tbl_atores.nome, tbl_sexo.sexo, tbl_atores.foto_ator, 
+        tbl_atores.dt_nasc, tbl_atores.dt_falec, tbl_atores.sobre, tbl_nacionalidades.nacionalidade, tbl_nacionalidades.pais_origem
+				from tbl_sexo left join tbl_atores on tbl_sexo.id = tbl_atores.id_sexo 
+					inner join tbl_nacionalidades_ator on tbl_atores.id = tbl_nacionalidades_ator.id_ator
+						inner join tbl_nacionalidades on tbl_nacionalidades.id = tbl_nacionalidades_ator.id_nacionalidade 
+							where tbl_atores.id = ${id}`
 
         //Executa o scriptSQL no BD e guarda o retorno dos dados
         let rsAtor = await prisma.$queryRawUnsafe(sql)
@@ -245,7 +250,12 @@ const selectByNameAtores = async function (nome) {
 
     try {
         //ScriptSQL para buscar um dos registros pelo nome no BD
-        let sql = `select* from tbl_atores where nome like '%${nome}%';`
+        let sql = `select tbl_atores.id, tbl_atores.nome, tbl_sexo.sexo, tbl_atores.foto_ator, 
+        tbl_atores.dt_nasc, tbl_atores.dt_falec, tbl_atores.sobre, tbl_nacionalidades.nacionalidade, tbl_nacionalidades.pais_origem
+				from tbl_sexo left join tbl_atores on tbl_sexo.id = tbl_atores.id_sexo 
+					inner join tbl_nacionalidades_ator on tbl_atores.id = tbl_nacionalidades_ator.id_ator
+						inner join tbl_nacionalidades on tbl_nacionalidades.id = tbl_nacionalidades_ator.id_nacionalidade 
+							where nome like '%${nome}%';`
 
         //Executa o scriptSQL no BD e guarda o retorno dos dados
         let rsAtor = await prisma.$queryRawUnsafe(sql)

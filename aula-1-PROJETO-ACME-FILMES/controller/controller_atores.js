@@ -8,6 +8,7 @@
 
 
 const atoresDAO = require('../model/DAO/atores.js')
+const nacionalidadesAtorDAO = require('../model/DAO/nacionalidade_ator.js')
 
 //Import do Arquivo de Configuração do Projeto
 const message = require('../modulo/config.js')
@@ -23,11 +24,13 @@ const setInserirNovoAtor = async function (dadosAtor, content) {
             let novoAtorJson = {}
             let statusvalidate = false
             if (
-                dadosAtor.nome == ''                || dadosAtor.nome == undefined              || dadosAtor.nome == null       || dadosAtor.nome.length > 200          ||
-                dadosAtor.foto_ator == ''           || dadosAtor.foto_ator == undefined         || dadosAtor.foto_ator == null  || dadosAtor.foto_ator.length > 300     ||
-                dadosAtor.dt_nasc == ''             || dadosAtor.dt_nasc == undefined           || dadosAtor.dt_nasc == null    || dadosAtor.dt_nasc.length != 10       ||
-                dadosAtor.sobre == ''               || dadosAtor.sobre == undefined             || dadosAtor.sobre == null      || dadosAtor.sobre.length > 65000       || 
-                dadosAtor.id_sexo == ''             || dadosAtor.id_sexo == undefined           || dadosAtor.id_sexo == null
+                dadosAtor.nome                 == ''|| dadosAtor.nome               == undefined|| dadosAtor.nome        == null|| dadosAtor.nome.length         > 200  ||
+                dadosAtor.foto_ator            == ''|| dadosAtor.foto_ator          == undefined|| dadosAtor.foto_ator   == null|| dadosAtor.foto_ator.length    > 300  ||
+                dadosAtor.dt_nasc              == ''|| dadosAtor.dt_nasc            == undefined|| dadosAtor.dt_nasc     == null|| dadosAtor.dt_nasc.length      != 10  ||
+                dadosAtor.sobre                == ''|| dadosAtor.sobre              == undefined|| dadosAtor.sobre       == null|| dadosAtor.sobre.length        > 65000|| 
+                dadosAtor.id_sexo              == ''|| dadosAtor.id_sexo            == undefined|| dadosAtor.id_sexo     == null||
+                dadosAtor.nome                 == ''|| dadosAtor.nome               == undefined|| dadosAtor.nome        == null|| dadosAtor.nome.length         > 200  ||
+                dadosAtor.nome                 == ''|| dadosAtor.nome               == undefined|| dadosAtor.nome        == null|| dadosAtor.nome.length         > 200
                 ) {
                 return message.ERROR_REQUIRED_FIELDS
             } else {
@@ -73,15 +76,23 @@ const setInserirNovoAtor = async function (dadosAtor, content) {
 }
 
 //Função para atualizar um Ator existente
-const setAtualizarNovoAtor = async function (id, dadosAtorUpdate, content) {
+const setAtualizarNovoAtor = async function (id, dadosAtorNacionalidadeUpdate, content) {
     if (String(content).toLowerCase() == 'application/json') {
         
         let updateAtorJson = {}
+        let dadosAtorUpdate = {}
+        let dadosNacionalidadeUpdate = {}
+
+        dadosAtorNacionalidadeUpdate.nome = dadosAtorNacionalidadeUpdate.nome
+
+
         try {
             const validaId = await getBuscarAtores(id)
-            
+
             if (validaId) {
+
                 const atorAtualizado = await atoresDAO.updateAtor(id, dadosAtorUpdate)
+                const nacionalidadeAtorAtualizado = await nacionalidadesAtorDAO.updateNacionalidadesAtor(dadosNacionalidadeUpdate)
                 
                 if (atorAtualizado) {
                     updateAtorJson.id = validaId
@@ -115,8 +126,9 @@ const setExcluirAtor = async function (id) {
         
         if (validaId) {
             const apagarAtor = await atoresDAO.deleteAtor(id)
+            const apagarNacionalidadeAtor = await nacionalidadesAtorDAO.deleteNacionalidadesAtor(id)
             
-            if (apagarAtor) {
+            if (apagarAtor && apagarNacionalidadeAtor) {
                 deleteAtorJson.status = message.SUCCES_DELETED_ITEM.status
                 deleteAtorJson.status_code = message.SUCCES_DELETED_ITEM.status_code
                 deleteAtorJson.message = message.SUCCES_DELETED_ITEM.message
@@ -139,21 +151,37 @@ const setExcluirAtor = async function (id) {
 const getListarAtores = async function () {
 
     //Criar o objeto JSON
-    let AtoresJSON = {}
+    let atoresNacionalidadesJSON = {}
+    let atoresNacionalidadesARRAY = []
+    let atoresJSON = {}
+    let atoresARRAY = []
+    let nacionalidadesJSON = {}
+    let nacionalidadesArray = []
+
 
     //Chama a função do DAO para retornar os dados do BD
     let dadosAtores = await atoresDAO.selectAllAtores()
+    let dadosNacionalidadeAtor = await nacionalidadesAtorDAO.selectAllNacionalidadesAtor()
+
+    atoresARRAY.push(dadosAtores)
+
+    nacionalidadesArray.push(dadosNacionalidadeAtor)
+
+    atoresJSON.atores = atoresARRAY
+    atoresJSON.nacionalidades = nacionalidadesArray
+
+    atoresNacionalidadesARRAY.push(atoresJSON)
 
     //Validação para criar o JSON dos dados
-    if (dadosAtores) {
+    if (dadosAtores && dadosNacionalidadeAtor) {
         if (dadosAtores.length > 0) {
 
             //Cria o JSON de retorno dos dados
-            AtoresJSON.atores = dadosAtores
-            AtoresJSON.quantidade = dadosAtores.length
-            AtoresJSON.status_code = 200
+            atoresNacionalidadesJSON.info = atoresNacionalidadesARRAY
+            atoresNacionalidadesJSON.quantidade = dadosAtores.length
+            atoresNacionalidadesJSON.status_code = 200
 
-            return AtoresJSON
+            return atoresNacionalidadesJSON
         } else {
             return message.ERROR_NOT_FOUND
         }
@@ -196,7 +224,7 @@ const getBuscarAtores = async function (id) {
 
     let atorIdJson = {}
 
-    if (idAtor == '' || idAtor == undefined || isNaN(idAtor)) {
+    if (idAtor ==  '' || idAtor ==  undefined || isNaN(idAtor)) {
         return message.ERROR_INVALID_ID
     } else {
 
@@ -224,7 +252,7 @@ const getBuscarAtoresPeloNome = async function (nome) {
 
     let atorNomeJson = {}
 
-    if (nomeAtor == '' || nomeAtor == undefined) {
+    if (nomeAtor ==  '' || nomeAtor ==  undefined) {
         return message.ERROR_INVALID_NAME_ENTER
     } else {
 
