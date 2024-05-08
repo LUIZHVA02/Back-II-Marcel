@@ -48,6 +48,7 @@ const controllerClassificacoes = require('./controller/controller_classificacoes
 const controllerGeneros = require('./controller/controller_generos.js')
 const controllerSexos = require('./controller/controller_sexos.js')
 const controllerNacionalidades = require('./controller/controller_nacionalidades.js')
+const controllerAtores = require('./controller/controller_atores.js')
 const { METHOD_NOT_ALLOWED } = require('./modulo/config.js')
 
 /***********************************************************************/
@@ -169,7 +170,7 @@ app.delete('/v2/acmefilmes/deleteFilme/:id', cors(), bodyParserJson, async funct
 
 
 
-app.get('/v2/acmefilmes/classificacoes', cors(), async function (request, response, next){
+app.get('/v2/acmefilmes/classificacoes', cors(), async function (request, response, next) {
     let dadosClassificacoes = await controllerClassificacoes.getListarClassificacoes()
 
     response.status(dadosClassificacoes.status_code)
@@ -189,21 +190,21 @@ app.post('/v2/acmefilmes/classificacao/', cors(), bodyParserJson, async function
 
 })
 
-app.get('/v2/acmefilmes/filtro/classificacao/siglas/', cors(), async function (request, response, next){
-    
+app.get('/v2/acmefilmes/filtro/classificacao/siglas/', cors(), async function (request, response, next) {
+
     let siglaClassificacao = request.query.sigla
-    
+
     let dadosClassificacao = await controllerClassificacoes.getClassificacaoPelaSigla(siglaClassificacao)
 
     response.status(dadosClassificacao.status_code)
     response.json(dadosClassificacao)
 })
 
-app.get('/v2/acmefilmes/filtro/classificacao/legenda/', cors(), async function (request, response, next){
-    
+app.get('/v2/acmefilmes/filtro/classificacao/legenda/', cors(), async function (request, response, next) {
+
     let legendaClassificacao = request.query.legenda
 
-    
+
     let dadosClassificacao = await controllerClassificacoes.getClassificacaoPelaLegenda(legendaClassificacao)
 
     response.status(dadosClassificacao.status_code)
@@ -222,11 +223,11 @@ app.put('/v2/acmefilmes/updateClassificacao/:id', cors(), bodyParserJson, async 
     response.json(resultDados)
 })
 
-app.get('/v2/acmefilmes/classificacao/:id', cors(), async function (request, response, next){
-    
+app.get('/v2/acmefilmes/classificacao/:id', cors(), async function (request, response, next) {
+
     let idClassificacao = request.params.id
 
-    
+
     let dadosClassificacao = await controllerClassificacoes.getBuscarClassificacao(idClassificacao)
 
     response.status(dadosClassificacao.status_code)
@@ -398,6 +399,143 @@ app.delete('/v2/acmefilmes/deleteNacionalidade/:id', cors(), bodyParserJson, asy
 
 
 
+
+app.get('/v2/acmefilmes/sexos', cors(), async function (request, response, next) {
+
+    //Chama a função para retornar os dados de filme
+    let dadosSexo = await controllerSexos.getListarSexos()
+
+    response.status(dadosSexo.status_code)
+    response.json(dadosSexo)
+})
+
+
+//EndPoint: Retorna os dados de um filme pelo ID
+app.get('/v2/acmefilmes/sexo/:id', cors(), async function (request, response, next) {
+
+    let idSexo = request.params.id
+
+    let dadosSexo = await controllerSexos.getBuscarSexo(idSexo)
+
+    response.status(dadosSexo.status_code)
+    response.json(dadosSexo)
+})
+
+//EndPoint: Retorna os dados de um filme pelo nome
+app.get('/v2/acmefilmes/filtro/sexo/nome/', cors(), async function (request, response, next) {
+
+    let nomeSexo = request.query.nome
+
+    let dadosSexo = await controllerSexos.getSexoPeloNome(nomeSexo)
+
+    response.status(dadosSexo.status_code)
+    response.json(dadosSexo)
+})
+
+app.post('/v2/acmefilmes/InsertSexo/', cors(), bodyParserJson, async function (request, response, next) {
+
+    let contentType = request.headers['content-type']
+
+    let dadosBody = request.body
+
+    let resultDados = await controllerSexos.setInserirNovoSexo(dadosBody, contentType)
+
+    response.status(resultDados.status_code)
+    response.json(resultDados)
+
+})
+
+app.put('/v2/acmefilmes/updateSexo/:id', cors(), bodyParserJson, async function (request, response, next) {
+
+    let idSexo = request.params.id
+    let contentType = request.headers['content-type']
+    let dadosSexoUpdate = request.body
+
+    let resultDados = await controllerSexos.setAtualizarSexos(idSexo, dadosSexoUpdate, contentType)
+
+    response.status(resultDados.status_code)
+    response.json(resultDados)
+})
+
+app.delete('/v2/acmefilmes/deleteSexo/:id', cors(), bodyParserJson, async function (request, response, next) {
+
+    let idSexo = request.params.id
+
+    let resultDados = await controllerSexos.setExcluirSexo(idSexo)
+
+    response.status(resultDados.status_code)
+    response.json(resultDados)
+})
+
+
+
+
+app.get('/v2/acmefilmes/atores', cors(), async function (request, response, next) {
+
+    //Chama a função para retornar os dados de filme
+    let dadosAtor = await controllerAtores.getListarAtores()
+
+    response.status(dadosAtor.status_code)
+    response.json(dadosAtor)
+})
+
+
+//EndPoint: Retorna os dados de um filme pelo ID
+app.get('/v2/acmefilmes/ator/:id', cors(), async function (request, response, next) {
+
+    let idAtor = request.params.id
+
+    let dadosAtor = await controllerAtores.getBuscarAtores(idAtor)
+
+    response.status(dadosAtor.status_code)
+    response.json(dadosAtor)
+})
+
+//EndPoint: Retorna os dados de um filme pelo nome
+app.get('/v2/acmefilmes/filtro/ator/nome/', cors(), async function (request, response, next) {
+
+    let nomeAtor = request.query.nome
+
+    let dadosAtor = await controllerAtores.getBuscarAtoresPeloNome(nomeAtor)
+
+    response.status(dadosAtor.status_code)
+    response.json(dadosAtor)
+})
+
+app.post('/v2/acmefilmes/InsertAtor/', cors(), bodyParserJson, async function (request, response, next) {
+
+    let contentType = request.headers['content-type']
+
+    let dadosBody = request.body
+
+    let resultDados = await controllerAtores.setInserirNovoAtor(dadosBody, contentType)
+
+    response.status(resultDados.status_code)
+    response.json(resultDados)
+
+})
+
+app.put('/v2/acmefilmes/updateAtor/:id', cors(), bodyParserJson, async function (request, response, next) {
+
+    let idAtor = request.params.id
+    let contentType = request.headers['content-type']
+    let dadosAtorUpdate = request.body
+
+    let resultDados = await controllerAtores.setAtualizarNovoAtor(idAtor, dadosAtorUpdate, contentType)
+
+    response.status(resultDados.status_code)
+    response.json(resultDados)
+})
+
+app.delete('/v2/acmefilmes/deleteAtor/:id', cors(), bodyParserJson, async function (request, response, next) {
+
+    let idAtor = request.params.id
+
+    let resultDados = await controllerAtores.setExcluirAtor(idAtor)
+
+    response.status(resultDados.status_code)
+    response.json(resultDados)
+})
 
 app.listen(8080, function () {
     console.log('Serviço funcionando e aguardando requisições')
