@@ -32,12 +32,13 @@ const setInserirNovoDiretor = async function (dadosDiretor, content) {
             let statusvalidate = false
             if (
                 dadosDiretor.nome == '' || dadosDiretor.nome == undefined || dadosDiretor.nome == null || dadosDiretor.nome.length > 200 ||
-                dadosDiretor.foto_Diretor == '' || dadosDiretor.foto_Diretor == undefined || dadosDiretor.foto_Diretor == null || dadosDiretor.foto_Diretor.length > 300 ||
+                dadosDiretor.foto_diretor == '' || dadosDiretor.foto_diretor == undefined || dadosDiretor.foto_diretor == null || dadosDiretor.foto_diretor.length > 300 ||
                 dadosDiretor.dt_nasc == '' || dadosDiretor.dt_nasc == undefined || dadosDiretor.dt_nasc == null || dadosDiretor.dt_nasc.length != 10 ||
                 dadosDiretor.sexo == '' || dadosDiretor.sexo == undefined || dadosDiretor.sexo == null ||
                 dadosDiretor.nacionalidade == '' || dadosDiretor.nacionalidade == undefined || dadosDiretor.nacionalidade == null || dadosDiretor.nacionalidade.length > 100 ||
                 dadosDiretor.pais_origem == '' || dadosDiretor.pais_origem == undefined || dadosDiretor.pais_origem == null || dadosDiretor.pais_origem.length > 100
             ) {
+                console.log(dadosDiretor)
                 return message.ERROR_REQUIRED_FIELDS
             } else {
                 if (
@@ -50,6 +51,7 @@ const setInserirNovoDiretor = async function (dadosDiretor, content) {
 
                 ) {
                     if (dadosDiretor.dt_falec.length != 10 && dadosDiretor.sobre.length > 65000) {
+                        console.log(dadosDiretor + 'aqui')
                         return message.ERROR_REQUIRED_FIELDS
                     } else {
                         statusvalidate = true // validação para liberar a inserção dos dados no DAO
@@ -60,22 +62,137 @@ const setInserirNovoDiretor = async function (dadosDiretor, content) {
             }
             if (statusvalidate) {
                 let nome = dadosDiretor.nome
-                let foto_Diretor = dadosDiretor.foto_Diretor
+                let foto_diretor = dadosDiretor.foto_diretor
                 let dt_nasc = dadosDiretor.dt_nasc
                 let dt_falec = dadosDiretor.dt_falec
                 let sobre = dadosDiretor.sobre
 
-                let nacionalidade = dadosDiretor.nacionalidade
+                let nacionalidade = {}
+                nacionalidade.nacionalidade = dadosDiretor.nacionalidade
+                nacionalidade.pais_origem = dadosDiretor.pais_origem
 
                 let nomeSexo = dadosDiretor.sexo
                 let infoSexo = await controller_sexos.getSexoPeloNome(nomeSexo)
-                let id_sexo = infoSexo.sexo
+                let id_sexo = infoSexo.sexo[0].id
 
-                if (id_sexo) {
+                if (id_sexo && dt_falec && sobre) {
                     let jsonDadosDiretor = {}
 
                     jsonDadosDiretor.nome = nome
-                    jsonDadosDiretor.foto_Diretor = foto_Diretor
+                    jsonDadosDiretor.foto_diretor = foto_diretor
+                    jsonDadosDiretor.dt_nasc = dt_nasc
+                    jsonDadosDiretor.dt_falec = dt_falec
+                    jsonDadosDiretor.sobre = sobre
+                    jsonDadosDiretor.id_sexo = id_sexo
+
+                    let novoDiretor = await diretoresDAO.insertDiretor(jsonDadosDiretor)
+
+                    if (novoDiretor) {
+                        let idNovoDiretor = await diretoresDAO.selectLastIdDiretores()
+
+                        let infoNacionalidade = await controller_nacionalidades.getNacionalidadePelaNacionalidade(nacionalidade.nacionalidade)
+                        let idNacionalidade = infoNacionalidade.nacionalidade[0].id
+
+                        let dadosDiretorNacionalidade = {}
+                        dadosDiretorNacionalidade.id_diretor = idNovoDiretor[0].id
+                        dadosDiretorNacionalidade.id_nacionalidade = idNacionalidade
+
+                        let novaNacionalidadeDiretor = await controller_nacionalidades_Diretor.setInserirNovoNacionalidadeDiretor(dadosDiretorNacionalidade, content)
+
+                        if (novoDiretor && novaNacionalidadeDiretor) {
+
+                            novoDiretorJson.status = message.SUCCES_CREATED_ITEM.status
+                            novoDiretorJson.status_code = message.SUCCES_CREATED_ITEM.status_code
+                            novoDiretorJson.message = message.SUCCES_CREATED_ITEM.message
+                            novoDiretorJson.id = idNovoDiretor[0].id
+                            novoDiretorJson.diretor = jsonDadosDiretor
+                            novoDiretorJson.nacionalidade = nacionalidade
+
+                            return novoDiretorJson
+                        } else {
+                            return message.INTERNAL_SERVER_ERROR_DB
+                        }
+                    }
+                } if (id_sexo && dt_falec) {
+                    let jsonDadosDiretor = {}
+
+                    jsonDadosDiretor.nome = nome
+                    jsonDadosDiretor.foto_diretor = foto_diretor
+                    jsonDadosDiretor.dt_nasc = dt_nasc
+                    jsonDadosDiretor.dt_falec = dt_falec
+                    jsonDadosDiretor.id_sexo = id_sexo
+
+                    let novoDiretor = await diretoresDAO.insertDiretor(jsonDadosDiretor)
+
+                    if (novoDiretor) {
+                        let idNovoDiretor = await diretoresDAO.selectLastIdDiretores()
+
+                        let infoNacionalidade = await controller_nacionalidades.getNacionalidadePelaNacionalidade(nacionalidade.nacionalidade)
+                        let idNacionalidade = infoNacionalidade.nacionalidade[0].id
+
+                        let dadosDiretorNacionalidade = {}
+                        dadosDiretorNacionalidade.id_diretor = idNovoDiretor[0].id
+                        dadosDiretorNacionalidade.id_nacionalidade = idNacionalidade
+
+                        let novaNacionalidadeDiretor = await controller_nacionalidades_Diretor.setInserirNovoNacionalidadeDiretor(dadosDiretorNacionalidade, content)
+
+                        if (novoDiretor && novaNacionalidadeDiretor) {
+
+                            novoDiretorJson.status = message.SUCCES_CREATED_ITEM.status
+                            novoDiretorJson.status_code = message.SUCCES_CREATED_ITEM.status_code
+                            novoDiretorJson.message = message.SUCCES_CREATED_ITEM.message
+                            novoDiretorJson.id = idNovoDiretor[0].id
+                            novoDiretorJson.diretor = jsonDadosDiretor
+                            novoDiretorJson.nacionalidade = nacionalidade
+
+                            return novoDiretorJson
+                        } else {
+                            return message.INTERNAL_SERVER_ERROR_DB
+                        }
+                    }
+                } if (id_sexo && sobre) {
+                    let jsonDadosDiretor = {}
+
+                    jsonDadosDiretor.nome = nome
+                    jsonDadosDiretor.foto_diretor = foto_diretor
+                    jsonDadosDiretor.dt_nasc = dt_nasc
+                    jsonDadosDiretor.sobre = sobre
+                    jsonDadosDiretor.id_sexo = id_sexo
+
+                    let novoDiretor = await diretoresDAO.insertDiretor(jsonDadosDiretor)
+
+                    if (novoDiretor) {
+                        let idNovoDiretor = await diretoresDAO.selectLastIdDiretores()
+
+                        let infoNacionalidade = await controller_nacionalidades.getNacionalidadePelaNacionalidade(nacionalidade.nacionalidade)
+                        let idNacionalidade = infoNacionalidade.nacionalidade[0].id
+
+                        let dadosDiretorNacionalidade = {}
+                        dadosDiretorNacionalidade.id_diretor = idNovoDiretor[0].id
+                        dadosDiretorNacionalidade.id_nacionalidade = idNacionalidade
+
+                        let novaNacionalidadeDiretor = await controller_nacionalidades_Diretor.setInserirNovoNacionalidadeDiretor(dadosDiretorNacionalidade, content)
+
+                        if (novoDiretor && novaNacionalidadeDiretor) {
+
+                            novoDiretorJson.status = message.SUCCES_CREATED_ITEM.status
+                            novoDiretorJson.status_code = message.SUCCES_CREATED_ITEM.status_code
+                            novoDiretorJson.message = message.SUCCES_CREATED_ITEM.message
+                            novoDiretorJson.id = idNovoDiretor[0].id
+                            novoDiretorJson.diretor = jsonDadosDiretor
+                            novoDiretorJson.nacionalidade = nacionalidade
+
+                            return novoDiretorJson
+                        } else {
+                            return message.INTERNAL_SERVER_ERROR_DB
+                        }
+                    }
+                } if (id_sexo) {
+
+                    let jsonDadosDiretor = {}
+
+                    jsonDadosDiretor.nome = nome
+                    jsonDadosDiretor.foto_diretor = foto_diretor
                     jsonDadosDiretor.dt_nasc = dt_nasc
                     jsonDadosDiretor.id_sexo = id_sexo
 
@@ -84,149 +201,28 @@ const setInserirNovoDiretor = async function (dadosDiretor, content) {
                     if (novoDiretor) {
                         let idNovoDiretor = await diretoresDAO.selectLastIdDiretores()
 
-                        let infoNacionalidade = controller_nacionalidades.getNacionalidadePelaNacionalidade(nacionalidade)
-                        let idNacionalidade = infoNacionalidade.id
+                        let infoNacionalidade = await controller_nacionalidades.getNacionalidadePelaNacionalidade(nacionalidade.nacionalidade)
+                        let idNacionalidade = infoNacionalidade.nacionalidade[0].id
 
                         let dadosDiretorNacionalidade = {}
-                        dadosDiretorNacionalidade.id_Diretor = idNovoDiretor
+                        dadosDiretorNacionalidade.id_diretor = idNovoDiretor[0].id
                         dadosDiretorNacionalidade.id_nacionalidade = idNacionalidade
 
-
-                        let novaNacionalidadeDiretor = await controller_nacionalidades_Diretor.setInserirNovoNacionalidadeDiretor(dadosDiretorNacionalidade)
-
-
+                        let novaNacionalidadeDiretor = await controller_nacionalidades_Diretor.setInserirNovoNacionalidadeDiretor(dadosDiretorNacionalidade, content)
 
                         if (novoDiretor && novaNacionalidadeDiretor) {
 
                             novoDiretorJson.status = message.SUCCES_CREATED_ITEM.status
                             novoDiretorJson.status_code = message.SUCCES_CREATED_ITEM.status_code
                             novoDiretorJson.message = message.SUCCES_CREATED_ITEM.message
-                            novoDiretorJson.id = idNovoDiretor
-                            novoDiretorJson.Diretor = novoDiretor
-                            novoDiretorJson.nacionalidade = novaNacionalidadeDiretor
+                            novoDiretorJson.id = idNovoDiretor[0].id
+                            novoDiretorJson.diretor = jsonDadosDiretor
+                            novoDiretorJson.nacionalidade = nacionalidade
 
                             return novoDiretorJson
                         } else {
                             return message.INTERNAL_SERVER_ERROR_DB
                         }
-                    } if (id_sexo != false && dt_falec) {
-
-                        let jsonDadosDiretor = {}
-
-                        jsonDadosDiretor.nome = nome
-                        jsonDadosDiretor.foto_Diretor = foto_Diretor
-                        jsonDadosDiretor.dt_nasc = dt_nasc
-                        jsonDadosDiretor.dt_falec = dt_falec
-                        jsonDadosDiretor.id_sexo = id_sexo
-
-                        let novoDiretor = await diretoresDAO.insertDiretor(jsonDadosDiretor)
-
-                        let infoNacionalidade = await controller_nacionalidades.getNacionalidadePelaNacionalidade(nacionalidade)
-                        let idNacionalidade = infoNacionalidade.id
-
-                        let idNovoDiretor = await diretoresDAO.selectLastIdDiretores()
-
-                        let dadosDiretorNacionalidade = {}
-                        dadosDiretorNacionalidade.id_Diretor = idNovoDiretor
-                        dadosDiretorNacionalidade.id_nacionalidade = idNacionalidade
-
-
-                        let novaNacionalidadeDiretor = await controller_nacionalidades_Diretor.setInserirNovoNacionalidadeDiretor(dadosDiretorNacionalidade)
-
-
-
-                        if (novoDiretor && novaNacionalidadeDiretor) {
-
-                            novoDiretorJson.status = message.SUCCES_CREATED_ITEM.status
-                            novoDiretorJson.status_code = message.SUCCES_CREATED_ITEM.status_code
-                            novoDiretorJson.message = message.SUCCES_CREATED_ITEM.message
-                            novoDiretorJson.id = idNovoDiretor
-                            novoDiretorJson.Diretor = novoDiretor
-                            novoDiretorJson.nacionalidade = novaNacionalidadeDiretor
-
-                            return novoDiretorJson
-                        } else {
-                            return message.INTERNAL_SERVER_ERROR_DB
-                        }
-                    }
-                } if (id_sexo != false && sobre) {
-
-                    let jsonDadosDiretor = {}
-
-                    jsonDadosDiretor.nome = nome
-                    jsonDadosDiretor.foto_Diretor = foto_Diretor
-                    jsonDadosDiretor.dt_nasc = dt_nasc
-                    jsonDadosDiretor.sobre = sobre
-                    jsonDadosDiretor.id_sexo = id_sexo
-
-                    let novoDiretor = await diretoresDAO.insertDiretor(jsonDadosDiretor)
-
-                    let infoNacionalidade = await controller_nacionalidades.getNacionalidadePelaNacionalidade(nacionalidade)
-                    let idNacionalidade = infoNacionalidade.id
-
-                    let idNovoDiretor = await diretoresDAO.selectLastIdDiretores()
-
-                    let dadosDiretorNacionalidade = {}
-                    dadosDiretorNacionalidade.id_Diretor = idNovoDiretor
-                    dadosDiretorNacionalidade.id_nacionalidade = idNacionalidade
-
-
-                    let novaNacionalidadeDiretor = await controller_nacionalidades_Diretor.setInserirNovoNacionalidadeDiretor(dadosDiretorNacionalidade)
-
-
-
-                    if (novoDiretor && novaNacionalidadeDiretor) {
-
-                        novoDiretorJson.status = message.SUCCES_CREATED_ITEM.status
-                        novoDiretorJson.status_code = message.SUCCES_CREATED_ITEM.status_code
-                        novoDiretorJson.message = message.SUCCES_CREATED_ITEM.message
-                        novoDiretorJson.id = idNovoDiretor
-                        novoDiretorJson.Diretor = novoDiretor
-                        novoDiretorJson.nacionalidade = novaNacionalidadeDiretor
-
-                        return novoDiretorJson
-                    } else {
-                        return message.INTERNAL_SERVER_ERROR_DB
-                    }
-                } if (id_sexo != false && dt_falec && sobre) {
-
-                    let jsonDadosDiretor = {}
-
-                    jsonDadosDiretor.nome = nome
-                    jsonDadosDiretor.foto_Diretor = foto_Diretor
-                    jsonDadosDiretor.dt_nasc = dt_nasc
-                    jsonDadosDiretor.dt_falec = dt_falec
-                    jsonDadosDiretor.sobre = sobre
-                    jsonDadosDiretor.id_sexo = id_sexo
-
-                    let novoDiretor = await diretoresDAO.insertDiretor(jsonDadosDiretor)
-
-                    let infoNacionalidade = await controller_nacionalidades.getNacionalidadePelaNacionalidade(nacionalidade)
-                    let idNacionalidade = infoNacionalidade.id
-
-                    let idNovoDiretor = await diretoresDAO.selectLastIdDiretores()
-
-                    let dadosDiretorNacionalidade = {}
-                    dadosDiretorNacionalidade.id_Diretor = idNovoDiretor
-                    dadosDiretorNacionalidade.id_nacionalidade = idNacionalidade
-
-
-                    let novaNacionalidadeDiretor = await controller_nacionalidades_Diretor.setInserirNovoNacionalidadeDiretor(dadosDiretorNacionalidade)
-
-
-
-                    if (novoDiretor && novaNacionalidadeDiretor) {
-
-                        novoDiretorJson.status = message.SUCCES_CREATED_ITEM.status
-                        novoDiretorJson.status_code = message.SUCCES_CREATED_ITEM.status_code
-                        novoDiretorJson.message = message.SUCCES_CREATED_ITEM.message
-                        novoDiretorJson.id = idNovoDiretor
-                        novoDiretorJson.Diretor = novoDiretor
-                        novoDiretorJson.nacionalidade = novaNacionalidadeDiretor
-
-                        return novoDiretorJson
-                    } else {
-                        return message.INTERNAL_SERVER_ERROR_DB
                     }
                 } else {
                     return message.ERROR_INTERNAL_SERVER_DB
