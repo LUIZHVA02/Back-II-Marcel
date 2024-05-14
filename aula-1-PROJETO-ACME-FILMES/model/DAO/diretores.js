@@ -179,11 +179,11 @@ const selectAllDiretores = async function () {
     try {
         //Script SQL para buscar todos os registros do BD
         let sql = `select tbl_diretores.id, tbl_diretores.nome, tbl_diretores.foto_diretor, tbl_diretores.dt_nasc, 
-        tbl_diretores.dt_falec, tbl_diretores.sobre, tbl_sexo.sexo, tbl_nacionalidades_diretor.id_nacionalidade, 
+        tbl_diretores.dt_falec, tbl_diretores.sobre, tbl_diretores.id_sexo, tbl_sexo.sexo, tbl_nacionalidades_diretor.id_nacionalidade, 
 			tbl_nacionalidades.nacionalidade, tbl_nacionalidades.pais_origem
 				from tbl_sexo left join tbl_diretores on tbl_sexo.id = tbl_diretores.id_sexo 
-					inner join tbl_nacionalidades_diretor on tbl_diretores.id = tbl_nacionalidades_diretor.id_Diretor
-						inner join tbl_nacionalidades on tbl_nacionalidades.id = tbl_nacionalidades_diretor.id_nacionalidade 
+					right join tbl_nacionalidades_diretor on tbl_diretores.id = tbl_nacionalidades_diretor.id_Diretor
+						left join tbl_nacionalidades on tbl_nacionalidades.id = tbl_nacionalidades_diretor.id_nacionalidade 
 							where tbl_diretores.id > 0 order by tbl_diretores.id;`
 
         /**
@@ -229,11 +229,12 @@ const selectByIdDiretores = async function (id) {
 
     try {
         //ScriptSQL para buscar um dos registros pelo id no BD
-        let sql = `select tbl_diretores.id, tbl_diretores.nome, tbl_sexo.sexo, tbl_diretores.foto_diretor, 
-        tbl_diretores.dt_nasc, tbl_diretores.dt_falec, tbl_diretores.sobre, tbl_nacionalidades.nacionalidade, tbl_nacionalidades.pais_origem
+        let sql = `select tbl_diretores.id, tbl_diretores.nome, tbl_diretores.foto_diretor, tbl_diretores.dt_nasc, 
+        tbl_diretores.dt_falec, tbl_diretores.sobre, tbl_diretores.id_sexo, tbl_sexo.sexo, tbl_nacionalidades_diretor.id_nacionalidade, 
+			tbl_nacionalidades.nacionalidade, tbl_nacionalidades.pais_origem
 				from tbl_sexo left join tbl_diretores on tbl_sexo.id = tbl_diretores.id_sexo 
-					inner join tbl_nacionalidades_diretor on tbl_diretores.id = tbl_nacionalidades_diretor.id_Diretor
-						inner join tbl_nacionalidades on tbl_nacionalidades.id = tbl_nacionalidades_diretor.id_nacionalidade 
+					right join tbl_nacionalidades_diretor on tbl_diretores.id = tbl_nacionalidades_diretor.id_Diretor
+						left join tbl_nacionalidades on tbl_nacionalidades.id = tbl_nacionalidades_diretor.id_nacionalidade 
 							where tbl_diretores.id = ${id}`
 
         //Executa o scriptSQL no BD e guarda o retorno dos dados
