@@ -211,7 +211,7 @@ const getNacionalidadePelaNacionalidade = async function (nacionalidade) {
 
         if (dadosNacionalidade) {
             if (dadosNacionalidade.length > 0) {
-                nacionalidadeIdJSON.Nacionalidade = dadosNacionalidade
+                nacionalidadeIdJSON.nacionalidade = dadosNacionalidade
                 nacionalidadeIdJSON.status_code = 200
                 
                 return nacionalidadeIdJSON

@@ -56,6 +56,50 @@ const selectNacionalidadesAtorById = async function (id) {
     }
 }
 
+const selectNacionalidadesAtorByIdNacionalidade = async function (id) {
+
+    try {
+        //Script SQL para buscar todos os registros do BD
+        let sql = `select *from tbl_nacionalidades_ator where id_nacionalidade = ${id};`
+
+        /**
+         * $queryRawUnsafe(sql)                 ----- Encaminha uma variável
+         * $queryRaw('select*from tbl_nacionalidades_ator')   ----- Encaminha direto o script
+        */
+
+        //Executa o scriptSQL no DB e guarda o retorno dos dados
+        let rsNacionalidadesAtor = await prisma.$queryRawUnsafe(sql)
+
+        //Validação para retornar os dados ou retornar false
+        return rsNacionalidadesAtor
+
+    } catch (error) {
+        return false
+    }
+}
+
+const selectNacionalidadesAtorByIdAtor = async function (id) {
+
+    try {
+        //Script SQL para buscar todos os registros do BD
+        let sql = `select *from tbl_nacionalidades_ator where id_ator = ${id};`
+
+        /**
+         * $queryRawUnsafe(sql)                 ----- Encaminha uma variável
+         * $queryRaw('select*from tbl_nacionalidades_ator')   ----- Encaminha direto o script
+        */
+
+        //Executa o scriptSQL no DB e guarda o retorno dos dados
+        let rsNacionalidadesAtor = await prisma.$queryRawUnsafe(sql)
+
+        //Validação para retornar os dados ou retornar false
+        return rsNacionalidadesAtor
+
+    } catch (error) {
+        return false
+    }
+}
+
 const selectLastIdNacionalidadesAtor = async function () {
 
     try {
@@ -163,12 +207,26 @@ const deleteNacionalidadesAtorPorIdAtor = async function (id) {
     }
 }
 
+const deleteNacionalidadesAtorPorIdNacionalidade = async function (id) {
+    try {
+        let sql = `delete from tbl_nacionalidades_ator where id_nacionalidade = ${id};`
+        let result = await prisma.$executeRawUnsafe(sql)
+
+        return result
+    } catch (error) {
+        return false
+    }
+}
+
 module.exports = {
     selectAllNacionalidadesAtor,
+    selectNacionalidadesAtorByIdAtor,
+    selectNacionalidadesAtorByIdNacionalidade,
     selectNacionalidadesAtorById,
     selectLastIdNacionalidadesAtor,
     insertNacionalidadesAtor,
     updateNacionalidadesAtor,
     deleteNacionalidadesAtor,
-    deleteNacionalidadesAtorPorIdAtor
+    deleteNacionalidadesAtorPorIdAtor,
+    deleteNacionalidadesAtorPorIdNacionalidade
 }

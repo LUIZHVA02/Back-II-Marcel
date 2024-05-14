@@ -144,7 +144,7 @@ const setExcluirSexo = async function (id) {
 const getBuscarSexo = async function (id) {
     let idSexo = id
 
-    let SexoIdJSON = {}
+    let sexoIdJSON = {}
 
     if (idSexo == '' || idSexo == undefined || isNaN(idSexo)) {
         return message.ERROR_INVALID_ID
@@ -154,10 +154,10 @@ const getBuscarSexo = async function (id) {
         if (dadosSexo) {
             //Validação para verificar se o DAO retornou os dados
             if (dadosSexo.length > 0) {
-                SexoIdJSON.Sexo = dadosSexo
-                SexoIdJSON.status_code = 200
+                sexoIdJSON.Sexo = dadosSexo
+                sexoIdJSON.status_code = 200
 
-                return SexoIdJSON
+                return sexoIdJSON
             } else {
                 return message.ERROR_NOT_FOUND
             }
@@ -171,7 +171,7 @@ const getBuscarSexo = async function (id) {
 const getSexoPeloNome = async function (nome) {
     let nomeSexo = nome
 
-    let SexoIdJSON = {}
+    let sexoIdJSON = {}
 
     if (nomeSexo == '' || nomeSexo == undefined) {
         return message.ERROR_INVALID_NAME_ENTER
@@ -182,10 +182,10 @@ const getSexoPeloNome = async function (nome) {
 
         if (dadosSexo) {
             if (dadosSexo.length > 0) {
-                SexoIdJSON.Sexo = dadosSexo
-                SexoIdJSON.status_code = 200
+                sexoIdJSON.sexo = dadosSexo
+                sexoIdJSON.status_code = 200
                 
-                return SexoIdJSON
+                return sexoIdJSON
             } else {
                 return message.ERROR_INVALID_NAME_ENTER
             }

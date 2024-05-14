@@ -52,12 +52,12 @@ const insertAtor = async function (dadosAtor) {
                                             nome, 
                                             foto_ator, 
                                             dt_nasc,
-                                            id_ator
+                                            id_sexo
                                         )values(
                                                 "${dadosAtor.nome}", 
                                                 "${dadosAtor.foto_ator}", 
                                                 "${dadosAtor.dt_nasc}",
-                                                "${dadosAtor.id_ator}"
+                                                "${dadosAtor.id_sexo}"
                                         );
             `
         }
@@ -71,13 +71,13 @@ const insertAtor = async function (dadosAtor) {
                                             foto_ator, 
                                             dt_nasc,
                                             dt_falec,
-                                            id_ator
+                                            id_sexo
                                         )values(
                                                 "${dadosAtor.nome}", 
                                                 "${dadosAtor.foto_ator}", 
                                                 "${dadosAtor.dt_nasc}",
                                                 "${dadosAtor.dt_falec}",
-                                                "${dadosAtor.id_ator}"
+                                                "${dadosAtor.id_sexo}"
                                         );
             `
         }
@@ -91,13 +91,13 @@ const insertAtor = async function (dadosAtor) {
                                             foto_ator, 
                                             dt_nasc,
                                             sobre,
-                                            id_ator
+                                            id_sexo
                                         )values(
                                                 "${dadosAtor.nome}", 
                                                 "${dadosAtor.foto_ator}", 
                                                 "${dadosAtor.dt_nasc}",
                                                 "${dadosAtor.sobre}",
-                                                "${dadosAtor.id_ator}"
+                                                "${dadosAtor.id_sexo}"
                                         );
             `
         } else {
@@ -109,14 +109,14 @@ const insertAtor = async function (dadosAtor) {
                                             dt_nasc,
                                             dt_falec,
                                             sobre,
-                                            id_ator
+                                            id_sexo
                                         )values(
                                                 "${dadosAtor.nome}", 
                                                 "${dadosAtor.foto_ator}", 
                                                 "${dadosAtor.dt_nasc}",
                                                 "${dadosAtor.dt_falec}",
                                                 "${dadosAtor.sobre}",
-                                                "${dadosAtor.id_ator}"
+                                                "${dadosAtor.id_sexo}"
                                         );
         `
 
@@ -178,8 +178,9 @@ const selectAllAtores = async function () {
 
     try {
         //Script SQL para buscar todos os registros do BD
-        let sql = `select tbl_atores.id, tbl_atores.nome, tbl_sexo.sexo, tbl_atores.foto_ator, 
-        tbl_atores.dt_nasc, tbl_atores.dt_falec, tbl_atores.sobre, tbl_nacionalidades.nacionalidade, tbl_nacionalidades.pais_origem
+        let sql = `select tbl_atores.id, tbl_atores.nome, tbl_atores.foto_ator, tbl_atores.dt_nasc, 
+        tbl_atores.dt_falec, tbl_atores.sobre, tbl_sexo.sexo, tbl_nacionalidades_ator.id_nacionalidade, 
+			tbl_nacionalidades.nacionalidade, tbl_nacionalidades.pais_origem
 				from tbl_sexo left join tbl_atores on tbl_sexo.id = tbl_atores.id_sexo 
 					inner join tbl_nacionalidades_ator on tbl_atores.id = tbl_nacionalidades_ator.id_ator
 						inner join tbl_nacionalidades on tbl_nacionalidades.id = tbl_nacionalidades_ator.id_nacionalidade 

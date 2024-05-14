@@ -49,6 +49,9 @@ const controllerGeneros = require('./controller/controller_generos.js')
 const controllerSexos = require('./controller/controller_sexos.js')
 const controllerNacionalidades = require('./controller/controller_nacionalidades.js')
 const controllerAtores = require('./controller/controller_atores.js')
+const controllerNacionalidadesAtor = require('./controller/controller_nacionalidade_ator.js')
+const controllerDiretores = require('./controller/controller_diretores.js')
+const controllerNacionalidadesDiretor = require('./controller/controller_nacionalidade_diretor.js')
 const { METHOD_NOT_ALLOWED } = require('./modulo/config.js')
 
 /***********************************************************************/
@@ -131,7 +134,7 @@ app.get('/v2/acmefilmes/filtro/filme/', cors(), async function (request, respons
     response.json(dadosFilme)
 })
 
-app.post('/v2/acmefilmes/filme/', cors(), bodyParserJson, async function (request, response, next) {
+app.post('/v2/acmefilmes/insertFilme/', cors(), bodyParserJson, async function (request, response, next) {
 
     let contentType = request.headers['content-type']
 
@@ -177,7 +180,7 @@ app.get('/v2/acmefilmes/classificacoes', cors(), async function (request, respon
     response.json(dadosClassificacoes)
 })
 
-app.post('/v2/acmefilmes/classificacao/', cors(), bodyParserJson, async function (request, response, next) {
+app.post('/v2/acmefilmes/insertClassificacao/', cors(), bodyParserJson, async function (request, response, next) {
 
     let contentType = request.headers['content-type']
 
@@ -361,7 +364,7 @@ app.get('/v2/acmefilmes/filtro/nacionalidade/paisOrigem/nome/', cors(), async fu
     response.json(dadosNacionalidade)
 })
 
-app.post('/v2/acmefilmes/InsertNacionalidade/', cors(), bodyParserJson, async function (request, response, next) {
+app.post('/v2/acmefilmes/insertNacionalidade/', cors(), bodyParserJson, async function (request, response, next) {
 
     let contentType = request.headers['content-type']
 
@@ -432,7 +435,7 @@ app.get('/v2/acmefilmes/filtro/sexo/nome/', cors(), async function (request, res
     response.json(dadosSexo)
 })
 
-app.post('/v2/acmefilmes/InsertSexo/', cors(), bodyParserJson, async function (request, response, next) {
+app.post('/v2/acmefilmes/insertSexo/', cors(), bodyParserJson, async function (request, response, next) {
 
     let contentType = request.headers['content-type']
 
@@ -502,7 +505,7 @@ app.get('/v2/acmefilmes/filtro/ator/nome/', cors(), async function (request, res
     response.json(dadosAtor)
 })
 
-app.post('/v2/acmefilmes/InsertAtor/', cors(), bodyParserJson, async function (request, response, next) {
+app.post('/v2/acmefilmes/insertAtor/', cors(), bodyParserJson, async function (request, response, next) {
 
     let contentType = request.headers['content-type']
 
@@ -532,6 +535,237 @@ app.delete('/v2/acmefilmes/deleteAtor/:id', cors(), bodyParserJson, async functi
     let idAtor = request.params.id
 
     let resultDados = await controllerAtores.setExcluirAtor(idAtor)
+
+    response.status(resultDados.status_code)
+    response.json(resultDados)
+})
+
+
+
+
+
+app.get('/v2/acmefilmes/nacionalidadesAtor', cors(), async function (request, response, next) {
+
+    //Chama a função para retornar os dados de filme
+    let dadosNacionalidadeAtor = await controllerNacionalidadesAtor.getListarNacionalidadesAtor()
+
+    response.status(dadosNacionalidadeAtor.status_code)
+    response.json(dadosNacionalidadeAtor)
+})
+
+
+//EndPoint: Retorna os dados de um filme pelo ID
+app.get('/v2/acmefilmes/nacionalidadeAtor/:id', cors(), async function (request, response, next) {
+
+    let idNacionalidade = request.params.id
+
+    let dadosNacionalidade = await controllerNacionalidadesAtor.getBuscarNacionalidadeAtorById(idNacionalidade)
+
+    response.status(dadosNacionalidade.status_code)
+    response.json(dadosNacionalidade)
+})
+
+app.post('/v2/acmefilmes/insertNacionalidadeAtor/', cors(), bodyParserJson, async function (request, response, next) {
+
+    let contentType = request.headers['content-type']
+
+    let dadosBody = request.body
+
+    let resultDados = await controllerNacionalidadesAtor.setInserirNovoNacionalidadeAtor(dadosBody, contentType)
+
+    response.status(resultDados.status_code)
+    response.json(resultDados)
+
+})
+
+app.put('/v2/acmefilmes/updateNacionalidadeAtor/:id', cors(), bodyParserJson, async function (request, response, next) {
+
+    let idNacionalidadeAtor = request.params.id
+    let contentType = request.headers['content-type']
+    let dadosNacionalidadeAtorUpdate = request.body
+
+    let resultDados = await controllerNacionalidadesAtor.setAtualizarNovoNacionalidadeAtor(idNacionalidadeAtor, dadosNacionalidadeAtorUpdate, contentType)
+
+    response.status(resultDados.status_code)
+    response.json(resultDados)
+})
+
+app.delete('/v2/acmefilmes/deleteNacionalidadeAtor/:id', cors(), bodyParserJson, async function (request, response, next) {
+
+    let idNacionalidadeAtor = request.params.id
+
+    let resultDados = await controllerNacionalidadesAtor.setExcluirNacionalidadeAtor(idNacionalidadeAtor)
+
+    response.status(resultDados.status_code)
+    response.json(resultDados)
+})
+
+app.delete('/v2/acmefilmes/deleteNacionalidadeAtorByIdNacionalidade/:id', cors(), bodyParserJson, async function (request, response, next) {
+
+    let idNacionalidade = request.params.id
+
+    let resultDados = await controllerNacionalidadesAtor.setExcluirNacionalidadeAtorByNacionalideId(idNacionalidade)
+
+    response.status(resultDados.status_code)
+    response.json(resultDados)
+})
+
+app.delete('/v2/acmefilmes/deleteNacionalidadeByIdAtor/:id', cors(), bodyParserJson, async function (request, response, next) {
+
+    let idAtor = request.params.id
+
+    let resultDados = await controllerNacionalidadesAtor.setExcluirNacionalidadeAtorByAtorId(idAtor)
+
+    response.status(resultDados.status_code)
+    response.json(resultDados)
+})
+
+
+
+
+
+app.get('/v2/acmefilmes/diretores', cors(), async function (request, response, next) {
+
+    //Chama a função para retornar os dados de filme
+    let dadosDiretor = await controllerDiretores.getListarDiretores()
+
+    response.status(dadosDiretor.status_code)
+    response.json(dadosDiretor)
+})
+
+
+//EndPoint: Retorna os dados de um filme pelo ID
+app.get('/v2/acmefilmes/diretor/:id', cors(), async function (request, response, next) {
+
+    let idDiretor = request.params.id
+
+    let dadosDiretor = await controllerDiretores.getBuscarDiretores(idDiretor)
+
+    response.status(dadosDiretor.status_code)
+    response.json(dadosDiretor)
+})
+
+//EndPoint: Retorna os dados de um filme pelo nome
+app.get('/v2/acmefilmes/filtro/diretor/nome/', cors(), async function (request, response, next) {
+
+    let nomeDiretor = request.query.nome
+
+    let dadosDiretor = await controllerDiretores.getBuscarDiretoresPeloNome(nomeDiretor)
+
+    response.status(dadosDiretor.status_code)
+    response.json(dadosDiretor)
+})
+
+app.post('/v2/acmefilmes/insertDiretor/', cors(), bodyParserJson, async function (request, response, next) {
+
+    let contentType = request.headers['content-type']
+
+    let dadosBody = request.body
+
+    let resultDados = await controllerDiretores.setInserirNovoDiretor(dadosBody, contentType)
+
+    response.status(resultDados.status_code)
+    response.json(resultDados)
+
+})
+
+app.put('/v2/acmefilmes/updateDiretor/:id', cors(), bodyParserJson, async function (request, response, next) {
+
+    let idDiretor = request.params.id
+    let contentType = request.headers['content-type']
+    let dadosDiretorUpdate = request.body
+
+    let resultDados = await controllerDiretores.setAtualizarNovoDiretor(idDiretor, dadosDiretorUpdate, contentType)
+
+    response.status(resultDados.status_code)
+    response.json(resultDados)
+})
+
+app.delete('/v2/acmefilmes/deleteDiretor/:id', cors(), bodyParserJson, async function (request, response, next) {
+
+    let idDiretor = request.params.id
+
+    let resultDados = await controllerDiretores.setExcluirDiretor(idDiretor)
+
+    response.status(resultDados.status_code)
+    response.json(resultDados)
+})
+
+
+
+
+
+app.get('/v2/acmefilmes/nacionalidadesDiretor', cors(), async function (request, response, next) {
+
+    //Chama a função para retornar os dados de filme
+    let dadosNacionalidadeDiretor = await controllerNacionalidadesDiretor.getListarNacionalidadesDiretor()
+
+    response.status(dadosNacionalidadeDiretor.status_code)
+    response.json(dadosNacionalidadeDiretor)
+})
+
+
+//EndPoint: Retorna os dados de um filme pelo ID
+app.get('/v2/acmefilmes/nacionalidadeDiretor/:id', cors(), async function (request, response, next) {
+
+    let idNacionalidade = request.params.id
+
+    let dadosNacionalidade = await controllerNacionalidadesDiretor.getBuscarNacionalidadeDiretorById(idNacionalidade)
+
+    response.status(dadosNacionalidade.status_code)
+    response.json(dadosNacionalidade)
+})
+
+app.post('/v2/acmefilmes/insertNacionalidadeDiretor/', cors(), bodyParserJson, async function (request, response, next) {
+
+    let contentType = request.headers['content-type']
+
+    let dadosBody = request.body
+
+    let resultDados = await controllerNacionalidadesDiretor.setInserirNovoNacionalidadeDiretor(dadosBody, contentType)
+
+    response.status(resultDados.status_code)
+    response.json(resultDados)
+
+})
+
+app.put('/v2/acmefilmes/updateNacionalidadeDiretor/:id', cors(), bodyParserJson, async function (request, response, next) {
+
+    let idNacionalidadeDiretor = request.params.id
+    let contentType = request.headers['content-type']
+    let dadosNacionalidadeDiretorUpdate = request.body
+
+    let resultDados = await controllerNacionalidadesDiretor.setAtualizarNovoNacionalidadeDiretor(idNacionalidadeDiretor, dadosNacionalidadeDiretorUpdate, contentType)
+
+    response.status(resultDados.status_code)
+    response.json(resultDados)
+})
+
+app.delete('/v2/acmefilmes/deleteNacionalidadeDiretor/:id', cors(), bodyParserJson, async function (request, response, next) {
+
+    let idNacionalidadeDiretor = request.params.id
+
+    let resultDados = await controllerNacionalidadesDiretor.setExcluirNacionalidadeDiretor(idNacionalidadeDiretor)
+
+    response.status(resultDados.status_code)
+    response.json(resultDados)
+})
+
+app.delete('/v2/acmefilmes/deleteNacionalidadeDiretorByIdNacionalidade/:id', cors(), bodyParserJson, async function (request, response, next) {
+
+    let idNacionalidade = request.params.id
+
+    let resultDados = await controllerNacionalidadesDiretor.setExcluirNacionalidadeDiretorByNacionalideId(idNacionalidade)
+
+    response.status(resultDados.status_code)
+    response.json(resultDados)
+})
+
+app.delete('/v2/acmefilmes/deleteNacionalidadeByIdDiretor/:id', cors(), bodyParserJson, async function (request, response, next) {
+
+    let idDiretor = request.params.id
+
+    let resultDados = await controllerNacionalidadesDiretor.setExcluirNacionalidadeDiretorByDiretorId(idDiretor)
 
     response.status(resultDados.status_code)
     response.json(resultDados)

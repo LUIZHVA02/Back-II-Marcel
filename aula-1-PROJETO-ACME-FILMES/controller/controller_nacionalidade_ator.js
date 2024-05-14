@@ -39,6 +39,33 @@ const getListarNacionalidadesAtor = async function () {
     }
 }
 
+const getBuscarNacionalidadeAtorById = async function (id) {
+    let idNacionalidadeAtor = id
+
+    let nacionalidadeAtorIdJSON = {}
+
+    if (idNacionalidadeAtor == '' || idNacionalidadeAtor == undefined || isNaN(idNacionalidadeAtor)) {
+        return message.ERROR_INVALID_ID
+    } else {
+        let dadosNacionalidadeAtor = await nacionalidadesAtorDAO.selectNacionalidadesAtorById(idNacionalidadeAtor)
+
+        if (dadosNacionalidadeAtor) {
+            //Validação para verificar se o DAO retornou os dados
+            if (dadosNacionalidadeAtor.length > 0) {
+                nacionalidadeAtorIdJSON.nacionalidadeAtor = dadosNacionalidadeAtor
+                nacionalidadeAtorIdJSON.status_code = 200
+
+                return nacionalidadeAtorIdJSON
+            } else {
+                return message.ERROR_NOT_FOUND
+            }
+        } else {
+            return message.INTERNAL_SERVER_ERROR_DB
+        }
+    }
+
+}
+
 const setInserirNovoNacionalidadeAtor = async function (dadosNacionalidadeAtor, content) {
 
     try {
@@ -49,9 +76,9 @@ const setInserirNovoNacionalidadeAtor = async function (dadosNacionalidadeAtor, 
             let statusvalidate = false
             if (
                 dadosNacionalidadeAtor.id_ator              == ''   || dadosNacionalidadeAtor.id_ator                   == undefined || 
-                dadosNacionalidadeAtor.id_ator              == null || dadosNacionalidadeAtor.id_ator.length            > 80         ||
-                dadosNacionalidadeAtor.id_nacionalidades    == ''   || dadosNacionalidadeAtor.id_nacionalidades         == undefined || 
-                dadosNacionalidadeAtor.id_nacionalidades    == null || dadosNacionalidadeAtor.id_nacionalidades.length  > 65000
+                dadosNacionalidadeAtor.id_ator              == null ||
+                dadosNacionalidadeAtor.id_nacionalidade     == ''   || dadosNacionalidadeAtor.id_nacionalidade          == undefined || 
+                dadosNacionalidadeAtor.id_nacionalidade     == null
             ) {
                 return message.ERROR_REQUIRED_FIELDS
             } else {
@@ -68,7 +95,7 @@ const setInserirNovoNacionalidadeAtor = async function (dadosNacionalidadeAtor, 
                     novoNacionalidadeAtorJson.status_code = message.SUCCES_CREATED_ITEM.status_code
                     novoNacionalidadeAtorJson.message = message.SUCCES_CREATED_ITEM.message
                     novoNacionalidadeAtorJson.id = idNovoNacionalidadeAtor
-                    novoNacionalidadeAtorJson.NacionalidadeAtor = dadosNacionalidadeAtor
+                    novoNacionalidadeAtorJson.nacionalidadeAtor = dadosNacionalidadeAtor
 
                     return novoNacionalidadeAtorJson
                 } else {
@@ -99,7 +126,7 @@ const setAtualizarNovoNacionalidadeAtor = async function (id, dadosNacionalidade
                     updateNacionalidadeAtorJson.status = message.SUCCES_UPDATED_ITEM.status
                     updateNacionalidadeAtorJson.status_code = message.SUCCES_UPDATED_ITEM.status_code
                     updateNacionalidadeAtorJson.message = message.SUCCES_UPDATED_ITEM.message
-                    updateNacionalidadeAtorJson.NacionalidadeAtor = nacionalidadeAtorAtualizado
+                    updateNacionalidadeAtorJson.nacionalidadeAtor = nacionalidadeAtorAtualizado
 
                     return updateNacionalidadeAtorJson
                 } else {
@@ -121,7 +148,7 @@ const setExcluirNacionalidadeAtor = async function (id) {
     let deleteNacionalidadeAtorJson = {}
 
     try {
-        const validaId = await nacionalidadesAtorDAO.getBuscarNacionalidadesAtor(id)
+        const validaId = await nacionalidadesAtorDAO.selectNacionalidadesAtorById(id)
 
         if (validaId) {
             const apagarNacionalidadeAtor = await nacionalidadesAtorDAO.deleteNacionalidadesAtor(id)
@@ -149,7 +176,7 @@ const setExcluirNacionalidadeAtorByAtorId = async function (idAtor) {
     let deleteNacionalidadeAtorJson = {}
 
     try {
-        const validaId = await nacionalidadesAtorDAO.getBuscarNacionalidadesAtor(idAtor)
+        const validaId = await nacionalidadesAtorDAO.selectNacionalidadesAtorByIdAtor(idAtor)
 
         if (validaId) {
             const apagarNacionalidadeAtor = await nacionalidadesAtorDAO.deleteNacionalidadesAtorPorIdAtor(idAtor)
@@ -173,10 +200,40 @@ const setExcluirNacionalidadeAtorByAtorId = async function (idAtor) {
     }
 }
 
+const setExcluirNacionalidadeAtorByNacionalideId = async function (idNacionalidade) {
+    let deleteNacionalidadeAtorJson = {}
+
+    try {
+        const validaId = await nacionalidadesAtorDAO.selectNacionalidadesAtorByIdNacionalidade(idNacionalidade)
+
+        if (validaId) {
+            const apagarNacionalidadeAtor = await nacionalidadesAtorDAO.deleteNacionalidadesAtorPorIdNacionalidade(idNacionalidade)
+
+            if (apagarNacionalidadeAtor) {
+                deleteNacionalidadeAtorJson.status = message.SUCCES_DELETED_ITEM.status
+                deleteNacionalidadeAtorJson.status_code = message.SUCCES_DELETED_ITEM.status_code
+                deleteNacionalidadeAtorJson.message = message.SUCCES_DELETED_ITEM.message
+                deleteNacionalidadeAtorJson.id = validaId
+
+                return deleteNacionalidadeAtorJson
+            } else {
+                return message.ERROR_INTERNAL_SERVER_DB
+            }
+        } else {
+            return message.ERROR_NOT_FOUND
+        }
+
+    } catch (error) {
+        return message.ERROR_UPDATED_ITEM
+    }
+}
+
 module.exports = {
     getListarNacionalidadesAtor,
+    getBuscarNacionalidadeAtorById,
     setAtualizarNovoNacionalidadeAtor,
     setExcluirNacionalidadeAtor,
     setInserirNovoNacionalidadeAtor,
-    setExcluirNacionalidadeAtorByAtorId
+    setExcluirNacionalidadeAtorByAtorId,
+    setExcluirNacionalidadeAtorByNacionalideId
 }
