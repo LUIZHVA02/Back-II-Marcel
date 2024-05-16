@@ -156,6 +156,7 @@ const updateAtor = async function (id, dadosAtorUpdate) {
 
         return result
     } catch (error) {
+        console.log(error)
         return false
     }
 
@@ -236,6 +237,9 @@ const selectByIdAtores = async function (id) {
 					inner join tbl_nacionalidades_ator on tbl_atores.id = tbl_nacionalidades_ator.id_ator
 						inner join tbl_nacionalidades on tbl_nacionalidades.id = tbl_nacionalidades_ator.id_nacionalidade 
 							where tbl_atores.id = ${id}`
+
+
+
 
         //Executa o scriptSQL no BD e guarda o retorno dos dados
         let rsAtor = await prisma.$queryRawUnsafe(sql)

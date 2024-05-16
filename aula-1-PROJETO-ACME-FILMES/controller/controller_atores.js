@@ -254,229 +254,170 @@ const setInserirNovoAtor = async function (dadosAtor, content) {
     }
 }
 
-
-// const atorAtualizado = await atoresDAO.updateAtor(id, dadosAtorUpdate)
-// const nacionalidadeAtorAtualizado = await nacionalidadesAtorDAO.updateNacionalidadesAtor(idNacionalidade)
-
-// if (atorAtualizado) {
-//     updateAtorJson.id = validaId
-//     updateAtorJson.status = message.SUCCES_UPDATED_ITEM.status
-//     updateAtorJson.status_code = message.SUCCES_UPDATED_ITEM.status_code
-//     updateAtorJson.message = message.SUCCES_UPDATED_ITEM.message
-//     updateAtorJson.ator = atorAtualizado
-//     updateAtorJson.nacionalidade = nacionalidadeAtorAtualizado
-
-//     return updateAtorJson
-// } else {
-//     console.log(dadosAtorNacionalidadeUpdate, atorAtualizado);
-//     return message.ERROR_INTERNAL_SERVER_DB
-// }
-
-
 //Função para atualizar um Ator existente
 const setAtualizarNovoAtor = async function (id, dadosAtorNacionalidadeUpdate, content) {
     if (String(content).toLowerCase() == 'application/json') {
 
+        let dadosAtorNacionalidade = {}
         let updateAtorJson = {}
         let dadosAtorUpdate = {}
         let dadosNacionalidadeUpdate = {}
-
-        dadosNacionalidadeUpdate.nacionalidade = dadosAtorNacionalidadeUpdate.nacionalidade
 
         try {
             const validaId = await getBuscarAtores(id)
 
             if (validaId) {
-                let nome = dadosAtor.nome
-                let foto_ator = dadosAtor.foto_ator
-                let dt_nasc = dadosAtor.dt_nasc
-                let dt_falec = dadosAtor.dt_falec
-                let sobre = dadosAtor.sobre
+                let id_ator = id
+                let nome = dadosAtorNacionalidadeUpdate.nome
+                let foto_ator = dadosAtorNacionalidadeUpdate.foto_ator
+                let dt_nasc = dadosAtorNacionalidadeUpdate.dt_nasc
+                let dt_falec = dadosAtorNacionalidadeUpdate.dt_falec
+                let sobre = dadosAtorNacionalidadeUpdate.sobre
 
-                let nacionalidade = {}
-                nacionalidade.nacionalidade = dadosAtor.nacionalidade
-                nacionalidade.pais_origem = dadosAtor.pais_origem
-
-                let nomeSexo = dadosAtor.sexo
+                let nomeSexo = dadosAtorNacionalidadeUpdate.sexo
                 let infoSexo = await controller_sexos.getSexoPeloNome(nomeSexo)
                 let id_sexo = infoSexo.sexo[0].id
 
-                if (id_sexo && dt_falec && sobre) {
-                    let jsonDadosAtor = {}
+                let nacionalidade = {}
+                nacionalidade.nacionalidade = dadosAtorNacionalidadeUpdate.nacionalidade
+                nacionalidade.pais_origem = dadosAtorNacionalidadeUpdate.pais_origem
 
-                    jsonDadosAtor.nome = nome
-                    jsonDadosAtor.foto_ator = foto_ator
-                    jsonDadosAtor.dt_nasc = dt_nasc
-                    jsonDadosAtor.dt_falec = dt_falec
-                    jsonDadosAtor.sobre = sobre
-                    jsonDadosAtor.id_sexo = id_sexo
+                
+                if (
+                    nome != '' &&
+                    nome != undefined &&
+                    nome != null &&
+                    nome.length < 200
+                ) {
+                    dadosAtorUpdate.nome = nome
+                } else if (
+                    nome == '' &&
+                    nome == undefined &&
+                    nome == null
+                ){}
 
-                    const atorAtualizado = await atoresDAO.updateAtor(id, dadosAtorUpdate)
+                if (
+                    foto_ator != '' &&
+                    foto_ator != undefined &&
+                    foto_ator != null &&
+                    foto_ator.length < 300
+                ) {
+                    dadosAtorUpdate.foto_ator = foto_ator
+                } else if (
+                    foto_ator == '' &&
+                    foto_ator == undefined &&
+                    foto_ator == null
+                ){}
 
-                    if (novoAtor) {
-                        let idNovoAtor = await atoresDAO.selectLastIdAtores()
+                if (
+                    dt_nasc != '' &&
+                    dt_nasc != undefined &&
+                    dt_nasc != null &&
+                    dt_nasc.length == 10
+                ) {
+                    dadosAtorUpdate.dt_nasc = dt_nasc
+                } else if (
+                    dt_nasc == '' &&
+                    dt_nasc == undefined &&
+                    dt_nasc == null
+                ){}
 
-                        let infoNacionalidade = await controller_nacionalidades.getNacionalidadePelaNacionalidade(nacionalidade.nacionalidade)
-                        let idNacionalidade = infoNacionalidade.nacionalidade[0].id
+                if (
+                    dt_falec != '' &&
+                    dt_falec != undefined &&
+                    dt_falec != null &&
+                    dt_falec.length == 10
+                ) {                   
+                    dadosAtorUpdate.dt_falec = dt_falec
+                } else if (
+                    dt_falec == '' &&
+                    dt_falec == undefined &&
+                    dt_falec == null
+                ){}
 
-                        if (idNovoAtor && idNacionalidade) {
+                if (
+                    sobre != '' &&
+                    sobre != undefined &&
+                    sobre != null &&
+                    sobre.length < 65000
+                ) {
+                    dadosAtorUpdate.sobre = sobre
+                } else if (
+                    sobre == '' &&
+                    sobre == undefined &&
+                    sobre == null
+                ){}
 
-                            let dadosAtorNacionalidade = {}
-                            dadosAtorNacionalidade.id_ator = idNovoAtor[0].id
-                            dadosAtorNacionalidade.id_nacionalidade = idNacionalidade
+                if (
+                    id_sexo != '' &&
+                    id_sexo != undefined &&
+                    id_sexo != null
+                ) {
+                    dadosAtorUpdate.id_sexo = id_sexo
+                } else if (
+                    id_sexo == '' &&
+                    id_sexo == undefined &&
+                    id_sexo == null
+                ){}
 
-                            const nacionalidadeAtorAtualizado = await nacionalidadesAtorDAO.updateNacionalidadesAtor(idNacionalidade)
+                let infoNacionalidade
 
-                            if (novaNacionalidadeAtor) {
+                if (
+                    nacionalidade.nacionalidade != '' && 
+                    nacionalidade.nacionalidade != undefined &&
+                    nacionalidade.nacionalidade != null &&
+                    nacionalidade.nacionalidade.length < 100
+                ) {
+                    infoNacionalidade = await controller_nacionalidades.getNacionalidadePelaNacionalidade(nacionalidade.nacionalidade)
+                } else if (
+                    nacionalidade.pais_origem != '' && 
+                    nacionalidade.pais_origem != undefined && 
+                    nacionalidade.pais_origem != null &&
+                    nacionalidade.pais_origem.length < 100
+                ) {
+                    infoNacionalidade = await controller_nacionalidades.getNacionalidadePeloPaisOrigem(nacionalidade.pais_origem)
+                }
 
-                                novoAtorJson.status = message.SUCCES_CREATED_ITEM.status
-                                novoAtorJson.status_code = message.SUCCES_CREATED_ITEM.status_code
-                                novoAtorJson.message = message.SUCCES_CREATED_ITEM.message
-                                novoAtorJson.id = idNovoAtor[0].id
-                                novoAtorJson.ator = jsonDadosAtor
-                                novoAtorJson.nacionalidade = nacionalidade
+                let idNacionalidade = {}
+                idNacionalidade.id_nacionalidade = infoNacionalidade.nacionalidade[0].id
 
-                                return novoAtorJson
-                            } else {
-                                return message.ERROR_INTERNAL_SERVER_DB
-                            }
-                        }
-                    } else {
-                        return message.ERROR_INTERNAL_SERVER_DB
-                    }
-                } else if (id_sexo && dt_falec) {
-                    let jsonDadosAtor = {}
+                dadosAtorNacionalidade.id_nacionalidade = validaId.ator[0].id_nacionalidade
+                dadosAtorNacionalidade.id_ator = id_ator
 
-                    jsonDadosAtor.nome = nome
-                    jsonDadosAtor.foto_ator = foto_ator
-                    jsonDadosAtor.dt_nasc = dt_nasc
-                    jsonDadosAtor.dt_falec = dt_falec
-                    jsonDadosAtor.id_sexo = id_sexo
+                let infoNacionalidadeAtor = {}
+                infoNacionalidadeAtor = await controller_nacionalidades_ator.getBuscarNacionalidadeAtorByIdAtorIdNacionalidade(content, dadosAtorNacionalidade)
+                
+                let idNacionalidadeAtor = infoNacionalidadeAtor.nacionalidadeAtorInfo[0].id
 
-                    let novoAtor = await atoresDAO.insertAtor(jsonDadosAtor)
 
-                    if (novoAtor) {
-                        let idNovoAtor = await atoresDAO.selectLastIdAtores()
+                if (idNacionalidade && idNacionalidadeAtor) {
+                    const nacionalidadeAtorAtualizado = await controller_nacionalidades_ator.setAtualizarNovoNacionalidadeAtor(idNacionalidadeAtor, idNacionalidade, content)
 
-                        let infoNacionalidade = await controller_nacionalidades.getNacionalidadePelaNacionalidade(nacionalidade.nacionalidade)
-                        let idNacionalidade = infoNacionalidade.nacionalidade[0].id
+                    dadosNacionalidadeUpdate = nacionalidadeAtorAtualizado
+                }
 
-                        if (idNovoAtor && idNacionalidade) {
+                const atorAtualizado = await atoresDAO.updateAtor(id, dadosAtorUpdate)
 
-                            let dadosAtorNacionalidade = {}
-                            dadosAtorNacionalidade.id_ator = idNovoAtor[0].id
-                            dadosAtorNacionalidade.id_nacionalidade = idNacionalidade
+                if (atorAtualizado) {
 
-                            let novaNacionalidadeAtor = await controller_nacionalidades_ator.setInserirNovoNacionalidadeAtor(dadosAtorNacionalidade, content)
+                    updateAtorJson.status = message.SUCCES_UPDATED_ITEM.status
+                    updateAtorJson.status_code = message.SUCCES_UPDATED_ITEM.status_code
+                    updateAtorJson.message = message.SUCCES_UPDATED_ITEM.message
+                    updateAtorJson.ator = dadosAtorUpdate
+                    updateAtorJson.nacionalidade = dadosNacionalidadeUpdate
 
-                            if (novaNacionalidadeAtor) {
-
-                                novoAtorJson.status = message.SUCCES_CREATED_ITEM.status
-                                novoAtorJson.status_code = message.SUCCES_CREATED_ITEM.status_code
-                                novoAtorJson.message = message.SUCCES_CREATED_ITEM.message
-                                novoAtorJson.id = idNovoAtor[0].id
-                                novoAtorJson.ator = jsonDadosAtor
-                                novoAtorJson.nacionalidade = nacionalidade
-
-                                return novoAtorJson
-                            } else {
-                                return message.ERROR_INTERNAL_SERVER_DB
-                            }
-                        }
-                    } else {
-                        return message.ERROR_INTERNAL_SERVER_DB
-                    }
-                } else if (id_sexo && sobre) {
-                    let jsonDadosAtor = {}
-
-                    jsonDadosAtor.nome = nome
-                    jsonDadosAtor.foto_ator = foto_ator
-                    jsonDadosAtor.dt_nasc = dt_nasc
-                    jsonDadosAtor.sobre = sobre
-                    jsonDadosAtor.id_sexo = id_sexo
-
-                    let novoAtor = await atoresDAO.insertAtor(jsonDadosAtor)
-
-                    if (novoAtor) {
-                        let idNovoAtor = await atoresDAO.selectLastIdAtores()
-
-                        let infoNacionalidade = await controller_nacionalidades.getNacionalidadePelaNacionalidade(nacionalidade.nacionalidade)
-                        let idNacionalidade = infoNacionalidade.nacionalidade[0].id
-
-                        if (idNovoAtor && idNacionalidade) {
-
-                            let dadosAtorNacionalidade = {}
-                            dadosAtorNacionalidade.id_ator = idNovoAtor[0].id
-                            dadosAtorNacionalidade.id_nacionalidade = idNacionalidade
-
-                            let novaNacionalidadeAtor = await controller_nacionalidades_ator.setInserirNovoNacionalidadeAtor(dadosAtorNacionalidade, content)
-
-                            if (novaNacionalidadeAtor) {
-
-                                novoAtorJson.status = message.SUCCES_CREATED_ITEM.status
-                                novoAtorJson.status_code = message.SUCCES_CREATED_ITEM.status_code
-                                novoAtorJson.message = message.SUCCES_CREATED_ITEM.message
-                                novoAtorJson.id = idNovoAtor[0].id
-                                novoAtorJson.ator = jsonDadosAtor
-                                novoAtorJson.nacionalidade = nacionalidade
-
-                                return novoAtorJson
-                            } else {
-                                return message.ERROR_INTERNAL_SERVER_DB
-                            }
-                        }
-                    } else {
-                        return message.ERROR_INTERNAL_SERVER_DB
-                    }
-                } else if (id_sexo) {
-                    let jsonDadosAtor = {}
-
-                    jsonDadosAtor.nome = nome
-                    jsonDadosAtor.foto_ator = foto_ator
-                    jsonDadosAtor.dt_nasc = dt_nasc
-                    jsonDadosAtor.id_sexo = id_sexo
-
-                    let novoAtor = await atoresDAO.insertAtor(jsonDadosAtor)
-
-                    if (novoAtor) {
-                        let idNovoAtor = await atoresDAO.selectLastIdAtores()
-
-                        let infoNacionalidade = await controller_nacionalidades.getNacionalidadePelaNacionalidade(nacionalidade.nacionalidade)
-                        let idNacionalidade = infoNacionalidade.nacionalidade[0].id
-
-                        if (idNovoAtor && idNacionalidade) {
-
-                            let dadosAtorNacionalidade = {}
-                            dadosAtorNacionalidade.id_ator = idNovoAtor[0].id
-                            dadosAtorNacionalidade.id_nacionalidade = idNacionalidade
-
-                            let novaNacionalidadeAtor = await controller_nacionalidades_ator.setInserirNovoNacionalidadeAtor(dadosAtorNacionalidade, content)
-
-                            if (novaNacionalidadeAtor) {
-
-                                novoAtorJson.status = message.SUCCES_CREATED_ITEM.status
-                                novoAtorJson.status_code = message.SUCCES_CREATED_ITEM.status_code
-                                novoAtorJson.message = message.SUCCES_CREATED_ITEM.message
-                                novoAtorJson.id = idNovoAtor[0].id
-                                novoAtorJson.ator = jsonDadosAtor
-                                novoAtorJson.nacionalidade = nacionalidade
-
-                                return novoAtorJson
-                            } else {
-                                return message.ERROR_INTERNAL_SERVER_DB
-                            }
-                        }
-                    } else {
-                        return message.ERROR_INTERNAL_SERVER_DB
-                    }
+                    return updateAtorJson
                 } else {
+                    console.log(dadosAtorUpdate, atorAtualizado)
                     return message.ERROR_INTERNAL_SERVER_DB
                 }
+
             } else {
                 return message.ERROR_NOT_FOUND
             }
 
         } catch (error) {
+            console.log(error)
             return message.ERROR_UPDATED_ITEM
         }
     } else {

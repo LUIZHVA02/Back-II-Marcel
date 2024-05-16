@@ -565,6 +565,18 @@ app.get('/v2/acmefilmes/nacionalidadeAtor/:id', cors(), async function (request,
     response.json(dadosNacionalidade)
 })
 
+app.get('/v2/acmefilmes/idNacionalidadeAtor/', cors(), bodyParserJson, async function (request, response, next) {
+
+    let contentType = request.headers['content-type']
+
+    let dadosAtorNacionalidade = request.body
+
+    let dadosNacionalidade = await controllerNacionalidadesAtor.getBuscarNacionalidadeAtorByIdAtorIdNacionalidade(contentType, dadosAtorNacionalidade)
+
+    response.status(dadosNacionalidade.status_code)
+    response.json(dadosNacionalidade)
+})
+
 app.post('/v2/acmefilmes/insertNacionalidadeAtor/', cors(), bodyParserJson, async function (request, response, next) {
 
     let contentType = request.headers['content-type']

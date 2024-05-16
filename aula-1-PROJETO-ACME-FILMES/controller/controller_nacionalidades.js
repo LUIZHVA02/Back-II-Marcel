@@ -156,7 +156,7 @@ const getBuscarNacionalidade = async function (id) {
         if (dadosNacionalidade) {
             //Validação para verificar se o DAO retornou os dados
             if (dadosNacionalidade.length > 0) {
-                nacionalidadeIdJSON.Nacionalidade = dadosNacionalidade
+                nacionalidadeIdJSON.nacionalidade = dadosNacionalidade
                 nacionalidadeIdJSON.status_code = 200
 
                 return nacionalidadeIdJSON
@@ -184,7 +184,7 @@ const getNacionalidadePeloPaisOrigem = async function (pais_origem) {
 
         if (dadosNacionalidade) {
             if (dadosNacionalidade.length > 0) {
-                nacionalidadeIdJSON.Nacionalidade = dadosNacionalidade
+                nacionalidadeIdJSON.nacionalidade = dadosNacionalidade
                 nacionalidadeIdJSON.status_code = 200
                 
                 return nacionalidadeIdJSON
