@@ -66,6 +66,44 @@ const getBuscarNacionalidadeDiretorById = async function (id) {
 
 }
 
+const getBuscarNacionalidadeDiretorByIdDiretorIdNacionalidade = async function (content, dadosDiretorNacionalidade) {
+
+    try {
+        if (String(content).toLowerCase() === 'application/json') {
+            let idNacionalidade = dadosDiretorNacionalidade.id_nacionalidade
+            let idDiretor = dadosDiretorNacionalidade.id_diretor
+        
+            let nacionalidadeDiretorIdJSON = {}
+        
+            if (
+                idNacionalidade == '' || idNacionalidade == undefined || isNaN(idNacionalidade) &&
+                idDiretor == '' || idDiretor == undefined || isNaN(idDiretor)
+            ) {
+                return message.ERROR_INVALID_ID
+            } else {
+                let dadosNacionalidadeDiretor = await nacionalidadesDiretorDAO.selectNacionalidadesDiretorByIdDiretorIdNacionalidade(idDiretor,idNacionalidade)
+        
+                if (dadosNacionalidadeDiretor) {
+                    //Validação para verificar se o DAO retornou os dados
+                    if (dadosNacionalidadeDiretor.length > 0) {
+                        nacionalidadeDiretorIdJSON.nacionalidadeDiretorInfo = dadosNacionalidadeDiretor
+                        nacionalidadeDiretorIdJSON.status_code = 200
+        
+                        return nacionalidadeDiretorIdJSON
+                    } else {
+                        return message.ERROR_NOT_FOUND
+                    }
+                } else {
+                    return message.INTERNAL_SERVER_ERROR_DB
+                }
+            }
+        }
+    } catch (error) {
+        return message.ERROR_INTERNAL_SERVER
+    }
+
+}
+
 const setInserirNovoNacionalidadeDiretor = async function (dadosNacionalidadeDiretor, content) {
 
     try {
@@ -231,6 +269,7 @@ const setExcluirNacionalidadeDiretorByNacionalideId = async function (idNacional
 module.exports = {
     getListarNacionalidadesDiretor,
     getBuscarNacionalidadeDiretorById,
+    getBuscarNacionalidadeDiretorByIdDiretorIdNacionalidade,
     setAtualizarNovoNacionalidadeDiretor,
     setExcluirNacionalidadeDiretor,
     setInserirNovoNacionalidadeDiretor,

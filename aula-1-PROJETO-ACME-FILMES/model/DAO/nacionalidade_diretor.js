@@ -121,6 +121,28 @@ const selectLastIdNacionalidadesDiretor = async function () {
     }
 }
 
+const selectNacionalidadesDiretorByIdDiretorIdNacionalidade = async function (id_diretor, id_nacionalidade) {
+
+    try {
+        //Script SQL para buscar todos os registros do BD
+        let sql = `select *from tbl_nacionalidades_diretor where id_diretor = ${id_diretor} and id_nacionalidade = ${id_nacionalidade};`
+
+        /**
+         * $queryRawUnsafe(sql)                 ----- Encaminha uma variável
+         * $queryRaw('select*from tbl_nacionalidades_diretor')   ----- Encaminha direto o script
+        */
+
+        //Executa o scriptSQL no DB e guarda o retorno dos dados
+        let rsNacionalidadesDiretor = await prisma.$queryRawUnsafe(sql)
+
+        //Validação para retornar os dados ou retornar false
+        return rsNacionalidadesDiretor
+
+    } catch (error) {
+        return false
+    }
+}
+
 const insertNacionalidadesDiretor = async function (dadosNacionalidadesDiretor) {
     let sql
 
@@ -224,6 +246,7 @@ module.exports = {
     selectNacionalidadesDiretorByIdNacionalidade,
     selectNacionalidadesDiretorById,
     selectLastIdNacionalidadesDiretor,
+    selectNacionalidadesDiretorByIdDiretorIdNacionalidade,
     insertNacionalidadesDiretor,
     updateNacionalidadesDiretor,
     deleteNacionalidadesDiretor,

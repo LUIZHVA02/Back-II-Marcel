@@ -728,6 +728,18 @@ app.get('/v2/acmefilmes/nacionalidadeDiretor/:id', cors(), async function (reque
     response.json(dadosNacionalidade)
 })
 
+app.get('/v2/acmefilmes/idNacionalidadeDiretor/', cors(), bodyParserJson, async function (request, response, next) {
+
+    let contentType = request.headers['content-type']
+
+    let dadosDiretorNacionalidade = request.body
+
+    let dadosNacionalidade = await controllerNacionalidadesDiretor.getBuscarNacionalidadeDiretorByIdDiretorIdNacionalidade(contentType, dadosDiretorNacionalidade)
+
+    response.status(dadosNacionalidade.status_code)
+    response.json(dadosNacionalidade)
+})
+
 app.post('/v2/acmefilmes/insertNacionalidadeDiretor/', cors(), bodyParserJson, async function (request, response, next) {
 
     let contentType = request.headers['content-type']
