@@ -546,6 +546,7 @@ insert into tbl_genero_filme(id_genero, id_filme)values
 (16, 3),
 (27, 3);
 
+
 show tables;
 
 select *from tbl_classificacoes where sigla like '%L%';
@@ -609,7 +610,7 @@ select tbl_diretores.id, tbl_diretores.nome, tbl_diretores.foto_diretor, tbl_dir
 delete from tbl_nacionalidades_ator where id_ator = 6;
 delete from tbl_atores where id = 1;
 
-delete from tbl_filmes where id = 0;
+delete from tbl_filmes where id = 1;
 select foto_capa from tbl_filmes where id > 0;
 select *from tbl_filmes where nome like '%Forma%';
 select id from tbl_filmes order by id limit 1;

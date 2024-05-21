@@ -8,6 +8,9 @@
 
 
 const filmesDAO = require('../model/DAO/filmes.js')
+const controller_filme_ator = require('../controller/controller_filmes_ator.js')
+const controller_filme_diretor = require('../controller/controller_filmes_diretor.js')
+const controller_genero_filme = require('../controller/controller_genero_filme.js')
 
 //Import do Arquivo de Configuração do Projeto
 const message = require('../modulo/config.js')
@@ -30,7 +33,7 @@ const setInserirNovoFilme = async function (dadosFilme, content) {
                 dadosFilme.foto_capa == '' || dadosFilme.foto_capa == undefined || dadosFilme.foto_capa == null || dadosFilme.foto_capa.length > 200 ||
                 dadosFilme.valor_unitario.length > 8 || isNaN(dadosFilme.valor_unitario) || dadosFilme.id_classificacao == '' || dadosFilme.id_classificacao == undefined ||
                 dadosFilme.id_classificacao == null || dadosFilme.id_classificacao.length > 6
-                ) {
+            ) {
                 return message.ERROR_REQUIRED_FIELDS
             } else {
                 if (
@@ -77,14 +80,14 @@ const setInserirNovoFilme = async function (dadosFilme, content) {
 //Função para atualizar um filme existente
 const setAtualizarNovoFilme = async function (id, dadosFilmeUpdate, content) {
     if (String(content).toLowerCase() == 'application/json') {
-        
+
         let updateFilmeJson = {}
         try {
             const validaId = await getBuscarFilmes(id)
-            
+
             if (validaId) {
                 const filmeAtualizado = await filmesDAO.updateFilme(id, dadosFilmeUpdate)
-                
+
                 if (filmeAtualizado) {
                     updateFilmeJson.id = validaId
                     updateFilmeJson.status = message.SUCCES_UPDATED_ITEM.status
@@ -110,24 +113,35 @@ const setAtualizarNovoFilme = async function (id, dadosFilmeUpdate, content) {
 
 //Função para excluir um filme existente
 const setExcluirFilme = async function (id) {
-    let deleteFilmeJson ={}
-    
+    let deleteFilmeJson = {}
+
     try {
         const validaId = await getBuscarFilmes(id)
-        
-        if (validaId) {
-            const apagarFilme = await filmesDAO.deleteFilme(id)
-            
-            if (apagarFilme) {
-                deleteFilmeJson.status = message.SUCCES_DELETED_ITEM.status
-                deleteFilmeJson.status_code = message.SUCCES_DELETED_ITEM.status_code
-                deleteFilmeJson.message = message.SUCCES_DELETED_ITEM.message
-                deleteFilmeJson.id = validaId
 
-                return deleteFilmeJson
+        if (validaId) {
+
+            const apagarFilmeAtor = await controller_filme_ator.setExcluirFilmeAtorByIdFilme(id)
+            const apagarFilmeDiretor = await controller_filme_diretor.setExcluirFilmeDiretorByIdFilme(id)
+            const apagarGeneroFilme = await controller_genero_filme.setExcluirGeneroFilmeByIdFilme(id)
+
+            if (apagarFilmeAtor && apagarFilmeDiretor && apagarGeneroFilme) {
+
+                const apagarFilme = await filmesDAO.deleteFilme(id)
+
+                if (apagarFilme) {
+                    deleteFilmeJson.status = message.SUCCES_DELETED_ITEM.status
+                    deleteFilmeJson.status_code = message.SUCCES_DELETED_ITEM.status_code
+                    deleteFilmeJson.message = message.SUCCES_DELETED_ITEM.message
+                    deleteFilmeJson.id = validaId
+
+                    return deleteFilmeJson
+                } else {
+                    return message.ERROR_INTERNAL_SERVER_DB
+                }
             } else {
-                return message.ERROR_INTERNAL_SERVER_DB
+                return message.ERROR_INTERNAL_SERVER
             }
+
         } else {
             return message.ERROR_NOT_FOUND
         }

@@ -1,0 +1,25 @@
+{
+    "nome": "Filme xxxxx",
+    "sinopse": "Década de 60. Em meio aos grandes conflitos políticos e transformações sociais dos Estados Unidos da Guerra Fria, a muda Elisa (Sally Hawkins), zeladora em um laboratório experimental secreto do governo, se afeiçoa a uma criatura fantástica mantida presa e maltratada no local. Para executar um arriscado e apaixonado resgate ela recorre ao melhor amigo Giles (Richard Jenkins) e à colega de turno Zelda (Octavia Spencer).",
+    "duracao": "02:03:00",
+    "data_lancamento": "2018-02-01",
+    "data_relancamento": "2018-02-01",
+    "foto_capa": "https://br.web.img3.acsta.net/c_310_420/pictures/17/11/28/18/40/3044833.jpg",
+    "valor_unitario": "17.99",
+    "id_classificacao": "5",
+    "genero": [
+        1,
+        2,
+        3
+    ],
+    "ator": [
+        1,
+        2,
+        3
+    ],
+    "diretor": [
+        1,
+        2,
+        3
+    ]
+}
