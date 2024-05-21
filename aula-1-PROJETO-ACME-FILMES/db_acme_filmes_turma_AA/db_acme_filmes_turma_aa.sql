@@ -559,28 +559,36 @@ select tbl_filmes.id, tbl_filmes.nome, tbl_filmes.sinopse, tbl_filmes.duracao,
 					on tbl_filmes.id_classificacao = tbl_classificacoes.id where tbl_filmes.id > 0 order by id;
 
 
-select tbl_filmes.id as id_filme, tbl_filmes.nome  as nome_filme, tbl_filmes.sinopse  as sinopse_filme, tbl_filmes.duracao  as duracao_filme, 
-tbl_filmes.data_lancamento as filme_data_lancamento, tbl_filmes.data_relancamento  as filme_data_relancamento, tbl_filmes.foto_capa as filme_foto_capa, 
-	tbl_filmes.valor_unitario as filme_valor_unitario, tbl_classificacoes.sigla as classificacoes_sigla, tbl_classificacoes.classificacao, 
-	tbl_classificacoes.legenda as classificacoes_legenda, tbl_classificacoes.imagem as classificacoes_imagem, tbl_generos.id as generos_id, 
-		tbl_generos.nome as generos_nome, tbl_atores.id, tbl_atores.nome, tbl_atores.foto_ator, tbl_atores.dt_nasc, tbl_atores.dt_falec, 
-		tbl_atores.sobre, tbl_nacionalidades_ator.id_nacionalidade, tbl_nacionalidades.nacionalidade, 
-			tbl_nacionalidades.pais_origem, tbl_diretores.id, tbl_diretores.nome, tbl_diretores.foto_diretor, 
-			tbl_diretores.dt_nasc, tbl_diretores.dt_falec, tbl_diretores.sobre, tbl_nacionalidades_diretor.id_nacionalidade, 
-				tbl_nacionalidades.nacionalidade, tbl_nacionalidades.pais_origem from tbl_generos 
-				inner join tbl_genero_filme on tbl_genero_filme.id_genero = tbl_generos.id
-					inner join tbl_filmes on tbl_filmes.id = tbl_genero_filme.id_filme
-					inner join tbl_filmes_diretor on tbl_filmes_diretor.id_filme = tbl_filmes.id
+select tbl_filmes.id as id_filme, tbl_filmes.nome  as nome_filme, tbl_filmes.sinopse  as sinopse_filme, 
+tbl_filmes.duracao  as duracao_filme, tbl_filmes.data_lancamento as filme_data_lancamento, 
+tbl_filmes.data_relancamento  as filme_data_relancamento, tbl_filmes.foto_capa as filme_foto_capa, 
+	tbl_filmes.valor_unitario as filme_valor_unitario, tbl_classificacoes.sigla as classificacoes_sigla, 
+	tbl_classificacoes.classificacao, tbl_classificacoes.legenda as classificacoes_legenda, 
+	tbl_classificacoes.imagem as classificacoes_imagem, tbl_generos.id as generos_id, 
+		tbl_generos.nome as generos_nome, tbl_atores.id  as atores_id, tbl_atores.nome  as nome_atores, 
+		tbl_atores.foto_ator as atores_foto, tbl_atores.dt_nasc as atores_data_nascimento, 
+		tbl_atores.dt_falec as atores_data_falecimento, tbl_atores.sobre  as atores_sobre, 
+			tbl_atores.id_sexo as atores_sexo_id, tbl_sexo.sexo as atores_sexo_nome, 
+			tbl_nacionalidades_ator.id_nacionalidade as id_nacionalidade_atores, tbl_nacionalidades.nacionalidade, 
+			tbl_nacionalidades.pais_origem, tbl_diretores.id as diretores_id, tbl_diretores.nome as nome_diretores, 
+				tbl_diretores.foto_diretor as diretores_foto, tbl_diretores.dt_nasc as diretores_data_nascimento, 
+				tbl_diretores.dt_falec as diretores_data_falecimento, tbl_diretores.sobre  as diretores_sobre, 
+				tbl_diretores.id_sexo as diretores_sexo_id, tbl_sexo.sexo as diretores_sexo_nome, 
+					tbl_nacionalidades_diretor.id_nacionalidade as id_nacionalidade_diretores, 
+					tbl_nacionalidades.nacionalidade, tbl_nacionalidades.pais_origem from tbl_generos 
+					inner join tbl_genero_filme on tbl_genero_filme.id_genero = tbl_generos.id
+						inner join tbl_filmes on tbl_filmes.id = tbl_genero_filme.id_filme
+						inner join tbl_filmes_diretor on tbl_filmes_diretor.id_filme = tbl_filmes.id
 						inner join tbl_diretores on tbl_diretores.id = tbl_filmes_diretor.id_diretor
-						inner join tbl_nacionalidades_diretor on tbl_nacionalidades_diretor.id_diretor = tbl_diretores.id
+							inner join tbl_nacionalidades_diretor on tbl_nacionalidades_diretor.id_diretor = tbl_diretores.id
 							inner join tbl_nacionalidades on tbl_nacionalidades.id = tbl_nacionalidades_diretor.id_nacionalidade
 							inner join tbl_nacionalidades_ator on tbl_nacionalidades_ator.id_nacionalidade = tbl_nacionalidades.id
 								inner join tbl_atores on tbl_atores.id = tbl_nacionalidades_ator.id_ator
+								inner join tbl_sexo on tbl_sexo.id = tbl_atores.id_sexo
 								inner join tbl_filmes_ator on tbl_filmes_ator.id_ator = tbl_atores.id
 									inner join tbl_filmes as tbl_filmes_classificacoes on tbl_filmes.id = tbl_filmes_ator.id_filme
 									inner join tbl_classificacoes on tbl_classificacoes.id = tbl_filmes_classificacoes.id_classificacao
-										where tbl_filmes.id > 0 order by tbl_filmes.id;
-
+									where tbl_filmes.id > 0 order by tbl_filmes.id;
 
 select tbl_atores.id, tbl_atores.nome, tbl_atores.foto_ator, tbl_atores.dt_nasc, tbl_atores.dt_falec, 
 		tbl_atores.sobre, tbl_atores.id_sexo, tbl_sexo.sexo, tbl_nacionalidades_ator.id_nacionalidade, 
@@ -600,8 +608,6 @@ select tbl_diretores.id, tbl_diretores.nome, tbl_diretores.foto_diretor, tbl_dir
 
 delete from tbl_nacionalidades_ator where id_ator = 6;
 delete from tbl_atores where id = 1;
-
-
 
 delete from tbl_filmes where id = 0;
 select foto_capa from tbl_filmes where id > 0;
