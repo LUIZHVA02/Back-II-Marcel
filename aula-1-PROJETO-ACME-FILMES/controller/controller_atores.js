@@ -8,18 +8,13 @@
 
 
 const atoresDAO = require('../model/DAO/atores.js')
-const nacionalidadesAtorDAO = require('../model/DAO/nacionalidade_ator.js')
-const nacionalidadesDAO = require('../model/DAO/nacionalidades.js')
-const sexosDAO = require('../model/DAO/sexos.js')
 
 const controller_nacionalidades_ator = require('./controller_nacionalidade_ator.js')
 const controller_nacionalidades = require('./controller_nacionalidades.js')
 const controller_sexos = require('./controller_sexos.js')
 
-
 //Import do Arquivo de Configuração do Projeto
 const message = require('../modulo/config.js')
-
 
 //Função para inserir um novo Ator
 const setInserirNovoAtor = async function (dadosAtor, content) {

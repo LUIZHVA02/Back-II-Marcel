@@ -77,8 +77,101 @@ const setInserirNovoFilme = async function (dadosFilme, content) {
     }
 }
 
+const setInserirNovoFilmeV3 = async function (dadosFilme, content) {
+
+    try {
+
+        if (String(content).toLowerCase() === 'application/json') {
+
+            let novoFilmeJson = {}
+            let statusvalidate = false
+            if (
+                dadosFilme.nome == '' || dadosFilme.nome == undefined || dadosFilme.nome == null || dadosFilme.nome.length > 80 ||
+                dadosFilme.sinopse == '' || dadosFilme.sinopse == undefined || dadosFilme.sinopse == null || dadosFilme.sinopse.length > 65000 ||
+                dadosFilme.duracao == '' || dadosFilme.duracao == undefined || dadosFilme.duracao == null || dadosFilme.duracao.length > 8 ||
+                dadosFilme.data_lancamento == '' || dadosFilme.data_lancamento == undefined || dadosFilme.data_lancamento == null || dadosFilme.data_lancamento.length != 10 ||
+                dadosFilme.foto_capa == '' || dadosFilme.foto_capa == undefined || dadosFilme.foto_capa == null || dadosFilme.foto_capa.length > 200 ||
+                dadosFilme.valor_unitario.length > 8 || isNaN(dadosFilme.valor_unitario) || dadosFilme.id_classificacao == '' || dadosFilme.id_classificacao == undefined ||
+                dadosFilme.id_classificacao == null || dadosFilme.id_classificacao.length > 6
+            ) {
+                return message.ERROR_REQUIRED_FIELDS
+            } else {
+                if (
+                    dadosFilme.data_relancamento != '' &&
+                    dadosFilme.data_relancamento != null &&
+                    dadosFilme.data_relancamento != undefined
+                ) {
+                    if (dadosFilme.data_relancamento.length != 10) {
+                        return message.ERROR_REQUIRED_FIELDS
+                    } else {
+                        statusvalidate = true // validação para liberar a inserção dos dados no DAO
+                    }
+                } else {
+                    statusvalidate = true // validação para liberar a inserção dos dados no DAO
+                }
+            }
+            if (statusvalidate) {
+                let novoFilme = await filmesDAO.insertFilme(dadosFilme)
+
+                if (novoFilme) {
+
+                    let idNovoFilme = await filmesDAO.selectLastIdFilmes()
+
+                    novoFilmeJson.status = message.SUCCES_CREATED_ITEM.status
+                    novoFilmeJson.status_code = message.SUCCES_CREATED_ITEM.status_code
+                    novoFilmeJson.message = message.SUCCES_CREATED_ITEM.message
+                    novoFilmeJson.id = idNovoFilme
+                    novoFilmeJson.filme = dadosFilme
+
+                    return novoFilmeJson
+                } else {
+                    return message.INTERNAL_SERVER_ERROR_DB
+                }
+            }
+        } else {
+            return message.ERROR_CONTENT_TYPE
+        }
+
+    } catch (error) {
+        return message.ERROR_INTERNAL_SERVER
+    }
+}
+
 //Função para atualizar um filme existente
 const setAtualizarNovoFilme = async function (id, dadosFilmeUpdate, content) {
+    if (String(content).toLowerCase() == 'application/json') {
+
+        let updateFilmeJson = {}
+        try {
+            const validaId = await getBuscarFilmes(id)
+
+            if (validaId) {
+                const filmeAtualizado = await filmesDAO.updateFilme(id, dadosFilmeUpdate)
+
+                if (filmeAtualizado) {
+                    updateFilmeJson.id = validaId
+                    updateFilmeJson.status = message.SUCCES_UPDATED_ITEM.status
+                    updateFilmeJson.status_code = message.SUCCES_UPDATED_ITEM.status_code
+                    updateFilmeJson.message = message.SUCCES_UPDATED_ITEM.message
+                    updateFilmeJson.filme = filmeAtualizado
+
+                    return updateFilmeJson
+                } else {
+                    return message.ERROR_INTERNAL_SERVER_DB
+                }
+            } else {
+                return message.ERROR_NOT_FOUND
+            }
+
+        } catch (error) {
+            return message.ERROR_UPDATED_ITEM
+        }
+    } else {
+        return message.ERROR_CONTENT_TYPE
+    }
+}
+
+const setAtualizarNovoFilmeV3 = async function (id, dadosFilmeUpdate, content) {
     if (String(content).toLowerCase() == 'application/json') {
 
         let updateFilmeJson = {}
