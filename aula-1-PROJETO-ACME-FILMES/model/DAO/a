@@ -12,6 +12,9 @@ const { PrismaClient } = require('@prisma/client')
 //Instânciando a classe do PrismaCliente
 const prisma = new PrismaClient()
 
+let caractereAntigo = "'"
+let caractereNovo = "|"
+
 const selectLastIdFilmes = async function () {
 
     try {
@@ -75,8 +78,8 @@ const insertFilme = async function (dadosFilme) {
                                             valor_unitario,
                                             id_classificacao
                                         )values(
-                                                "${dadosFilme.nome}", 
-                                                "${dadosFilme.sinopse}", 
+                                                replace('${dadosFilmeUpdate.sinopse}','${caractereAntigo}','${caractereNovo}'), 
+                                                replace('${dadosFilmeUpdate.sinopse}','${caractereAntigo}','${caractereNovo}'), 
                                                 "${dadosFilme.duracao}", 
                                                 "${dadosFilme.data_lancamento}", 
                                                 "${dadosFilme.data_relancamento}", 
@@ -113,6 +116,12 @@ const updateFilme = async function (id, dadosFilmeUpdate) {
             sql += `${key} = '${dadosFilmeUpdate[key]}'`
             if (index !== keys.length - 1) {
                 sql += `, `
+            }
+            if(dadosFilmeUpdate.nome){
+                sql += `nome = replace("${dadosFilmeUpdate.nome}","${caractereAntigo}","${caractereNovo}")`
+            }
+            if(dadosFilmeUpdate.sinopse){
+                sql += `sinopse = replace("${dadosFilmeUpdate.sinopse}","${caractereAntigo}","${caractereNovo}")`
             }
         })
 

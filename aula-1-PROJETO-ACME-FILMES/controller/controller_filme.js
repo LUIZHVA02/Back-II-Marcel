@@ -146,7 +146,123 @@ const setAtualizarNovoFilme = async function (id, dadosFilmeUpdate, content) {
             const validaId = await getBuscarFilmes(id)
 
             if (validaId) {
-                const filmeAtualizado = await filmesDAO.updateFilme(id, dadosFilmeUpdate)
+
+                let id = dadosFilmeUpdate.id
+                let nome = dadosFilmeUpdate.nome
+                let sinopse = dadosFilmeUpdate.sinopse
+                let duracao = dadosFilmeUpdate.duracao
+                let data_lancamento = dadosFilmeUpdate.data_lancamento
+                let data_relancamento = dadosFilmeUpdate.data_relancamento
+                let foto_capa = dadosFilmeUpdate.foto_capa
+                let valor_unitario = dadosFilmeUpdate.valor_unitario
+                let id_classificacao = dadosFilmeUpdate.id_classificacao
+                
+                
+
+                if (
+                    nome != '' &&
+                    nome != undefined &&
+                    nome != null &&
+                    nome.length < 100
+                ) {
+                    updateFilmeJson.nome = nome.replace(/'/g,"|")
+                } else if (
+                    nome == '' &&
+                    nome == undefined &&
+                    nome == null
+                ){}
+
+                if (
+                    sinopse != '' &&
+                    sinopse != undefined &&
+                    sinopse != null &&
+                    sinopse.length < 65000
+                ) {
+
+                    updateFilmeJson.sinopse = sinopse.replace(/'/g,"|")
+                } else if (
+                    sinopse == '' &&
+                    sinopse == undefined &&
+                    sinopse == null
+                ){}
+
+                if (
+                    duracao != '' &&
+                    duracao != undefined &&
+                    duracao != null &&
+                    duracao.length == 10
+                ) {
+                    updateFilmeJson.duracao = duracao
+                } else if (
+                    duracao == '' &&
+                    duracao == undefined &&
+                    duracao == null
+                ){}
+
+                if (
+                    data_lancamento != '' &&
+                    data_lancamento != undefined &&
+                    data_lancamento != null &&
+                    data_lancamento.length == 10
+                ) {
+                    updateFilmeJson.data_lancamento = data_lancamento
+                } else if (
+                    data_lancamento == '' &&
+                    data_lancamento == undefined &&
+                    data_lancamento == null
+                ){}
+
+                if (
+                    data_relancamento != '' &&
+                    data_relancamento != undefined &&
+                    data_relancamento != null &&
+                    data_relancamento.length == 10
+                ) {                   
+                    updateFilmeJson.data_relancamento = data_relancamento
+                } else if (
+                    data_relancamento == '' &&
+                    data_relancamento == undefined &&
+                    data_relancamento == null
+                ){}
+
+                if (
+                    foto_capa != '' &&
+                    foto_capa != undefined &&
+                    foto_capa != null &&
+                    foto_capa.length < 300
+                ) {
+                    updateFilmeJson.foto_capa = foto_capa
+                } else if (
+                    foto_capa == '' &&
+                    foto_capa == undefined &&
+                    foto_capa == null
+                ){}
+
+                if (
+                    valor_unitario != '' &&
+                    valor_unitario != undefined &&
+                    valor_unitario != null
+                ) {                   
+                    updateFilmeJson.valor_unitario = valor_unitario
+                } else if (
+                    valor_unitario == '' &&
+                    valor_unitario == undefined &&
+                    valor_unitario == null
+                ){}
+
+                if (
+                    id_classificacao != '' &&
+                    id_classificacao != undefined &&
+                    id_classificacao != null
+                ) {
+                    updateFilmeJson.id_classificacao = id_classificacao
+                } else if (
+                    id_classificacao == '' &&
+                    id_classificacao == undefined &&
+                    id_classificacao == null
+                ){}
+
+                const filmeAtualizado = await filmesDAO.updateFilme(id, updateFilmeJson)
 
                 if (filmeAtualizado) {
                     updateFilmeJson.id = validaId
@@ -164,6 +280,7 @@ const setAtualizarNovoFilme = async function (id, dadosFilmeUpdate, content) {
             }
 
         } catch (error) {
+            console.log(error);
             return message.ERROR_UPDATED_ITEM
         }
     } else {
