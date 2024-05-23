@@ -171,39 +171,6 @@ const setAtualizarNovoFilme = async function (id, dadosFilmeUpdate, content) {
     }
 }
 
-const setAtualizarNovoFilmeV3 = async function (id, dadosFilmeUpdate, content) {
-    if (String(content).toLowerCase() == 'application/json') {
-
-        let updateFilmeJson = {}
-        try {
-            const validaId = await getBuscarFilmes(id)
-
-            if (validaId) {
-                const filmeAtualizado = await filmesDAO.updateFilme(id, dadosFilmeUpdate)
-
-                if (filmeAtualizado) {
-                    updateFilmeJson.id = validaId
-                    updateFilmeJson.status = message.SUCCES_UPDATED_ITEM.status
-                    updateFilmeJson.status_code = message.SUCCES_UPDATED_ITEM.status_code
-                    updateFilmeJson.message = message.SUCCES_UPDATED_ITEM.message
-                    updateFilmeJson.filme = filmeAtualizado
-
-                    return updateFilmeJson
-                } else {
-                    return message.ERROR_INTERNAL_SERVER_DB
-                }
-            } else {
-                return message.ERROR_NOT_FOUND
-            }
-
-        } catch (error) {
-            return message.ERROR_UPDATED_ITEM
-        }
-    } else {
-        return message.ERROR_CONTENT_TYPE
-    }
-}
-
 //Função para excluir um filme existente
 const setExcluirFilme = async function (id) {
     let deleteFilmeJson = {}
