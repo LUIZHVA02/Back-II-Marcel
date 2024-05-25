@@ -12,6 +12,9 @@ const { PrismaClient } = require('@prisma/client')
 //Instânciando a classe do PrismaCliente
 const prisma = new PrismaClient()
 
+const caractereAntigo = ","
+const caractereNovo = "|"
+
 const selectLastIdFilmes = async function () {
 
     try {
@@ -54,8 +57,8 @@ const insertFilme = async function (dadosFilme) {
                                             valor_unitario,
                                             id_classificacao
                                         )values(
-                                                "${dadosFilme.nome}", 
-                                                "${dadosFilme.sinopse}", 
+                                                replace("${dadosFilme.nome}","${caractereAntigo}","${caractereNovo}"),
+                                                replace("${dadosFilme.sinopse}","${caractereAntigo}","${caractereNovo}"),
                                                 "${dadosFilme.duracao}", 
                                                 "${dadosFilme.data_lancamento}",
                                                 "${dadosFilme.foto_capa}", 
@@ -75,8 +78,8 @@ const insertFilme = async function (dadosFilme) {
                                             valor_unitario,
                                             id_classificacao
                                         )values(
-                                                "${dadosFilme.nome}", 
-                                                "${dadosFilme.sinopse}", 
+                                            replace("${dadosFilme.nome}","${caractereAntigo}","${caractereNovo}"),
+                                            replace("${dadosFilme.sinopse}","${caractereAntigo}","${caractereNovo}"),
                                                 "${dadosFilme.duracao}", 
                                                 "${dadosFilme.data_lancamento}", 
                                                 "${dadosFilme.data_relancamento}", 
@@ -95,10 +98,12 @@ const insertFilme = async function (dadosFilme) {
         if (result) {
             return true
         } else {
+            console.log(result);
             return false
         }
 
     } catch (error) {
+        console.log(error);
         return false
     }
 }
