@@ -12,7 +12,7 @@ const { PrismaClient } = require('@prisma/client')
 //Instânciando a classe do PrismaCliente
 const prisma = new PrismaClient()
 
-const caractereAntigo = ","
+const caractereAntigo = "'"
 const caractereNovo = "|"
 
 const selectLastIdFilmes = async function () {
@@ -150,7 +150,9 @@ const selectAllFilmes = async function () {
 
     try {
         //Script SQL para buscar todos os registros do BD
-        let sql = `select tbl_filmes.id, tbl_filmes.nome, tbl_filmes.sinopse, tbl_filmes.duracao, 
+        let sql = `select tbl_filmes.id, 
+        replace(tbl_filmes.nome,"${caractereNovo}","${caractereAntigo}") as nome,
+        replace(tbl_filmes.sinopse,"${caractereNovo}","${caractereAntigo}") as sinopse,tbl_filmes.duracao, 
 		tbl_filmes.data_lancamento, tbl_filmes.data_relancamento, tbl_filmes.foto_capa, 
 			tbl_filmes.valor_unitario, tbl_classificacoes.sigla, tbl_classificacoes.classificacao, 
 				tbl_classificacoes.legenda, tbl_classificacoes.imagem from tbl_filmes left join tbl_classificacoes 
