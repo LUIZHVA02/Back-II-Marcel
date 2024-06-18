@@ -11,16 +11,17 @@
  *      - PRISMA ORM    (Biblioteca mais atual)
  *      - FASTFY ORM    (Biblioteca mais atual)
  * 
- *      instalação do PRISMA ORM
+ * instalação do PRISMA ORM
  *          npm install prisma --save (É quem realiza a conexão com o banco de dados)
  *          npm install @prisma/client --save (É quem executa os scripts SQL no BD)
  * 
  *      Após as intalações devemos rodar o comando:
  *          npx prisma init (Esse comando inicializa a utilização do projeto)
+ *          npx prisma db pull
+ *          npx prisma generate
  * 
  *      Caso ocorra algum problema, execute:
- *              npx prisma generate 
- *              npm i 
+ *          npm i 
  */
 
 const express = require('express')

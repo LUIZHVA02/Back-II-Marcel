@@ -32,6 +32,7 @@ const selectLastIdFilmes = async function () {
         }
 
     } catch (error) {
+        console.log(error);
         return false
     }
 }
@@ -141,6 +142,7 @@ const deleteFilme = async function (id) {
 
         return result
     } catch (error) {
+        console.log(error);
         return false
     }
 }
@@ -170,6 +172,7 @@ const selectAllFilmes = async function () {
         return rsFilmes
 
     } catch (error) {
+        console.log(error);
         return false
     }
 }
@@ -192,6 +195,7 @@ const selectAllPhotoFilmes = async function () {
         return rsFilmes
 
     } catch (error) {
+        console.log(error);
         return false
     }
 }
@@ -209,6 +213,7 @@ const selectByIdFilmes = async function (id) {
         //Validação para retornar os dados ou retornar false
         return rsFilme
     } catch (error) {
+        console.log(error);
         return false
     }
 }
@@ -226,6 +231,7 @@ const selectByNameFilmes = async function (nome) {
         //Validação para retornar os dados ou retornar false
         return rsFilme
     } catch (error) {
+        console.log(error);
         return false
     }
 }

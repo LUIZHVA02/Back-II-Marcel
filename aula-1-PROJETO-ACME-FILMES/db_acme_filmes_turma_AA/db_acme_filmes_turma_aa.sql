@@ -1,6 +1,6 @@
-create database db_acme_filmes_turma_aa;
+create database db_acme_filmes_turma_aa_vidal;
 
-use db_acme_filmes_turma_aa;
+use db_acme_filmes_turma_aa_vidal;
 
 create table tbl_classificacoes(
 	id int not null auto_increment primary key,
@@ -545,7 +545,6 @@ insert into tbl_genero_filme(id_genero, id_filme)values
 (20, 2),
 (16, 3),
 (27, 3);
-
 
 show tables;
 
