@@ -5,11 +5,24 @@
  * Versão: 1.0 
  */
 
-/*
- * Para realizar a interação com banco de dados precisamos de uma biblioteca
- *      - SEQUELIZE ORM (Biblioteca mais antiga)
- *      - PRISMA ORM    (Biblioteca mais atual)
- *      - FASTFY ORM    (Biblioteca mais atual)
+/** Instalações da dependência para criação da API
+ * 
+ *  express     - "npm install express --save"  
+ *      {
+ *          Dependência do node para auxiliar na criação da API
+ *      }
+ * 
+ *  cors        - "npm install cors --save" 
+ *      {
+ *          [Dependência para manipular recursos de acesso, permissões, etc da API]
+ *          [Trabalha com as informações no Head(Front-End - html)]
+ *      }
+ * 
+ *  body-parser - "npm install body-parser --save" 
+ *      {
+ *          [É uma dependência para auxiliar na chegada de dados na API]
+ *          [Trabalha com as informações no Body(Front-End - html)]
+ *      }
  * 
  * instalação do PRISMA ORM
  *          npm install prisma --save (É quem realiza a conexão com o banco de dados)
