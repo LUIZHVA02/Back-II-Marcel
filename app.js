@@ -6,6 +6,14 @@
  */
 
 /** Instalações da dependência para criação da API
+ *  
+ *  npm         -  "Comandos de instalação"
+ *                  "npm install"
+ *                  "npm run build --if-present"
+ *                  "npm run test --if-present"
+ *
+ *              -  "Comando de update"
+ *                  "npm install -g npm@latest"
  * 
  *  express     - "npm install express --save"  
  *      {
