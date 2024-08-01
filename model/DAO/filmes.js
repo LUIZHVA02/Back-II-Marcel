@@ -41,12 +41,21 @@ const selectLastIdFilmes = async function () {
 const insertFilme = async function (dadosFilme) {
     let sql
 
+    let nome = dadosFilme.nome
+    let sinopse = dadosFilme.sinopse
+    let duracao = dadosFilme.duracao
+    let data_lancamento = dadosFilme.data_lancamento
+    let data_relancamento = dadosFilme.data_relancamento
+    let foto_capa = dadosFilme.foto_capa
+    let valor_unitario = parseFloat(dadosFilme.valor_unitario)
+    let id_classificacao = dadosFilme.id_classificacao
+
     try {
         //ScriptSQL para buscar um dos registros pelo nome no BD
 
-        if (dadosFilme.data_relancamento == undefined ||
-            dadosFilme.data_relancamento == null ||
-            dadosFilme.data_relancamento == '') {
+        if (data_relancamento == undefined ||
+            data_relancamento == null ||
+            data_relancamento == '') {
 
             sql = `
                 insert into tbl_filmes  (
@@ -58,15 +67,16 @@ const insertFilme = async function (dadosFilme) {
                                             valor_unitario,
                                             id_classificacao
                                         )values(
-                                                replace("${dadosFilme.nome}","${caractereAntigo}","${caractereNovo}"),
-                                                replace("${dadosFilme.sinopse}","${caractereAntigo}","${caractereNovo}"),
-                                                "${dadosFilme.duracao}", 
-                                                "${dadosFilme.data_lancamento}",
-                                                "${dadosFilme.foto_capa}", 
-                                                "${dadosFilme.valor_unitario}",
-                                                "${dadosFilme.id_classificacao}"
+                                                replace("${nome}","${caractereAntigo}","${caractereNovo}"),
+                                                replace("${sinopse}","${caractereAntigo}","${caractereNovo}"),
+                                                "${duracao}", 
+                                                "${data_lancamento}",
+                                                "${foto_capa}", 
+                                                "${valor_unitario}",
+                                                "${id_classificacao}"
                                 );
             `
+            console.log(valor_unitario, dadosFilme.valor_unitario);
         } else {
             sql = `
                 insert into tbl_filmes  (
@@ -79,16 +89,17 @@ const insertFilme = async function (dadosFilme) {
                                             valor_unitario,
                                             id_classificacao
                                         )values(
-                                            replace("${dadosFilme.nome}","${caractereAntigo}","${caractereNovo}"),
-                                            replace("${dadosFilme.sinopse}","${caractereAntigo}","${caractereNovo}"),
-                                                "${dadosFilme.duracao}", 
-                                                "${dadosFilme.data_lancamento}", 
-                                                "${dadosFilme.data_relancamento}", 
-                                                "${dadosFilme.foto_capa}", 
-                                                "${dadosFilme.valor_unitario}",
-                                                "${dadosFilme.id_classificacao}"
+                                            replace("${nome}","${caractereAntigo}","${caractereNovo}"),
+                                            replace("${sinopse}","${caractereAntigo}","${caractereNovo}"),
+                                                "${duracao}", 
+                                                "${data_lancamento}", 
+                                                "${data_relancamento}", 
+                                                "${foto_capa}", 
+                                                "${valor_unitario}",
+                                                "${id_classificacao}"
                                         );
                 `
+                console.log(valor_unitario, dadosFilme.valor_unitario);
 
         }
         //Executa o scriptSQL no BD e guarda o retorno dos dados
