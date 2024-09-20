@@ -49,6 +49,7 @@ values
 	(
 		"A18",
         "Não recomendado para menores de 18 anos",
+
         "Esta programação possui cenas de violência extrema, suicídio, consumo e indução ao consumo de drogas, sexo explícito e distúrbios psicossomáticos",
         "https://raw.githubusercontent.com/LUIZHVA02/Back-II-Leonid/main/Front-acme/image/png/classi-indicativa18.png"
 	);
